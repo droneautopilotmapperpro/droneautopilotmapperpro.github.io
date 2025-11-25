@@ -56,10 +56,106 @@
     /* hero card */
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:20px;border-radius:14px}
 
-    /* Donation */
-    .donation{display:flex;flex-direction:column;gap:14px}
-    .progress{height:16px;background:var(--glass);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;width:58%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));box-shadow:inset 0 -6px 12px rgba(0,0,0,0.25);transition:width 1s ease}
+    /* ----- Donation list (dark + gold + green accents) ----- */
+    .donation-list-section { padding:40px 0; }
+    .donation-list { display:flex; gap:18px; align-items:flex-start; flex-wrap:nowrap; column-gap:22px; }
+
+    .donor-panel { flex:0 0 320px; min-width:260px; max-width:340px; }
+    .donor-panel .card { padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.16)); border:1px solid rgba(255,255,255,0.03); }
+
+    /* GRID layout: 3 columns, responsive */
+    .donors-wrap { flex:1 1 auto; min-width:240px; overflow:visible; position:relative; }
+    .donors {
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 per row */
+      gap:14px;
+      align-items:start;
+      padding:8px 6px;
+      transition:all .4s ease;
+      will-change:transform;
+      grid-auto-flow: row;
+    }
+    /* responsive breakpoints */
+    @media (max-width:1100px) {
+      .donors { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 2 per row */
+    }
+    @media (max-width:700px) {
+      .donors { grid-template-columns: repeat(1, minmax(0, 1fr)); } /* 1 per row on small */
+    }
+
+    /* donor-card (sama gaya, dijaga agar cocok grid) */
+    .donor-card {
+      display:flex; gap:12px; align-items:center; padding:14px; border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.22));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+      transform: translateY(18px) scale(.995); opacity:0;
+      transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .5s ease, box-shadow .25s;
+      position:relative; overflow:hidden;
+    }
+
+    /* reveal after visible */
+    .donor-card[data-visible="true"] { transform:none; opacity:1; }
+
+    /* make sure cards stretch nicely in grid cells */
+    .donor-card .donor-info { min-width:0; }
+
+    /* rest of styles keep as sebelumnya (avatar, meta, hover etc.) */
+
+    /* staggerable reveal (uses --delay) */
+    .donor-card[data-visible="true"] { transform: none; opacity:1; }
+    .donor-card::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.02) 50%, rgba(184,134,11,0.015) 100%);
+      mix-blend-mode:overlay; opacity:.9;
+    }
+
+    /* avatar */
+    .donor-avatar{
+      width:64px; height:64px; min-width:64px; border-radius:12px;
+      display:grid; place-items:center; font-weight:800; font-size:18px; color:#070707;
+      background:linear-gradient(135deg,var(--gold),var(--gold-soft)); box-shadow:0 8px 22px rgba(184,134,11,0.12);
+      flex-shrink:0;
+    }
+
+    /* info */
+    .donor-info { flex:1 1 auto; min-width:0 }
+    .donor-name { font-weight:800; font-size:16px; color:var(--text); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+    /* pastikan donor-meta tetap fleksibel, tapi job selalu di baris baru */
+    .donor-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .donor-meta .platform-pill { flex: 0 0 auto; }    /* tetap sejajar di baris pertama */
+    .donor-meta .job {
+      display:block;          /* paksa block */
+      flex-basis:100%;        /* ambil baris penuh di bawah */
+      margin-top:2px;
+      color: rgba(255,255,255,0.6);
+      font-size:13px;
+    }
+    .platform-pill { padding:4px 8px; border-radius:999px; font-weight:700; font-size:12px; color:#071007; background:linear-gradient(90deg,var(--accent-green), rgba(40,199,111,0.85)); box-shadow:0 6px 18px rgba(40,199,111,0.06); }
+
+    /* amount / job */
+    .donor-amount { font-weight:800; color:var(--gold); font-size:14px; margin-left:12px; white-space:nowrap; text-align:right; }
+
+    /* hover */
+    .donor-card:hover{ transform:translateY(-10px) scale(1.01); box-shadow:0 36px 80px rgba(0,0,0,0.6); border-color: rgba(184,134,11,0.18); }
+    .donor-card:hover .donor-avatar{ transform:translateY(-4px) rotate(-2deg); transition:transform .32s cubic-bezier(.2,.9,.2,1); }
+
+    /* subtle sliding animation */
+    @keyframes shimmer-slide { 0%{ background-position: -200% 0 } 100%{ background-position: 200% 0 } }
+    .donor-card .shine { position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0.02), rgba(255,255,255,0)); mix-blend-mode:screen; opacity:0.6; transform:translateX(-30%); }
+
+    /* responsive */
+    @media (max-width:980px){
+      .donation-list { flex-direction:column; }
+      .donors { overflow-x:auto; padding:14px; }
+      .donor-card{ min-width:300px; }
+      .donor-panel{ order:2; }
+    }
+
+    /* small extra: gold underline for header */
+    .donation-list-section h2 { display:inline-block; position:relative; padding-bottom:6px; }
+    .donation-list-section h2::after { content:''; position:absolute; left:0; right:0; bottom:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); border-radius:6px; transform:scaleX(.9); opacity:.95; }
+
 
     /* cards */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -162,41 +258,26 @@
         <div>
           <div class="reveal" style="display:flex;gap:18px;align-items:center;margin-top:18px">
             <figure class="card" style="margin:0;max-width:320px;padding:5px;flex-shrink:0">
-              <img src="QROkto.jpeg" alt="QR code donasi" style="width:100%;height:auto;border-radius:8px;display:block" loading="lazy" />
+              <br><br><img src="QROkto.jpeg" alt="QR code donasi" style="width:100%;height:auto;border-radius:8px;display:block" loading="lazy" />
               <figcaption style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.7)">Scan QR untuk donasi</figcaption>
             </figure>
             <div style="color:rgba(255,255,255,0.85);max-width:560px">
-              <p style="margin:0 0 8px">Terimakasih Donasi Sahabat dan Telah Menghargai Kerja Keras Saya Dalam Membangun Aplikasi Ini 👋🥰</p>
-              <p style="margin:0"><a class="green-link" href="#donation">Nama Sahabat akan Muncul Disini →</a></p>
+              <p style="margin:0 0 8px">Terimakasih,<br>Donasi Abangku <p style="font-size:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent"></p> Untuk Kerja Keras Saya<br>Dalam Membangun Aplikasi Ini 👋🥰</p>
+              <p style="margin:0"><a class="green-link" href="#donation">Nama Abangku<br>akan Muncul Disini →</a></p>
             </div>
           </div>
-          <h1 class="font-size:10px;title reveal">Thanks For Buying <span style="font-size:35px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent">Drone Autopilot Mapper Pro V.8.2</span><br> You Can Support Me by Donating through this QR Code </h1>
-          <p class="lead reveal">Here's List of <a class="green-link" href="#">The Great People</a> Which have Donating Me and Supporting Me , Thankyou It Means alot!!<br>(Saya Akan Terus Mengembangkan Software Ini 🚀🚀)</p>
-          <div style="display:flex;gap:5px;align-items:center" class="reveal">
+          <h1 class="font-size:10px;title reveal">Thanks For Buying <span style="font-size:35px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent">Drone Autopilot Mapper Pro V.8.2</span><br> You Can Support Me<br>by Donating through<br>This QR Code </h1>
+          <p class="lead reveal">Here's List of <a class="green-link" href="#">The Great People</a> Which have Donating Me and Supporting Me,<br>Thankyou It Means alot!!<br>(Saya Akan Terus Mengembangkan Software Ini 🚀🚀)</p>
+          <div style="padding: 20px;display:flex;gap: 35px;px;align-items:center" class="reveal">
             <a class="cta" href="#donation">The Great People</a>
             <a class="green-link" href="#tutorial">Software Tutorial →</a>
-          </div>
-          <div style="margin-top:15px" class="card reveal">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-size:12px;color:rgba(255,255,255,0.6)">Target User Download</div>
-                <div style="font-weight:700;font-size:20px">10.000</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-size:12px;color:rgba(255,255,255,0.6)">Download</div>
-                <div style="font-weight:700;font-size:20px;color:var(--accent-green)">0</div>
-              </div>
-            </div>
-            <div style="margin-top:14px">
-              <div class="progress" aria-hidden="true"><i style="width:0%"></i></div>
-            </div>
           </div>
         </div>
 
         <aside>
           <div class="card float reveal">
-            <h3 style="margin:0 0 10px">Why choose this style?</h3>
-            <p style="margin:0 0 12px;color:rgba(255,255,255,0.65)">Black + gold memberi kesan premium. Gunakan rantai warna yang hangat untuk aksen, dan hijau sebagai highlight interaksi (CTA hover → putih).</p>
+            <h3 style="margin:0 0 10px">Punya Saran dan Masukan?</h3>
+            <p style="margin:0 0 12px;color:rgba(255,255,255,0.65)">Jika ada Feature yang mau ditambahkan?<br>please, let me know ya guys.</p>
             <div style="display:flex;gap:8px;margin-top:6px">
               <button class="cta">Join</button>
               <button style="padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;font-weight:700;color:var(--accent-green)" onclick="scrollTo('#news')">Latest News</button>
@@ -206,35 +287,78 @@
       </div>
     </section>
 
-    <section id="donation" style="padding:40px 0">
+    <section id="donation" class="donation-list-section">
       <h2 class="reveal">Donation</h2>
-      <div class="donation reveal" style="margin-top:18px;">
-        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-          <div style="flex:1;min-width:240px" class="card">
-            <div style="font-size:13px;color:rgba(255,255,255,0.6)">Progress</div>
-            <div style="margin-top:10px" class="progress"><i style="width:58%"></i></div>
-            <div style="margin-top:10px;display:flex;justify-content:space-between;color:rgba(255,255,255,0.6)"><span>58% tercapai</span><span>29M/50M</span></div>
-          </div>
+      <div class="donation-list reveal" style="margin-top:18px;">
+        <!-- kanan: horizontal donor list -->
+        <div class="donors-wrap">
+          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
+            <!-- contoh donor (bisa ditambah lewat JS) -->
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
+              <div class="donor-avatar">G</div>
+              <div class="donor-info">
+                <div class="donor-name">Gian</div>
+                <div class="donor-meta"><span class="platform-pill">@gian_kintap</span><span class="job">Surveyor Tambang</span></div>
+              </div>
+              <div class="donor-amount">Rp 112.000</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
 
-          <div style="flex:1;min-width:240px" class="card">
-            <div style="font-weight:700">Pilih Paket</div>
-            <div style="display:flex;gap:8px;margin-top:10px">
-              <button style="padding:10px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.06);min-width:100px">Rp 50.000</button>
-              <button style="padding:10px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));color:#070707;min-width:100px">Rp 150.000</button>
-              <button style="padding:10px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.06);min-width:100px">Custom</button>
-            </div>
-          </div>
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
+              <div class="donor-avatar">MF</div>
+              <div class="donor-info">
+                <div class="donor-name">Muhammad Faruq U</div>
+                <div class="donor-meta"><span class="platform-pill">@ubaydisana</span><span class="job">Surveyor Pro</span></div>
+              </div>
+              <div class="donor-amount">Rp 84.000</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
 
-          <div style="min-width:200px" class="card">
-            <div style="font-weight:700">Tindakan Cepat</div>
-            <div style="margin-top:12px;display:flex;gap:8px;flex-direction:column">
-              <button class="cta">Donasi Sekarang</button>
-              <button style="padding:10px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04)">Lihat Laporan</button>
-            </div>
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
+              <div class="donor-avatar">BH</div>
+              <div class="donor-info">
+                <div class="donor-name">Bahlil</div>
+                <div class="donor-meta"><span class="platform-pill">@anakbungsu123456789</span><span class="job">?</span></div>
+              </div>
+              <div class="donor-amount">Rp 69.800</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
+
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
+              <div class="donor-avatar">50S</div>
+              <div class="donor-info">
+                <div class="donor-name">50s 1 116</div>
+                <div class="donor-meta"><span class="platform-pill">@50n.1.116</span><span class="job">Surveyor Pro</span></div>
+              </div>
+              <div class="donor-amount">Rp 61.800</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
+
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
+              <div class="donor-avatar">TZ</div>
+              <div class="donor-info">
+                <div class="donor-name">Tazz</div>
+                <div class="donor-meta"><span class="platform-pill">@tazz55945</span><span class="job">?</span></div>
+              </div>
+              <div class="donor-amount">Rp 56.200</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
+
+            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
+              <div class="donor-avatar">RN</div>
+              <div class="donor-info">
+                <div class="donor-name">Riki Nurgahayu822</div>
+                <div class="donor-meta"><span class="platform-pill">@rikinurgahayu96</span><span class="job">Mechanic Drone</span></div>
+              </div>
+              <div class="donor-amount">Rp 55.800</div>
+              <div class="shine" aria-hidden="true"></div>
+            </article>
+            <!-- tambah donor statis lebih banyak sesuai kebutuhan -->
           </div>
         </div>
       </div>
     </section>
+
 
     <section id="news" style="padding:40px 0">
       <h2 class="reveal">News</h2>
@@ -271,17 +395,17 @@
         <div class="step reveal">
           <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));display:grid;place-items:center;font-weight:700;color:#070707">1</div>
           <div>
-            <div style="font-weight:700">Setup project</div>
-            <div style="color:rgba(255,255,255,0.6);margin-top:6px">Buat struktur file, siapkan variabel warna, dan tambahkan background pattern.</div>
-            <div style="margin-top:8px" class="code"><pre style="margin:0;font-size:13px">&lt;link rel="stylesheet" href="style.css"/&gt;</pre></div>
+            <div style="font-weight:700">How To Mapping</div>
+            <div style="color:rgba(255,255,255,0.6);margin-top:6px">After Making Polygon or Polyline,<br>dont forget to import Polygon and <br>then calculate (Vertical) or Force Horizontal (Horizontal)</div>
+            <div style="margin-top:8px" class="code"><pre style="margin:0;font-size:13px">&lt;Coming Soon&gt;</pre></div>
           </div>
         </div>
 
         <div class="step reveal">
           <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));display:grid;place-items:center;font-weight:700;color:#070707">2</div>
           <div>
-            <div style="font-weight:700">Micro interactions</div>
-            <div style="color:rgba(255,255,255,0.6);margin-top:6px">Gunakan transitions, animated underline, dan reveal on scroll untuk memperkaya pengalaman.</div>
+            <div style="font-weight:700">3D Waypoint, Follow Terrain!</div>
+            <div style="color:rgba(255,255,255,0.6);margin-top:6px">Coming Soon, On Development (Masih Dalam Pengembangan ya)</div>
           </div>
         </div>
       </div>
@@ -604,6 +728,79 @@
       });
 
     })();
+
+
+    // Donation list animations & helpers
+    (function(){
+      const donorsWrap = document.getElementById('donorsList');
+      if(!donorsWrap) return;
+
+      const donorCards = Array.from(donorsWrap.querySelectorAll('.donor-card'));
+
+      // Intersection Observer untuk trigger staggered reveal
+      const revealDonor = (entries, obs) => {
+        entries.forEach(entry => {
+          if(!entry.isIntersecting) return;
+          donorCards.forEach((card, i) => {
+            // use dataset attr to control
+            const delay = parseFloat(card.style.getPropertyValue('--delay')) || (i*0.06);
+            setTimeout(()=> card.setAttribute('data-visible','true'), Math.round(delay*1000));
+          });
+          obs.unobserve(entry.target);
+        });
+      };
+      const io = new IntersectionObserver(revealDonor, { threshold: 0.15 });
+      io.observe(document.querySelector('#donation'));
+
+      // hover auto-scroll: gentle nudge to reveal more cards on hover (desktop)
+      let scrollAnim = null;
+      const parent = donorsWrap.parentElement;
+      parent.addEventListener('mouseenter', ()=> {
+        if(window.matchMedia('(max-width:980px)').matches) return;
+        // slow left-right ping-pong
+        const el = donorsWrap;
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        if(maxScroll <= 2) return;
+        let dir = 1;
+        let pos = el.scrollLeft;
+        const step = () => {
+          pos += dir * 0.4; // slow
+          if(pos <= 0){ pos = 0; dir = 1; }
+          if(pos >= maxScroll){ pos = maxScroll; dir = -1; }
+          el.scrollLeft = pos;
+          scrollAnim = requestAnimationFrame(step);
+        };
+        scrollAnim = requestAnimationFrame(step);
+      });
+      parent.addEventListener('mouseleave', ()=> {
+        if(scrollAnim) cancelAnimationFrame(scrollAnim);
+        scrollAnim = null;
+      });
+
+      // helper untuk menambah donor (gunakan server data / realtime feed)
+      window.addDonor = function(name, handle, job, amount){
+        const initials = (name.split(' ').map(w=>w[0]||'').slice(0,2).join('') || name.slice(0,2)).toUpperCase();
+        const card = document.createElement('article');
+        card.className = 'donor-card';
+        card.setAttribute('role','listitem');
+        card.setAttribute('data-visible','false');
+        card.style.setProperty('--delay', (donorsWrap.children.length * 0.06) + 's');
+        card.innerHTML = `
+          <div class="donor-avatar">${initials}</div>
+          <div class="donor-info">
+            <div class="donor-name">${name}</div>
+            <div class="donor-meta"><span class="platform-pill">${handle}</span><span class="job">${job}</span></div>
+          </div>
+          <div class="donor-amount">${amount}</div>
+          <div class="shine" aria-hidden="true"></div>
+        `;
+        donorsWrap.appendChild(card);
+        // small delay then reveal
+        setTimeout(()=> card.setAttribute('data-visible','true'), 120);
+        return card;
+      };
+    })();
+
 
   </script>
 </body>
