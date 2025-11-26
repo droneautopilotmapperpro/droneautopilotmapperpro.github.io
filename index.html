@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Okto Drone Autopilot Mapper Pro V.8.2</title>
+  <!-- Bootstraps Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
   <style>
     :root{
       --bg:#070707;
@@ -227,70 +230,6 @@
     /* kelas untuk teks yang akan sedikit bergerak mengikuti musik */
     .reactive{ will-change:transform; display:inline-block; transition:transform .16s linear; }
 
-    /* Welcome modal */
-    #welcome-overlay{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.65);
-      z-index:9999;
-      padding:20px;
-    }
-    #welcome-modal{
-      width:min(500px, 96%);
-      transform: translate(-335px, -295px); /* geser kiri, lalu naik */
-      max-width:720px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.24));
-      border:1px solid rgba(255,255,255,0.04);
-      border-radius:12px;
-      padding:22px;
-      box-shadow:0 30px 80px rgba(0,0,0,0.6);
-      color:var(--text);
-      display:flex;
-      gap:18px;
-      align-items:center;
-    }
-    #welcome-modal .left {
-      width:92px;
-      height:92px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--gold),var(--gold-soft));
-      display:grid;
-      place-items:center;
-      font-weight:900;
-      color:#070707;
-      font-size:18px;
-      flex-shrink:0;
-    }
-    #welcome-modal .content h2{
-      margin:0 0 8px;
-      font-size:20px;
-      color:var(--gold);
-    }
-    #welcome-modal .content p{ margin:0 0 12px; color:rgba(255,255,255,0.78) }
-    #welcome-modal .actions{ display:flex; gap:10px; margin-top:6px; }
-    #welcome-modal .btn {
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,0.04);
-      background:transparent;
-      color:var(--text);
-    }
-    #welcome-modal .btn.ok {
-      background:linear-gradient(90deg,var(--gold),var(--gold-soft));
-      color:#070707;
-      box-shadow:0 10px 30px rgba(184,134,11,0.14);
-    }
-    #welcome-modal .btn.cancel{ background:rgba(255,255,255,0.02) }
-
-    /* small: hide overlay when not needed */
-    .hidden { display:none !important; }
-
-
   </style>
 </head>
 <body>
@@ -324,7 +263,7 @@
         <div>
           <div class="reveal" style="display:flex;gap:18px;align-items:center;margin-top:18px">
             <figure class="card" style="margin:0;max-width:320px;padding:5px;flex-shrink:0">
-              <br><br><img src="QROkto.jpeg" alt="QR code donasi" style="width:100%;height:auto;border-radius:8px;display:block" loading="lazy" />
+              <br><br><img src="QROkto.jpeg" alt="QR code donasi" style="width:80%;height:auto;border-radius:8px;display:block" loading="lazy" />
               <figcaption style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.7)">Scan QR untuk donasi</figcaption>
             </figure>
             <div style="color:rgba(255,255,255,0.85);max-width:560px">
@@ -333,8 +272,8 @@
             </div>
           </div>
           <h1 class="font-size:10px;title reveal">Thanks For Buying<br><span style="font-size:35px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent">Drone Autopilot<br>Mapper Pro V.8.2</span><br> You Can Support Me<br>by Donating through<br>This QR Code </h1>
-          <br><p class="lead reveal">Here's List of <a class="green-link" href="#">The Great People</a> Which have<br>Donating Me and Supporting Me,<br>Thankyou It Means alot!!<br>(Saya Akan Terus Mengembangkan Software Ini 🚀🚀)</p>
-          <div style="padding: 2px;display:flex;gap: 75px;px;align-items:center" class="reveal">
+          <p class="lead reveal">Here's List of<br><a class="green-link" href="#">The Great People</a><br>Which have Donating Me<br>and Supporting Me,<br>Thankyou It Means alot!!<br>(Saya Akan Terus Mengembangkan Software Ini 🚀🚀)</p>
+          <div style="padding: 20px;display:flex;gap: 35px;px;align-items:center" class="reveal">
             <a class="cta" href="#donation">The Great People</a>
             <a class="green-link" href="#tutorial">Software Tutorial →</a>
           </div>
@@ -342,7 +281,7 @@
 
         <aside>
           <div class="card float reveal">
-            <h3 style="margin:0 0 10px">Punya Saran dan Masukan?</h3>
+            <h3 style="margin:0 0 10px">Punya Saran dan Masukan?</h3><br>
             <p style="margin:0 0 12px;color:rgba(255,255,255,0.65)">Jika ada Feature yang mau ditambahkan?<br>please, let me know ya guys.</p>
             <div style="display:flex;gap:8px;margin-top:6px">
               <button class="cta">Join</button>
@@ -495,21 +434,6 @@
       </div>
     </section>
 
-    <!-- WELCOME MODAL -->
-    <div id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-desc">
-      <div id="welcome-modal" role="document">
-        <div class="left">V.8.2</div>
-        <div class="content">
-          <h2 id="welcome-title">Welcome To Drone Autopilot Mapper Pro</h2>
-          <p id="welcome-desc">Terimakasih sudah menggunakan Drone Autopilot Mapper Pro. Klik <strong>Oke</strong> untuk memulai musik latar dan melihat animasi reaktif.</p>
-          <div class="actions">
-            <button class="btn ok" id="welcome-ok">Oke, Mainkan Musik</button>
-            <button class="btn cancel" id="welcome-skip" aria-label="Tutup">Tutup</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div id="audio-hint" class="audio-hint" role="status" aria-live="polite">
       Klik tombol musik untuk menyalakan suara
     </div>
@@ -526,7 +450,7 @@
     </button>
 
 
-    <footer style="padding:40px 0;color:rgba(255,255,255,0.45);text-align:center">© 2025 Drone Autopilot Mapper Pro V.8.2 — Crafted By Okto</footer>
+    <footer style="padding:40px 0;color:rgba(255,255,255,0.45);text-align:center">© 2025 Drone Autopilot Mapper Pro V.8.2<br>Designed By Okto<br><a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-instagram"></i></a></li> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-facebook"></i></a> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-twitter"></i></a> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-youtube"></i></a>  &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-tiktok"></i></a></footer>
   </main>
 
   <script>
@@ -881,72 +805,6 @@
         return card;
       };
     })();
-
-      // Welcome modal behaviour: show on load, Oke -> trigger audio-control click
-      (function(){
-        const overlay = document.getElementById('welcome-overlay');
-        const okBtn = document.getElementById('welcome-ok');
-        const skipBtn = document.getElementById('welcome-skip');
-        const audioControl = document.getElementById('audio-control');
-
-        // safety: jika elemen tidak ada, jangan error
-        if(!overlay) return;
-
-        // focus management
-        function trapFocus(e){
-          const focusable = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-          if(!focusable.length) return;
-          const first = focusable[0], last = focusable[focusable.length-1];
-          if(e.key === 'Tab'){
-            if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-            else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-          } else if(e.key === 'Escape'){
-            closeModal();
-          }
-        }
-
-        function openModal(){
-          overlay.classList.remove('hidden');
-          // set initial focus to OK
-          okBtn.focus();
-          document.addEventListener('keydown', trapFocus);
-          document.body.style.overflow = 'hidden';
-        }
-        function closeModal(){
-          overlay.classList.add('hidden');
-          document.removeEventListener('keydown', trapFocus);
-          document.body.style.overflow = '';
-          // return focus to audio control for accessibility
-          if(audioControl) audioControl.focus();
-        }
-
-        // When user clicks OK: simulate click on existing audio-control to trigger play
-        okBtn.addEventListener('click', async (ev) => {
-          ev.preventDefault();
-          // close modal first (so gesture is considered user interaction)
-          closeModal();
-          // if audio control exists, click it (this will run your existing toggleAudio logic)
-          try{
-            if(audioControl){
-              audioControl.click();
-            } else {
-              // fallback: attempt to directly play bg audio
-              const bg = document.getElementById('bg-audio');
-              if(bg) { await bg.play().catch(()=>{}); }
-            }
-          }catch(e){ console.warn('welcome ok play error', e); }
-        });
-
-        // allow skip (close modal without autoplay)
-        skipBtn.addEventListener('click', (ev)=>{ ev.preventDefault(); closeModal(); });
-
-        // show modal once DOM fully loaded (or immediately if DOM already loaded)
-        if(document.readyState === 'loading'){
-          document.addEventListener('DOMContentLoaded', openModal, { once:true });
-        } else {
-          openModal();
-        }
-      })();
 
 
   </script>
