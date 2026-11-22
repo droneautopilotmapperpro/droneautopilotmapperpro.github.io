@@ -1407,14 +1407,12 @@
         <div class="lang-id">
           <ol>
             <li>Pastikan memakai APK sesuai drone (<code>Pro V5</code> atau <code>Old V4</code>).</li>
-            <li>Hubungkan kabel USB RC ke HP/tablet, izinkan akses USB, buka tab <code>SDK</code>, lalu tekan <code>Register SDK</code> hingga status produk terhubung.</li>
             <li>Pastikan area bebas halangan, lalu tekan <code>Upload KMZ &amp; Start Mission (SDK)</code>. Gunakan tombol <code>Pause</code>, <code>Resume</code>, <code>Stop</code> atau <code>RTH</code> bila diperlukan.</li>
           </ol>
         </div>
         <div class="lang-en">
           <ol>
             <li>Verify you are using the matching APK (<code>Pro V5</code> or <code>Old V4</code>).</li>
-            <li>Connect RC via USB OTG, approve USB prompt, open the <code>SDK</code> tab, tap <code>Register SDK</code> and confirm aircraft connection.</li>
             <li>Tap <code>Upload KMZ &amp; Start Mission (SDK)</code> after verifying clearance. Use <code>Pause</code>, <code>Resume</code>, <code>Stop</code> or <code>RTH</code> anytime.</li>
           </ol>
         </div>
@@ -1510,7 +1508,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td><code>SDK Not Registered</code> / Tidak konek USB</td><td><span class="lang-id-inline">Tidak ada internet saat registrasi App Key pertama kali atau kabel OTG / aplikasi DJI lain masih mengunci port USB</span><span class="lang-en-inline">No internet on first-ever SDK registration, faulty OTG cable or DJI Fly/GO4 holding USB port</span></td><td><span class="lang-id-inline">Tutup paksa DJI Fly/GO4 (Force Stop), aktifkan internet saat klik Register SDK pertama kali, colok ulang kabel USB data ke RC</span><span class="lang-en-inline">Force-stop DJI Fly/GO4, provide internet on initial SDK registration, reconnect USB data cable</span></td></tr>
+          <tr><td><code>SDK Not Registered</code> / Tidak konek USB</td><td><span class="lang-id-inline">Tidak ada internet saat registrasi App Key pertama kali atau kabel OTG / aplikasi DJI lain masih mengunci port USB</span><span class="lang-en-inline">No internet on first-ever SDK registration, faulty OTG cable or DJI Fly/GO4 holding USB port</span></td><td><span class="lang-id-inline">Tutup paksa DJI Fly/GO4 (Force Stop), restart aplikasi aktifkan internet untuk pertama kali install</span><span class="lang-en-inline">Force-stop DJI Fly/GO4, provide internet on first installation apk, reconnect USB data cable</span></td></tr>
           <tr><td>Mini 4 Pro tidak konek di Okto V5</td><td><span class="lang-id-inline">Menggunakan remote DJI RC 2 berlayar (OS dikunci DJI untuk aplikasi pihak ke-3)</span><span class="lang-en-inline">Using screen-equipped DJI RC 2 (closed OS blocking third-party MSDK apps)</span></td><td><span class="lang-id-inline">Gunakan remote tanpa layar <code>RC-N2/N3</code> + HP Android untuk Virtual Stick atau pakai metode <code>Share / Impor KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Pair <code>RC-N2/N3</code> + Android phone for MSDK V5 Virtual Stick or use <code>WPML KMZ</code> in DJI Fly</span></td></tr>
           <tr><td>Misi ditolak saat Upload MSDK V4/V5</td><td><span class="lang-id-inline">Salah APK untuk generasi drone, waypoint di luar zona NFZ/ketinggian &gt;500m atau baterai terlalu rendah</span><span class="lang-en-inline">Wrong SKU installed for aircraft generation, NFZ boundary, altitude &gt;500m or low battery</span></td><td><span class="lang-id-inline">Cek badge peringatan di tab <code>SDK</code>, pindah ke APK yang cocok atau gunakan alur <code>Share KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Check compatibility alert in <code>SDK</code> tab, switch SKU or export via <code>Share KMZ</code></span></td></tr>
           <tr><td>Overlay DXF muncul di laut / meleset jauh</td><td><span class="lang-id-inline">Koordinat CAD masih memakai UTM/TM-3 tetapi CRS dibiarkan Auto/WGS84 atau satuan mm</span><span class="lang-en-inline">CAD file uses UTM/TM-3 meters or millimeters while CRS prompt defaulted</span></td><td><span class="lang-id-inline">Pilih zona UTM spesifik (mis. <code>EPSG:32748</code> / UTM 48S) &amp; skala unit di dialog DXF saat impor</span><span class="lang-en-inline">Explicitly pick the site UTM EPSG zone and unit scale in the DXF import dialog</span></td></tr>
