@@ -1,1180 +1,1798 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="id" data-lang-mode="dual">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Okto Drone Autopilot Mapper Pro V.9</title>
-  <!-- Bootstraps Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    :root{
-      --bg:#070707;
-      --gold:#b8860b; /* dark gold */
-      --gold-soft:#c9a84a;
-      --accent-green:#28c76f; /* text color (green) */
-      --text:#dcdcdc;
-      --glass: rgba(255,255,255,0.03);
-      --glass-2: rgba(255,255,255,0.02);
-      --max-w:1200px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Okto Drone Mapper V.9.2 — Official Bilingual User &amp; Technical Module (ID / EN)</title>
+<style>
+  :root {
+    --bg-deep: #060913;
+    --bg-surface: #0D1424;
+    --bg-elevated: #141E34;
+    --bg-card: #10192D;
+    --border-subtle: rgba(148, 163, 184, 0.2);
+    --border-accent: rgba(0, 229, 255, 0.45);
+    --cyan: #00E5FF;
+    --purple: #8B5CF6;
+    --gold: #F5B731;
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: var(--sans);
+    background:
+      radial-gradient(circle at 14% 6%, rgba(0, 229, 255, 0.10), transparent 36%),
+      radial-gradient(circle at 86% 14%, rgba(139, 92, 246, 0.12), transparent 38%),
+      radial-gradient(circle at 50% 80%, rgba(245, 183, 49, 0.05), transparent 42%),
+      var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 1.58;
+    padding-bottom: 84px;
+  }
+
+  /* Reading Progress Bar */
+  .read-progress-track {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(15, 23, 42, 0.85);
+    z-index: 1200;
+  }
+  .read-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple), var(--gold));
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+    transition: width 0.08s linear;
+  }
+
+  /* Language switching system */
+  html[data-lang-mode="id"] .lang-en { display: none !important; }
+  html[data-lang-mode="en"] .lang-id { display: none !important; }
+  html[data-lang-mode="dual"] .bilingual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  html[data-lang-mode="id"] .bilingual-grid,
+  html[data-lang-mode="en"] .bilingual-grid {
+    display: block;
+  }
+  .lang-id-inline { font-weight: 600; color: var(--text-primary); }
+  .lang-en-inline { color: #C7D2FE; }
+  html[data-lang-mode="id"] .lang-en-inline { display: none !important; }
+  html[data-lang-mode="en"] .lang-id-inline { display: none !important; }
+  html[data-lang-mode="dual"] .lang-id-inline::after {
+    content: " / ";
+    color: var(--cyan);
+    font-weight: 400;
+  }
+
+  .lang-box {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 13px 15px;
+  }
+  .lang-box.lang-id { border-left: 3px solid var(--cyan); }
+  .lang-box.lang-en { border-left: 3px solid var(--purple); }
+  .lang-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .lang-tag.id { background: rgba(0,229,255,0.14); color: var(--cyan); border: 1px solid rgba(0,229,255,0.35); }
+  .lang-tag.en { background: rgba(139,92,246,0.18); color: #C4B5FD; border: 1px solid rgba(139,92,246,0.42); }
+
+  /* Sticky Avionics Header */
+  .topbar {
+    position: sticky;
+    top: 3px;
+    z-index: 1000;
+    background: rgba(6, 9, 19, 0.93);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-accent);
+    padding: 10px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .brand-badge {
+    background: linear-gradient(135deg, rgba(0,229,255,0.24), rgba(139,92,246,0.32));
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-weight: 800;
+    font-size: 12px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  }
+  .brand-title { font-size: 15px; font-weight: 700; letter-spacing: 0.03em; }
+  .brand-sub { font-size: 11px; color: var(--text-secondary); font-family: var(--mono); }
+
+  .toolbar-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .hud-btn {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    white-space: nowrap;
+  }
+  .hud-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .hud-btn.active {
+    background: linear-gradient(135deg, rgba(0,229,255,0.22), rgba(139,92,246,0.24));
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0,229,255,0.2);
+  }
+  .hud-btn.gold { border-color: rgba(245,183,49,0.55); color: var(--gold); }
+  .hud-btn.gold:hover { background: rgba(245,183,49,0.12); }
+  .hud-btn.bgm-pulse {
+    border-color: var(--purple);
+    color: #E9D5FF;
+    animation: bgmGlow 1.8s infinite ease-in-out;
+  }
+  @keyframes bgmGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.35); }
+    50% { box-shadow: 0 0 14px 2px rgba(0,229,255,0.42); }
+  }
+
+  /* Layout */
+  .container { max-width: 1260px; margin: 0 auto; padding: 20px 18px 64px; }
+
+  /* Top QR Showcase Banner (QROkto.jpeg) */
+  .qr-showcase {
+    position: relative;
+    background: linear-gradient(135deg, rgba(16, 26, 48, 0.97), rgba(18, 16, 42, 0.97));
+    border: 1px solid var(--border-accent);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: center;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 28px rgba(0, 229, 255, 0.08);
+    overflow: hidden;
+  }
+  .qr-showcase::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 12% 20%, rgba(0,229,255,0.12), transparent 40%),
+                radial-gradient(circle at 92% 80%, rgba(139,92,246,0.16), transparent 45%);
+    pointer-events: none;
+  }
+  .hud-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--cyan);
+    pointer-events: none;
+    opacity: 0.8;
+  }
+  .hud-corner.tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+  .hud-corner.tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; border-color: var(--purple); }
+  .hud-corner.bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; border-color: var(--purple); }
+  .hud-corner.br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+  .qr-frame-wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .qr-card-frame {
+    background: #FFFFFF;
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 22px rgba(0, 229, 255, 0.28);
+    cursor: zoom-in;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    width: 184px;
+    max-width: 100%;
+    text-align: center;
+  }
+  .qr-card-frame:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 28px rgba(0, 229, 255, 0.48);
+  }
+  .qr-card-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .qr-fallback {
+    display: none;
+    background: #0F172A;
+    color: #94A3B8;
+    border: 1px dashed var(--cyan);
+    border-radius: 8px;
+    padding: 22px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .qr-tap-hint {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--cyan);
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+
+  .qr-pitch { position: relative; z-index: 1; }
+  .live-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #86EFAC;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.42);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+    animation: pulseDot 1.6s infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.8); }
+  }
+  .qr-pitch h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    line-height: 1.3;
+    color: #F8FAFC;
+  }
+  .qr-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* QR Zoom Lightbox Modal */
+  .qr-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(3, 6, 14, 0.88);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .qr-modal.open { display: flex; }
+  .qr-modal-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--cyan);
+    border-radius: 16px;
+    padding: 18px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 229, 255, 0.25);
+  }
+  .qr-modal-card img {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    border-radius: 10px;
+    background: #FFFFFF;
+    padding: 10px;
+    border: 2px solid var(--cyan);
+  }
+  .qr-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--cyan);
+    font-weight: 700;
+  }
+
+  /* Quick Nav Pills */
+  .toc-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 20px;
+    padding: 11px 13px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+  }
+  .toc-nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: rgba(255,255,255,0.03);
+    transition: all 0.14s ease;
+  }
+  .toc-nav a:hover { color: var(--cyan); border-color: var(--border-accent); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, rgba(17,26,46,0.96), rgba(14,21,37,0.98));
+    border: 1px solid var(--border-accent);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero h1 { margin: 0 0 10px; font-size: 24px; letter-spacing: 0.01em; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stat-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.32);
+    color: var(--cyan);
+  }
+  .stat-pill.purple { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.4); color: #DDD6FE; }
+  .stat-pill.gold { background: rgba(245,183,49,0.14); border-color: rgba(245,183,49,0.45); color: var(--gold); }
+  .stat-pill.green { background: rgba(34,197,94,0.14); border-color: rgba(34,197,94,0.42); color: #86EFAC; }
+
+  /* Section & Cards */
+  .section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 22px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .section-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    font-family: var(--mono);
+    letter-spacing: 0.02em;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 11px;
+    padding: 15px;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+  .card:hover { border-color: rgba(0,229,255,0.34); }
+  .card.v5 { border-top: 3px solid var(--cyan); }
+  .card.v4 { border-top: 3px solid var(--gold); }
+  .card.kmz { border-top: 3px solid var(--purple); }
+  .card h3 { margin: 0 0 8px; font-size: 15px; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 13px 15px;
+    margin: 14px 0;
+    border: 1px solid var(--border-subtle);
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 4px solid var(--warning);
+  }
+  .callout.info { background: rgba(0, 229, 255, 0.07); border-left-color: var(--cyan); }
+  .callout.danger { background: rgba(239, 68, 68, 0.10); border-color: rgba(239, 68, 68, 0.35); border-left: 4px solid var(--danger); }
+  .callout-title {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .callout.danger .callout-title { color: #FCA5A5; }
+  .callout.info .callout-title { color: var(--cyan); }
+
+  /* Photogrammetry Quick Reference Bar */
+  .photo-ref-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(139,92,246,0.08));
+    border: 1px solid var(--border-accent);
+  }
+  .ref-metric {
+    background: rgba(6, 9, 19, 0.65);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 9px 11px;
+  }
+  .ref-metric .ref-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--cyan);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .ref-metric .ref-val {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 2px;
+    color: #F8FAFC;
+  }
+  .ref-metric .ref-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* Filter & Search Bar */
+  .filter-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 14px;
+  }
+  .search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .search-input {
+    flex: 1;
+    min-width: 210px;
+    padding: 9px 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border-accent);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+  }
+  .search-input:focus { box-shadow: 0 0 0 2px rgba(0,229,255,0.22); }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chip.active {
+    background: rgba(0,229,255,0.16);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th {
+    background: var(--bg-elevated);
+    color: var(--cyan);
+    text-align: left;
+    padding: 10px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-accent);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(0, 229, 255, 0.04); }
+  tr.hidden-row { display: none; }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .b-v5 { background: rgba(0,229,255,0.14); color: var(--cyan); border: 1px solid rgba(0,229,255,0.35); }
+  .b-v5vs { background: rgba(56,189,248,0.16); color: #7DD3FC; border: 1px solid rgba(56,189,248,0.38); }
+  .b-v4 { background: rgba(245,183,49,0.15); color: var(--gold); border: 1px solid rgba(245,183,49,0.4); }
+  .b-v4vs { background: rgba(251,146,60,0.16); color: #FDBA74; border: 1px solid rgba(251,146,60,0.4); }
+  .b-kmz { background: rgba(139,92,246,0.18); color: #DDD6FE; border: 1px solid rgba(139,92,246,0.45); }
+  .b-no { background: rgba(239,68,68,0.16); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.45); }
+
+  /* Diagrams & Step Cards */
+  .diagram-box {
+    background: #080D1A;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 14px 0;
+    overflow-x: auto;
+  }
+  .diagram-box svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+
+  .steps-list { display: grid; gap: 12px; margin-top: 12px; }
+  .step-item {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+    align-items: start;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #050811;
+    font-family: var(--mono);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  /* Interactive Checklist */
+  .checklist { display: grid; gap: 8px; margin-top: 10px; }
+  .check-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .check-row input { margin-top: 4px; width: 17px; height: 17px; accent-color: var(--cyan); cursor: pointer; flex-shrink: 0; }
+  .check-row.checked { border-color: rgba(34,197,94,0.45); background: rgba(34,197,94,0.06); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: rgba(0,229,255,0.1);
+    color: #A5F3FC;
+    padding: 1px 5px;
+    border-radius: 4px;
+    word-break: break-word;
+  }
+  ul, ol { margin: 6px 0; padding-left: 18px; }
+  li { margin: 4px 0; }
+
+  /* Floating Glassmorphic Neon Audio Pod (bgm.mp3) */
+  .bgm-pod {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 1150;
+    background: rgba(10, 17, 34, 0.90);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-accent);
+    border-radius: 14px;
+    padding: 9px 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(0, 229, 255, 0.16);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100vw - 28px);
+  }
+  .bgm-pod.awaiting {
+    border-color: var(--purple);
+    animation: bgmGlow 1.8s infinite ease-in-out;
+  }
+  .eq-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 18px;
+    width: 22px;
+    flex-shrink: 0;
+  }
+  .eq-bars span {
+    width: 3px;
+    height: 5px;
+    border-radius: 2px;
+    background: linear-gradient(to top, var(--purple), var(--cyan));
+    transition: height 0.2s ease;
+  }
+  .eq-bars.playing span:nth-child(1) { animation: eqBounce 0.7s infinite alternate 0.0s; }
+  .eq-bars.playing span:nth-child(2) { animation: eqBounce 0.55s infinite alternate 0.15s; }
+  .eq-bars.playing span:nth-child(3) { animation: eqBounce 0.8s infinite alternate 0.3s; }
+  .eq-bars.playing span:nth-child(4) { animation: eqBounce 0.6s infinite alternate 0.1s; }
+  .eq-bars.playing span:nth-child(5) { animation: eqBounce 0.75s infinite alternate 0.25s; }
+  @keyframes eqBounce {
+    0% { height: 4px; }
+    100% { height: 18px; }
+  }
+  .bgm-meta { min-width: 0; }
+  .bgm-title {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .bgm-status {
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 145px;
+  }
+  .bgm-controls { display: flex; align-items: center; gap: 5px; }
+  .bgm-icon-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .bgm-icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .bgm-vol {
+    width: 58px;
+    accent-color: var(--cyan);
+    cursor: pointer;
+  }
+
+  /* Scroll-to-Top Floating Button */
+  .top-float-btn {
+    position: fixed;
+    right: 14px;
+    bottom: 72px;
+    z-index: 1140;
+    background: rgba(16, 25, 45, 0.92);
+    border: 1px solid var(--border-accent);
+    color: var(--cyan);
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  }
+  .top-float-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Mobile & News Drawer WebView Responsive Optimization (down to 320px) */
+  @media (max-width: 820px) {
+    html[data-lang-mode="dual"] .bilingual-grid { grid-template-columns: 1fr; }
+    .topbar { padding: 8px 12px; }
+    .container { padding: 14px 10px 80px; }
+    .qr-showcase { grid-template-columns: 1fr; text-align: center; padding: 16px; }
+    .qr-card-frame { margin: 0 auto; }
+    .qr-actions { justify-content: center; }
+    .section { padding: 15px 12px; }
+    .hero { padding: 18px 14px; }
+    .hero h1 { font-size: 19px; }
+    .qr-pitch h2 { font-size: 17px; }
+  }
+  @media (max-width: 420px) {
+    .brand-sub { display: none; }
+    .hud-btn { padding: 5px 8px; font-size: 11px; }
+    .bgm-pod { right: 8px; bottom: 8px; padding: 7px 9px; gap: 7px; }
+    .bgm-vol { width: 44px; }
+    .bgm-status { max-width: 105px; }
+    .top-float-btn { right: 8px; bottom: 62px; }
+  }
+
+  @media print {
+    body { background: #FFFFFF !important; color: #0F172A !important; padding-bottom: 0; }
+    .topbar, .filter-panel, .no-print, .bgm-pod, .top-float-btn, .read-progress-track, .qr-modal { display: none !important; }
+    .section, .hero, .qr-showcase, .card, .lang-box, .step-item, .diagram-box, .check-row, .ref-metric {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border-color: #CBD5E1 !important;
+      box-shadow: none !important;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-
-    /* Background overlay + subtle pattern (replace --bg-image with your Unsplash image url) */
-    .page-bg{
-      position:fixed;inset:0;z-index:-2;pointer-events:none;background-color:var(--bg);
-      background-image: radial-gradient(rgba(184,134,11,0.06) 0.5px, transparent 0.5px), linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.7));
-      background-size:12px 12px, cover;
-      filter: saturate(0.9) contrast(1.02);
-    }
-    /* gradient band (gold shimmer) */
-    .gold-shimmer{position:fixed;inset: -20% -50% auto -50%;height:60vh;transform:rotate(-12deg);background:linear-gradient(90deg, rgba(184,134,11,0.03), rgba(255,215,0,0.06) 40%, rgba(184,134,11,0.04));mix-blend-mode:overlay;z-index:-1;}
-
-    .container{max-width:var(--max-w);margin:0 auto;padding:5px 20px}
-    header{display:flex;align-items:center;justify-content:space-between;padding:5px 0;position:fixed;top:0;left:0;right:0;background:linear-gradient(180deg, rgba(7,7,7,0.45), rgba(7,7,7,0.2));backdrop-filter: blur(6px);z-index:40;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .logo{display:flex;align-items:center;gap:12px}
-    .logo .mark{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold-soft));box-shadow:0 6px 18px rgba(184,134,11,0.12);display:grid;place-items:center;font-weight:700;color:#090909}
-    nav{display:flex;gap:18px;align-items:center}
-    nav a{position:relative;padding:10px 8px;border-radius:6px;color:var(--accent-green);text-decoration:none;font-weight:600;transition: color .18s ease, transform .18s ease}
-    nav a:hover{color:#ffffff}
-    /* animated underline */
-    nav a::after{content:'';position:absolute;left:8px;right:8px;bottom:6px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));opacity:0;transform:scaleX(0);transform-origin:left center;transition:transform .32s cubic-bezier(.2,.9,.2,1),opacity .28s}
-    nav a:hover::after{opacity:1;transform:scaleX(1)}
-
-    /* buat hero/halaman pertama benar-benar hitam */
-    
-    
-    /* header buttons */
-    .cta{margin-left:12px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));color:#070707;font-weight:700;box-shadow:0 6px 18px rgba(184,134,11,0.12)}
-
-    /* Hero */
-    .hero{min-height:78vh;display:grid;align-items:center;padding:1px 0}
-    .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center}
-    .title{font-size:clamp(25px,6.2vw,35px);line-height:1.02;margin:0 0 10px}
-    .lead{color:rgba(220,220,220,0.85);margin-bottom:20px}
-    .green-link{color:var(--accent-green);text-decoration:none;font-weight:700}
-    .green-link:hover{color:#ffffff}
-
-    /* hero card */
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:20px;border-radius:14px}
-
-    /* ----- Donation list (dark + gold + green accents) ----- */
-    .donation-list-section { padding:40px 0; }
-    .donation-list { display:flex; gap:18px; align-items:flex-start; flex-wrap:nowrap; column-gap:22px; }
-
-    .donor-panel { flex:0 0 320px; min-width:260px; max-width:340px; }
-    .donor-panel .card { padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.16)); border:1px solid rgba(255,255,255,0.03); }
-
-    /* GRID layout: 3 columns, responsive */
-    .donors-wrap { flex:1 1 auto; min-width:240px; overflow:visible; position:relative; }
-    .donors {
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 per row */
-      gap:14px;
-      align-items:start;
-      padding:8px 6px;
-      transition:all .4s ease;
-      will-change:transform;
-      grid-auto-flow: row;
-    }
-    /* responsive breakpoints */
-    @media (max-width:1100px) {
-      .donors { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 2 per row */
-    }
-    @media (max-width:700px) {
-      .donors { grid-template-columns: repeat(1, minmax(0, 1fr)); } /* 1 per row on small */
-    }
-
-    /* donor-card (sama gaya, dijaga agar cocok grid) */
-    .donor-card {
-      display:flex; gap:12px; align-items:center; padding:14px; border-radius:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.22));
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-      transform: translateY(18px) scale(.995); opacity:0;
-      transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .5s ease, box-shadow .25s;
-      position:relative; overflow:hidden;
-    }
-
-    /* reveal after visible */
-    .donor-card[data-visible="true"] { transform:none; opacity:1; }
-
-    /* make sure cards stretch nicely in grid cells */
-    .donor-card .donor-info { min-width:0; }
-
-    /* rest of styles keep as sebelumnya (avatar, meta, hover etc.) */
-
-    /* staggerable reveal (uses --delay) */
-    .donor-card[data-visible="true"] { transform: none; opacity:1; }
-    .donor-card::after{
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.02) 50%, rgba(184,134,11,0.015) 100%);
-      mix-blend-mode:overlay; opacity:.9;
-    }
-
-    /* avatar */
-    .donor-avatar{
-      width:64px; height:64px; min-width:64px; border-radius:12px;
-      display:grid; place-items:center; font-weight:800; font-size:18px; color:#070707;
-      background:linear-gradient(135deg,var(--gold),var(--gold-soft)); box-shadow:0 8px 22px rgba(184,134,11,0.12);
-      flex-shrink:0;
-    }
-
-    /* info */
-    .donor-info { flex:1 1 auto; min-width:0 }
-    .donor-name { font-weight:800; font-size:16px; color:var(--text); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-    /* pastikan donor-meta tetap fleksibel, tapi job selalu di baris baru */
-    .donor-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .donor-meta .platform-pill { margin-top: 5px;flex: 0 0 auto; }    /* tetap sejajar di baris pertama */
-    .donor-meta .job {
-      display:block;          /* paksa block */
-      flex-basis:100%;        /* ambil baris penuh di bawah */
-      margin-top:2px;
-      color: rgba(255,255,255,0.6);
-      font-size:13px;
-    }
-    .platform-pill { padding:4px 8px; border-radius:999px; font-weight:700; font-size:12px; color:#071007; background:linear-gradient(90deg,var(--accent-green), rgba(40,199,111,0.85)); box-shadow:0 6px 18px rgba(40,199,111,0.06); }
-
-    /* amount / job */
-    .donor-amount { font-weight:800; color:var(--gold); font-size:14px; margin-left:12px; white-space:nowrap; text-align:right; }
-
-    /* hover */
-    .donor-card:hover{ transform:translateY(-10px) scale(1.01); box-shadow:0 36px 80px rgba(0,0,0,0.6); border-color: rgba(184,134,11,0.18); }
-    .donor-card:hover .donor-avatar{ transform:translateY(-4px) rotate(-2deg); transition:transform .32s cubic-bezier(.2,.9,.2,1); }
-
-    /* subtle sliding animation */
-    @keyframes shimmer-slide { 0%{ background-position: -200% 0 } 100%{ background-position: 200% 0 } }
-    .donor-card .shine { position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0.02), rgba(255,255,255,0)); mix-blend-mode:screen; opacity:0.6; transform:translateX(-30%); }
-
-    /* responsive */
-    @media (max-width:980px){
-      .donation-list { flex-direction:column; }
-      .donors { overflow-x:auto; padding:14px; }
-      .donor-card{ min-width:300px; }
-      .donor-panel{ order:2; }
-    }
-
-    /* small extra: gold underline for header */
-    .donation-list-section h2 { display:inline-block; position:relative; padding-bottom:6px; }
-    .donation-list-section h2::after { content:''; position:absolute; left:0; right:0; bottom:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); border-radius:6px; transform:scaleX(.9); opacity:.95; }
-
-
-    /* cards */
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .news-card{padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);min-height:180px;display:flex;flex-direction:column;gap:12px}
-
-    /* tutorial */
-    .steps{display:flex;flex-direction:column;gap:12px}
-    .step{display:flex;gap:16px;align-items:flex-start;padding:14px;border-radius:10px;background:var(--glass-2);border:1px solid rgba(255,255,255,0.02)}
-    .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(255,255,255,0.01));padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);overflow:auto}
-
-    /* about */
-    .team{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .member{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.15));border:1px solid rgba(255,255,255,0.03);text-align:center;transition:transform .45s cubic-bezier(.2,.9,.2,1),box-shadow .3s}
-    .member:hover{transform:translateY(-12px) rotate(-1deg);box-shadow:0 30px 60px rgba(0,0,0,0.6)}
-
-    /* reveal animations */
-    .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease, transform .8s cubic-bezier(.2,.9,.2,1)}
-    .reveal.is-visible{opacity:1;transform:none}
-
-    /* small screens */
-    @media (max-width:900px){
-      .hero-grid{grid-template-columns:1fr;}
-      .grid,.team{grid-template-columns:1fr}
-      nav{display:none}
-    }
-
-    /* small micro animations */
-    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
-    .float{animation:floaty 6s ease-in-out infinite}
-
-    /* ================= Audio control (pojok kanan bawah) ================= */
-    .audio-control{
-      position:fixed;
-      opacity: 0.25;
-      right:20px;
-      bottom:20px;
-      width:64px;
-      height:64px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      z-index:200;
-      background:linear-gradient(180deg,var(--gold),var(--gold-soft));
-      box-shadow:0 10px 30px rgba(184,134,11,0.18);
-      cursor:pointer;
-      transition:transform .18s ease,box-shadow .18s ease;
-      border:1px solid rgba(255,255,255,0.06);
-    }
-    .audio-control:active{ transform:scale(.98); }
-    .audio-control .icon{ width:28px; height:28px; display:block; fill:#070707; }
-    .audio-control.playing{ box-shadow:0 18px 40px rgba(184,134,11,0.28); animation:audio-pulse 1.6s ease-in-out infinite; }
-    @keyframes audio-pulse{ 0%{transform:scale(1)} 50%{transform:scale(1.04)} 100%{transform:scale(1)} }
-
-    /* hint jika autoplay diblokir */
-    .audio-hint{
-      position:fixed;
-      opacity: 0.25;
-      right:20px;
-      bottom:94px;
-      background:rgba(0,0,0,0.6);
-      padding:8px 10px;
-      border-radius:8px;
-      color:rgba(255,255,255,0.9);
-      font-size:13px;
-      z-index:210;
-      display:none;
-    }
-
-    /* kelas untuk teks yang akan sedikit bergerak mengikuti musik */
-    .reactive{ will-change:transform; display:inline-block; transition:transform .16s linear; }
-
-  </style>
+    .section-title, th, code, .ref-label { color: #0369A1 !important; background: #F1F5F9 !important; }
+    .lang-en-inline { color: #334155 !important; }
+    .badge { border-color: #64748B !important; color: #0F172A !important; background: #F8FAFC !important; }
+    .section { break-inside: avoid-page; }
+  }
+</style>
 </head>
 <body>
-  <div class="page-bg" aria-hidden="true"></div>
-  <div class="gold-shimmer" aria-hidden="true"></div>
 
-  <!-- AUDIO (ganti src dengan file audio kamu) -->
-  <audio id="bg-audio" crossorigin="anonymous" playsinline loop preload="auto" src="bgm.mp3"></audio>
+<div class="read-progress-track no-print"><div class="read-progress-fill" id="readProgress"></div></div>
 
-  <header class="container">
-    <div class="logo">
-      <div class="mark">V.9.2</div>
-      <div>
-        <div style="font-weight:700;letter-spacing:0.6px">  Okto Drone Autopilot Mapper Pro</div>
-        <div style="font-size:12px;color:rgb(255, 238, 0)">  Profesional & Easy To Use</div>
-      </div>
+<audio id="oktoBgm" src="bgm.mp3" loop preload="auto"></audio>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-badge">OKTO V.9.2</span>
+    <div>
+      <div class="brand-title">Okto Drone Mapper Pro &amp; Old</div>
+      <div class="brand-sub">Official Bilingual Module (ID + EN) // DJI MSDK V5 + V4 + WPML KMZ</div>
     </div>
-    <nav role="navigation" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#donation">Donation</a>
-      <a href="#news">News</a>
-      <a href="#tutorial">Tutorial</a>
-      <a href="#about">About</a>
-      <a class="cta" href="#donation">Donate</a>
-    </nav>
-  </header>
+  </div>
+  <div class="toolbar-actions">
+    <button class="hud-btn" id="btnLangId" onclick="setLangMode('id')">🇮🇩 ID</button>
+    <button class="hud-btn" id="btnLangEn" onclick="setLangMode('en')">🇬🇧 EN</button>
+    <button class="hud-btn active" id="btnLangDual" onclick="setLangMode('dual')">🌐 Dual</button>
+    <button class="hud-btn" id="topBgmBtn" onclick="toggleBgmPlayback()" title="Toggle Background Music (bgm.mp3)">🎵 BGM</button>
+    <button class="hud-btn gold" onclick="window.print()">🖨️ PDF</button>
+  </div>
+</header>
 
-  <main class="container">
-    <section id="home" class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="reveal" style="display:flex;gap:18px;align-items:center;margin-top:18px">
-            <figure class="card" style="margin:0;max-width:200px;padding:5px;flex-shrink:0">
-              <br><br><img src="QROkto.jpeg" alt="QR code donasi" style="width:100%;height:auto;border-radius:8px;display:block" loading="lazy" />
-              <figcaption style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.7)">Harga Aplikasi 100 Ribu Saja<br>Scan QR jika ingin donasi</figcaption>
-            </figure>
-            <div style="color:rgba(255,255,255,0.85);max-width:560px">
-              <p style="margin:0 0 8px"><br><br>(INFOO) Update terbaru V.9.2<br>dikarenakan API Download maps offlinenya berbayar,<br>maka mohon maaf untuk V.9.2,<br>saya kenakan biaya update 100 ribu rupiah,<br>v.9.2 bisa download maps,<br>jadi bisa buat misi jika tidak ada sinyal internet,<br>ESRI Dan GMAPS Hybrid Maps (+nama jalan,dll),<br>STA Video Subtitle Generator,<br>Perbaikan Terbang Corridor Autopilot,<br>Terrain Follow(DEM Input)</p><br><br>
-              <p style="margin:0 0 8px"><a class="green-link" href="#donation">Nama Abangku<br>akan Muncul Disini →</a></p>
-            </div>
-          </div>
-          <h1 class="font-size:10px;title reveal">Thanks For Buying<br><span style="font-size:35px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));-webkit-background-clip:text;background-clip:text;color:transparent">Drone Autopilot<br>Mapper Pro V.9.2</span><br>Jika Aplikasi ini Membantu,<br>Bisa berterimakasih,<br>lewat Qris Donasi diatas ^.^ ,<br>agar saya terus Update.</h1>
-          <br><p class="lead reveal">Here's List of<br><a class="green-link" href="#">The Great People</a><br>Which have Donating Me<br>and Supporting Me,<br>Thankyou It Means alot!!<br>(Saya Akan Terus Mengembangkan Software Ini 🚀🚀)</p>
-          <div style="padding: 20px;display:flex;gap: 35px;px;align-items:center" class="reveal">
-            <a class="cta" href="#donation">The Great People</a>
-            <a class="green-link" href="#tutorial">Software Tutorial →</a>
-          </div>
-        </div>
+<main class="container">
 
-        <aside>
-          <div class="card float reveal">
-            <h3 style="margin:0 0 10px">Punya Saran dan Masukan?</h3><br>
-            <p style="margin:0 0 12px;color:rgba(255,255,255,0.65)">Jika ada Feature yang mau ditambahkan?<br>please, let me know ya guys.</p>
-            <div style="display:flex;gap:8px;margin-top:6px">
-              <button class="cta">Join</button>
-              <button style="padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;font-weight:700;color:var(--accent-green)" onclick="scrollTo('#news')">Latest News</button>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
+  <!-- TOP QR CODE SHOWCASE BANNER (QROkto.jpeg) -->
+  <section class="qr-showcase" id="sec-qr">
+    <span class="hud-corner tl"></span>
+    <span class="hud-corner tr"></span>
+    <span class="hud-corner bl"></span>
+    <span class="hud-corner br"></span>
 
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Buyer List Top Tier</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.012s">
-              <div class="donor-avatar">COCO</div>
-              <div class="donor-info">
-                <div class="donor-name">Jagad Drone</div>
-                <div class="donor-meta"><span class="platform-pill">@jagad.drone<br>(tiktok)</span><span class="job">Top 1 Donate</span></div>
-              </div>
-              <div class="donor-amount">Rp 500.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-          </div>
+    <div class="qr-frame-wrap">
+      <div class="qr-card-frame" onclick="openQrModal()" title="Klik untuk memperbesar QR / Click to zoom QR">
+        <img src="QROkto.jpeg" id="qrThumbImg" alt="Okto Drone Mapper Pro Official QR Code (QROkto.jpeg)"
+             onerror="this.style.display='none'; document.getElementById('qrFallback').style.display='block';">
+        <div class="qr-fallback" id="qrFallback">
+          <strong>QROkto.jpeg</strong><br>
+          <span class="lang-id-inline">Letakkan file QROkto.jpeg di folder yang sama dengan HTML ini</span>
+          <span class="lang-en-inline">Place QROkto.jpeg in the same folder as this HTML file</span>
         </div>
       </div>
-    </section>
-
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Buyer List 1</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.012s">
-              <div class="donor-avatar">FAR</div>
-              <div class="donor-info">
-                <div class="donor-name">FA Rataf</div>
-                <div class="donor-meta"><span class="platform-pill">@rahmat_tempomona<br>(tiktok)</span><span class="job">Top 1 Donate</span></div>
-              </div>
-              <div class="donor-amount">Rp 300.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-            
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">TZ</div>
-              <div class="donor-info">
-                <div class="donor-name">Tazz</div>
-                <div class="donor-meta"><span class="platform-pill">@tazz55945 (tiktok)</span><span class="job">Top 2 Donate</span></div>
-              </div>
-              <div class="donor-amount">Rp 206.200</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">SG</div>
-              <div class="donor-info">
-                <div class="donor-name">Sagitarius</div>
-                <div class="donor-meta"><span class="platform-pill">@miraclesagitarius12<br>(tiktok)</span><span class="job"> Top 3 Donate</span></div>
-              </div>
-              <div class="donor-amount">Rp 200.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">TMN</div>
-              <div class="donor-info">
-                <div class="donor-name">TypeMyName</div>
-                <div class="donor-meta"><span class="platform-pill">@mkeytype<br>(tiktok)</span><span class="job"> Top Donate</span></div>
-              </div>
-              <div class="donor-amount">Rp 150.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-            
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.012s">
-              <div class="donor-avatar">RA</div>
-              <div class="donor-info">
-                <div class="donor-name">2031's</div>
-                <div class="donor-meta"><span class="platform-pill">@rances434 (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 150.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">KG</div>
-              <div class="donor-info">
-                <div class="donor-name">KangGift</div>
-                <div class="donor-meta"><span class="platform-pill">@kanggiftpaten<br>(tiktok)</span><span class="job">Team Appraisal🔎🕵️‍♂️🏘️</span></div>
-              </div>
-              <div class="donor-amount">Rp 150.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">XNY</div>
-              <div class="donor-info">
-                <div class="donor-name">Xnypin</div>
-                <div class="donor-meta"><span class="platform-pill">@xnypin6<br>(tiktok)</span><span class="job">DP Kucing🙀</span></div>
-              </div>
-              <div class="donor-amount">Rp 150.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">NL</div>
-              <div class="donor-info">
-                <div class="donor-name">Nature Lover</div>
-                <div class="donor-meta"><span class="platform-pill">@naturerecorder<br>(tiktok)</span><span class="job">Cine Content Creator</span></div>
-              </div>
-              <div class="donor-amount">Rp 120.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Buyer List 2</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">PE</div>
-              <div class="donor-info">
-                <div class="donor-name">Patop Excellent</div>
-                <div class="donor-meta"><span class="platform-pill">@patop_excellent7<br>(tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">CA</div>
-              <div class="donor-info">
-                <div class="donor-name">catchemtcg.02</div>
-                <div class="donor-meta"><span class="platform-pill">@catchemtcg.02 (tiktok)</span><span class="job">Teteh dari Malaysia</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">IR</div>
-              <div class="donor-info">
-                <div class="donor-name">iedrahmat</div>
-                <div class="donor-meta"><span class="platform-pill">@iedrahmat (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">SU</div>
-              <div class="donor-info">
-                <div class="donor-name">Surya Utama</div>
-                <div class="donor-meta"><span class="platform-pill">@suryautama0 (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">CS</div>
-              <div class="donor-info">
-                <div class="donor-name">Crim Soot</div>
-                <div class="donor-meta"><span class="platform-pill">@joki_bakwan (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">BG</div>
-              <div class="donor-info">
-                <div class="donor-name">Bantug</div>
-                <div class="donor-meta"><span class="platform-pill">@bantughehe (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">S30</div>
-              <div class="donor-info">
-                <div class="donor-name">Setelah30</div>
-                <div class="donor-meta"><span class="platform-pill">@setelah30_ (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">AFR</div>
-              <div class="donor-info">
-                <div class="donor-name">Alvian F.R.</div>
-                <div class="donor-meta"><span class="platform-pill">@alvian_fr (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">AB</div>
-              <div class="donor-info">
-                <div class="donor-name">abidin</div>
-                <div class="donor-meta"><span class="platform-pill">@abidinnn_ (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">KB</div>
-              <div class="donor-info">
-                <div class="donor-name">Kita Bisa</div>
-                <div class="donor-meta"><span class="platform-pill">@Kita Bisa (facebook)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Buyer List 3</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">PES</div>
-              <div class="donor-info">
-                <div class="donor-name">Praba Engineering</div>
-                <div class="donor-meta"><span class="platform-pill">@Praba Engineering<br>(facebook)</span><span class="job">Engineering Teacher</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">ES</div>
-              <div class="donor-info">
-                <div class="donor-name">Erwin Saputra</div>
-                <div class="donor-meta"><span class="platform-pill">@Erwin Saputra<br>(facebook)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">FM</div>
-              <div class="donor-info">
-                <div class="donor-name">Farhanmunggaran</div>
-                <div class="donor-meta"><span class="platform-pill">@Farhanmunggaran<br>(Instagram)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">AL</div>
-              <div class="donor-info">
-                <div class="donor-name">Alim</div>
-                <div class="donor-meta"><span class="platform-pill">@Alimlewy98<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">BS</div>
-              <div class="donor-info">
-                <div class="donor-name">Bagus</div>
-                <div class="donor-meta"><span class="platform-pill">@masbagus363<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">JH</div>
-              <div class="donor-info">
-                <div class="donor-name">JHZON</div>
-                <div class="donor-meta"><span class="platform-pill">@rizonoktv<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">PH</div>
-              <div class="donor-info">
-                <div class="donor-name">Polroha</div>
-                <div class="donor-meta"><span class="platform-pill">@polroha2<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">SS</div>
-              <div class="donor-info">
-                <div class="donor-name">Sauss</div>
-                <div class="donor-meta"><span class="platform-pill">@.udontmattertome<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">WS</div>
-              <div class="donor-info">
-                <div class="donor-name">WS 99</div>
-                <div class="donor-meta"><span class="platform-pill">@w.sudir<br>(Tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Buyer List 4</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.012s">
-              <div class="donor-avatar">IT</div>
-              <div class="donor-info">
-                <div class="donor-name">Ikantongkol</div>
-                <div class="donor-meta"><span class="platform-pill">@ilhamalimuddin983<br>(tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">Dii</div>
-              <div class="donor-info">
-                <div class="donor-name">Dii</div>
-                <div class="donor-meta"><span class="platform-pill">@jud1567 (tiktok)</span><span class="job">Bang Keren</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">YN</div>
-              <div class="donor-info">
-                <div class="donor-name">Yannone</div>
-                <div class="donor-meta"><span class="platform-pill">@obitokecil99 (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">iGee</div>
-              <div class="donor-info">
-                <div class="donor-name">not_ur_igee</div>
-                <div class="donor-meta"><span class="platform-pill">@igee17 (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 100.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="donation" class="donation-list-section">
-      <h2 class="reveal">Donation</h2>
-      <div class="donation-list reveal" style="margin-top:18px;">
-        <!-- kanan: horizontal donor list -->
-        <div class="donors-wrap">
-          <div class="donors" id="donorsList" role="list" aria-label="Daftar Donatur">
-            <!-- contoh donor (bisa ditambah lewat JS) -->
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">G</div>
-              <div class="donor-info">
-                <div class="donor-name">Gian</div>
-                <div class="donor-meta"><span class="platform-pill">@gian_kintap (tiktok)</span><span class="job">Surveyor Tambang</span></div>
-              </div>
-              <div class="donor-amount">Rp 112.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.06s">
-              <div class="donor-avatar">MF</div>
-              <div class="donor-info">
-                <div class="donor-name">Muhammad Faruq U</div>
-                <div class="donor-meta"><span class="platform-pill">@ubaydisana (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 84.000</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">BH</div>
-              <div class="donor-info">
-                <div class="donor-name">Bahlil</div>
-                <div class="donor-meta"><span class="platform-pill">@anakbungsu123456789<br>(tiktok)</span><span class="job">?</span></div>
-              </div>
-              <div class="donor-amount">Rp 69.800</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0s">
-              <div class="donor-avatar">50S</div>
-              <div class="donor-info">
-                <div class="donor-name">50s 1 116</div>
-                <div class="donor-meta"><span class="platform-pill">@50n.1.116 (tiktok)</span><span class="job">Surveyor Pro</span></div>
-              </div>
-              <div class="donor-amount">Rp 61.800</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-
-            <article class="donor-card" role="listitem" data-visible="true" style="--delay:0.12s">
-              <div class="donor-avatar">RN</div>
-              <div class="donor-info">
-                <div class="donor-name">Riki Nurgahayu822</div>
-                <div class="donor-meta"><span class="platform-pill">@rikinurgahayu96 (tiktok)</span><span class="job">Mechanic Drone</span></div>
-              </div>
-              <div class="donor-amount">Rp 55.800</div>
-              <div class="shine" aria-hidden="true"></div>
-            </article>
-            <!-- tambah donor statis lebih banyak sesuai kebutuhan -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="news" style="padding:40px 0">
-      <h2 class="reveal">News</h2>
-      <div class="grid" style="margin-top:18px">
-        <article class="news-card reveal">
-          <div style="height:120px;border-radius:8px;background:linear-gradient(180deg, rgba(184,134,11,0.12), rgba(0,0,0,0.3));display:grid;place-items:center;font-weight:700">Feature Image</div>
-          <div style="flex:1">
-            <h3 style="margin:0 0 8px">Launch: New Module</h3>
-            <p style="margin:0;color:rgba(255,255,255,0.6)">Keterangan singkat tentang modul terbaru dengan highlight interaktif.</p>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:rgba(255,255,255,0.5)"><span>Nov 23, 2025</span><a class="green-link" href="#">Read →</a></div>
-        </article>
-
-        <article class="news-card reveal">
-          <div style="height:120px;border-radius:8px;background:linear-gradient(180deg, rgba(184,134,11,0.12), rgba(0,0,0,0.3));display:grid;place-items:center;font-weight:700">Image</div>
-          <h3 style="margin:0">Design showcase</h3>
-          <p style="color:rgba(255,255,255,0.6)">Contoh kombinasi layout dan micro-interactions untuk landing page.
-          </p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:rgba(255,255,255,0.5)"><span>Nov 13, 2025</span><a class="green-link" href="#">Read →</a></div>
-        </article>
-
-        <article class="news-card reveal">
-          <div style="height:120px;border-radius:8px;background:linear-gradient(180deg, rgba(184,134,11,0.12), rgba(0,0,0,0.3));display:grid;place-items:center;font-weight:700">Image</div>
-          <h3 style="margin:0">Community update</h3>
-          <p style="color:rgba(255,255,255,0.6)">Ringkasan aktivitas komunitas dan inisiatif baru.</p>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:rgba(255,255,255,0.5)"><span>Oct 30, 2025</span><a class="green-link" href="#">Read →</a></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="tutorial" style="padding:40px 0">
-      <h2 class="reveal">Tutorial</h2>
-      <div class="steps" style="margin-top:18px">
-        <div class="step reveal">
-          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));display:grid;place-items:center;font-weight:700;color:#070707">1</div>
-          <div>
-            <div style="font-weight:700">How To Mapping</div>
-            <div style="color:rgba(255,255,255,0.6);margin-top:6px">After Making Polygon or Polyline,<br>dont forget to import Polygon and <br>then calculate (Vertical) or Force Horizontal (Horizontal)</div>
-            <div style="margin-top:8px" class="code"><pre style="margin:0;font-size:13px">&lt;Coming Soon&gt;</pre></div>
-          </div>
-        </div>
-
-        <div class="step reveal">
-          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));display:grid;place-items:center;font-weight:700;color:#070707">2</div>
-          <div>
-            <div style="font-weight:700">3D Waypoint, Follow Terrain!</div>
-            <div style="color:rgba(255,255,255,0.6);margin-top:6px">Coming Soon, On Development (Masih Dalam Pengembangan ya)</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" style="padding:40px 0">
-      <h2 class="reveal">About</h2>
-      <div class="team" style="margin-top:18px">
-        <div class="member reveal">
-          <div style="font-size:20px;font-weight:700;color:#b8860b">Mapping Solution</div>
-          <div style="color:rgba(255,255,255,0.6);margin-top:8px">Create Drone Wayline with Front Overlap , Side Overlap and Precision Coordinate</div>
-        </div>
-        <div class="member reveal">
-          <div style="font-size:20px;font-weight:700;color:#b8860b">Speed Orientation</div>
-          <div style="color:rgba(255,255,255,0.6);margin-top:8px">With Both Mathematics and Physics Algorithm , Can Provide Max Speed @ 14 m/s mapping</div>
-        </div>
-        <div class="member reveal">
-          <div style="font-size:20px;font-weight:700;color:#b8860b">Horizontal and Vertical Wayline</div>
-          <div style="color:rgba(255,255,255,0.6);margin-top:8px">Plan Horizontal or Vertical Lines waypoint for effectiveness Mapping with Your Drone </div>
-        </div>
-      </div>
-    </section>
-
-    <div id="audio-hint" class="audio-hint" role="status" aria-live="polite">
-      Klik tombol musik untuk menyalakan suara
+      <div class="qr-tap-hint">🔍 <span class="lang-id-inline">Jika Ingin Donasi v^^v</span><span class="lang-en-inline">Ketuk QR untuk Perbesar</span></div>
     </div>
 
-    <button id="audio-control" class="audio-control" aria-pressed="false" aria-label="Play background music">
-      <!-- play/pause SVG icon (tukar display untuk play/pause via JS) -->
-      <svg id="audio-icon" class="icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path id="play-path" d="M8 5v14l11-7z"></path>
-        <g id="pause-path" style="display:none">
-          <path d="M6 5h4v14H6z"></path>
-          <path d="M14 5h4v14h-4z"></path>
-        </g>
+    <div class="qr-pitch">
+      <div class="live-tag"><span class="live-dot"></span> OFFICIAL ACCESS • OKTO DRONE MAPPER V.9.2</div>
+      <h2>
+        <span class="lang-id-inline">Portal Resmi, Unduhan APK, Lisensi &amp; Dukungan Pilot Pemetaan</span>
+        <span class="lang-en-inline">Official Access Portal — APKs, License Key &amp; Pro Mapping Support</span>
+      </h2>
+      <div class="bilingual-grid">
+        <div class="lang-box lang-id">
+          <span class="lang-tag id">Bahasa Indonesia</span>
+          Scan kode <strong>QR Okto</strong> di samping menggunakan kamera HP/WhatsApp untuk akses cepat pembaruan APK <strong>Okto Drone Mapper Pro (MSDK V5)</strong>, <strong>Okto Mapper Old (MSDK V4)</strong>, aktivasi lisensi, dan komunitas surveyor profesional Indonesia.
+        </div>
+        <div class="lang-box lang-en">
+          <span class="lang-tag en">English</span>
+          Scan the official <strong>Okto QR Code</strong> beside to access APK updates for <strong>Okto Drone Mapper Pro (MSDK V5)</strong> &amp; <strong>Okto Mapper Old (MSDK V4)</strong>, license activation, and field mapping support.
+        </div>
+      </div>
+      <div class="hero-pills">
+        <span class="stat-pill">MSDK V5.20.1 + V4.18</span>
+        <span class="stat-pill purple">39 PROVEN DJI MAPPING DRONES</span>
+        <span class="stat-pill gold">WPML KMZ CERTIFIED</span>
+        <span class="stat-pill green">ANDROID 7.0+ COMPATIBLE</span>
+      </div>
+      <div class="qr-actions no-print">
+        <button class="hud-btn active" onclick="openQrModal()">🔍 <span class="lang-id-inline">Zoom QR Penuh</span><span class="lang-en-inline">Full-Screen QR</span></button>
+        <button class="hud-btn" onclick="toggleBgmPlayback()">🎵 <span class="lang-id-inline">Putar / Jeda Musik</span><span class="lang-en-inline">Play / Pause BGM</span></button>
+        <a class="hud-btn gold" href="#sec-drones" style="text-decoration:none;">🛸 <span class="lang-id-inline">Cek Drone Anda</span><span class="lang-en-inline">Check Your Drone</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QR Zoom Modal -->
+  <div class="qr-modal no-print" id="qrModal" onclick="if(event.target===this) closeQrModal();">
+    <div class="qr-modal-card">
+      <div class="qr-modal-head">
+        <span>// OFFICIAL QR — OKTO DRONE MAPPER V.9.2</span>
+        <button class="hud-btn" onclick="closeQrModal()">✕ Close</button>
+      </div>
+      <img src="QROkto.jpeg" alt="Okto Official QR Full View"
+           onerror="this.style.display='none'; document.getElementById('qrModalFallback').style.display='block';">
+      <div class="qr-fallback" id="qrModalFallback">File QROkto.jpeg belum ditemukan di folder yang sama dengan file HTML.</div>
+      <p style="font-size:12px; color:var(--text-secondary); margin:10px 0 0;">
+        <span class="lang-id-inline">Scan langsung dengan kamera HP atau simpan layar untuk akses cepat.</span>
+        <span class="lang-en-inline">Scan directly with your phone camera or capture screen.</span>
+      </p>
+    </div>
+  </div>
+
+  <nav class="toc-nav no-print">
+    <a href="#sec-overview"><span class="lang-id-inline">1. Arsitektur 2 APK</span><span class="lang-en-inline">1. Dual-SKU Architecture</span></a>
+    <a href="#sec-drones"><span class="lang-id-inline">2. 39 Drone Terbukti &amp; RC</span><span class="lang-en-inline">2. 39 Proven Drones &amp; RCs</span></a>
+    <a href="#sec-cockpit"><span class="lang-id-inline">3. Kokpit HUD &amp; 6 Tab</span><span class="lang-en-inline">3. HUD Cockpit &amp; 6 Tabs</span></a>
+    <a href="#sec-planning"><span class="lang-id-inline">4. Perencanaan Misi &amp; Grid</span><span class="lang-en-inline">4. Mission &amp; Grid Planning</span></a>
+    <a href="#sec-dem"><span class="lang-id-inline">5. DEM &amp; Peta Offline</span><span class="lang-en-inline">5. DEM &amp; Offline Maps</span></a>
+    <a href="#sec-flight"><span class="lang-id-inline">6. Eksekusi Terbang (3 Jalur)</span><span class="lang-en-inline">6. 3-Tier Execution</span></a>
+    <a href="#sec-sta"><span class="lang-id-inline">7. STA SRT &amp; MP4</span><span class="lang-en-inline">7. STA SRT &amp; MP4 Tool</span></a>
+    <a href="#sec-sop"><span class="lang-id-inline">8. Checklist &amp; Solusi</span><span class="lang-en-inline">8. SOP &amp; Troubleshooting</span></a>
+    <a href="#sec-commercial"><span class="lang-id-inline">9. Lisensi &amp; Distribusi</span><span class="lang-en-inline">9. Licensing &amp; Distribution</span></a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>
+      <span class="lang-id-inline">Modul Pengguna &amp; Teknis Lengkap — Okto Drone Mapper V.9.2</span>
+      <span class="lang-en-inline">Complete User &amp; Technical Module — Okto Drone Mapper V.9.2</span>
+    </h1>
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Bahasa Indonesia</span>
+        Panduan teknis &amp; operasional resmi berdasarkan dokumentasi <strong>DJI Developer (MSDK V5 &amp; V4)</strong> serta standar pemetaan <strong>DroneDeploy, Dronelink, Map Pilot Pro, dan WPML KMZ</strong> — mencakup <strong>39 drone DJI yang terbukti dapat melakukan pemetaan otonom</strong> dari seri klasik <em>Phantom 3/4 / Mavic Pro 1 / Mini 1-2</em> hingga <em>Enterprise RTK &amp; Consumer Waypoints</em>.
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">English</span>
+        Official technical &amp; operational guide verified against <strong>DJI Developer SDKs (MSDK V5 &amp; V4)</strong> and industry-standard photogrammetry workflows (<strong>DroneDeploy, Dronelink, Map Pilot Pro, and WPML KMZ</strong>) — covering <strong>39 DJI aircraft proven for autonomous mapping</strong> from legacy <em>Phantom 3/4 / Mavic Pro 1 / Mini 1-2</em> fleets to <em>Enterprise RTK &amp; WPML Waypoint</em> airframes.
+      </div>
+    </div>
+
+    <div class="photo-ref-bar">
+      <div class="ref-metric">
+        <div class="ref-label">GSD Formula</div>
+        <div class="ref-val">GSD = (Sw × H) / (F × Iw)</div>
+        <div class="ref-sub">Sensor mm × Alt m ÷ (Focal mm × Image px)</div>
+      </div>
+      <div class="ref-metric">
+        <div class="ref-label"><span class="lang-id-inline">Shutter Speed Ideal</span><span class="lang-en-inline">Shutter Speed Target</span></div>
+        <div class="ref-val">&ge; 1/1000s (Mech / Day)</div>
+        <div class="ref-sub"><span class="lang-id-inline">Cegah motion blur di kecepatan 6–10 m/s</span><span class="lang-en-inline">Eliminates blur at 6–10 m/s cruise</span></div>
+      </div>
+      <div class="ref-metric">
+        <div class="ref-label">2D Nadir Overlap (-90°)</div>
+        <div class="ref-val">75% Front / 70% Side</div>
+        <div class="ref-sub"><span class="lang-id-inline">Ortofoto sawit, tambang &amp; topografi</span><span class="lang-en-inline">Orthomosaic &amp; DEM surveys</span></div>
+      </div>
+      <div class="ref-metric">
+        <div class="ref-label">3D Oblique Overlap (-45°)</div>
+        <div class="ref-val">80% Front / 75% Side</div>
+        <div class="ref-sub"><span class="lang-id-inline">Model bangunan 3D &amp; fasad perkotaan</span><span class="lang-en-inline">3D mesh &amp; urban modeling</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: 2 SKU & 3 TIERS -->
+  <section class="section" id="sec-overview">
+    <div class="section-head">
+      <h2 class="section-title">// 01. DUAL-APP ARCHITECTURE &amp; 3 PROVEN FLIGHT PATHWAYS</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card v5">
+        <h3>Okto Drone Mapper Pro (<code>com.oktodrone.mapper</code>)</h3>
+        <p><span class="badge b-v5">DJI MSDK V5.20.1</span> <span class="badge b-kmz">+ Universal KMZ</span></p>
+        <div class="lang-id">
+          <ul>
+            <li>Untuk drone modern <strong>MSDK V5</strong> &amp; remote berlayar <strong>DJI RC Plus / RC Pro Enterprise / Smart Controller Enterprise</strong>.</li>
+            <li>Upload langsung WPML V3 Onboard ke <strong>Mavic 3E/3T/3M</strong>, <strong>Matrice 4E/4T</strong>, <strong>Matrice 30/30T</strong>, <strong>Matrice 300/350 RTK</strong>.</li>
+            <li>Autopilot Virtual Stick V5 untuk <strong>Mini 4 Pro (RC-N2/N3)</strong>, <strong>Mini 3 Pro</strong>, dan <strong>Mini 3</strong>.</li>
+          </ul>
+        </div>
+        <div class="lang-en">
+          <ul>
+            <li>Built for modern <strong>MSDK V5</strong> airframes &amp; enterprise Android controllers (<strong>RC Plus / RC Pro Enterprise / SC Enterprise</strong>).</li>
+            <li>Direct onboard WPML V3 upload for <strong>Mavic 3E/3T/3M</strong>, <strong>Matrice 4E/4T</strong>, <strong>Matrice 30/30T</strong>, and <strong>Matrice 300/350 RTK</strong>.</li>
+            <li>Virtual Stick V5 autopilot for <strong>Mini 4 Pro (RC-N2/N3)</strong>, <strong>Mini 3 Pro</strong>, and <strong>Mini 3</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card v4">
+        <h3>Okto Mapper Old (<code>com.oktodrone.mapper.old</code>)</h3>
+        <p><span class="badge b-v4">DJI MSDK V4.18</span> <span class="badge b-kmz">+ Universal KMZ</span></p>
+        <div class="lang-id">
+          <ul>
+            <li>Dukungan HP 32-bit &amp; 64-bit Android 7.0–12 untuk seluruh armada survei DJI klasik yang masih sangat produktif.</li>
+            <li>Onboard Waypoint langsung ke <strong>Phantom 4 RTK/Pro V1-V2</strong>, <strong>Phantom 3 series</strong>, <strong>Mavic Pro 1</strong>, <strong>Mavic 2 Pro/Zoom/EA</strong>, <strong>Mavic Air 1</strong>, <strong>Inspire 1/2</strong>.</li>
+            <li>Virtual Stick V4 untuk <strong>Air 2S, Mavic Air 2, Mini 2, Mini SE, Mavic Mini 1, Spark</strong>.</li>
+          </ul>
+        </div>
+        <div class="lang-en">
+          <ul>
+            <li>Supports 32-bit &amp; 64-bit Android 7.0–12 devices for classic DJI mapping workhorses.</li>
+            <li>Direct Onboard Waypoint for <strong>Phantom 4 RTK/Pro V1-V2</strong>, <strong>Phantom 3 series</strong>, <strong>Mavic Pro 1</strong>, <strong>Mavic 2 Pro/Zoom/EA</strong>, <strong>Mavic Air 1</strong>, <strong>Inspire 1/2</strong>.</li>
+            <li>Closed-loop Virtual Stick V4 for <strong>Air 2S, Mavic Air 2, Mini 2, Mini SE, Mavic Mini 1, Spark</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card kmz">
+        <h3>Universal DJI Fly / Pilot 2 WPML Exporter</h3>
+        <p><span class="badge b-kmz">10 Consumer/Cinema + Mini 4 Pro RC 2</span></p>
+        <div class="lang-id">
+          <ul>
+            <li>Untuk drone modern berfitur <strong>Waypoint Flight</strong> bawaan yang tidak membuka kontrol SDK langsung (<strong>Mavic 4 Pro, Mini 5 Pro, Lito X1, Air 3S, Air 3, Mavic 3 / Classic / Pro / Cine, Inspire 3</strong>, plus <strong>Mini 4 Pro pada DJI RC 2</strong>).</li>
+            <li>Menghasilkan paket WPML <code>.kmz</code> standar resmi DJI (<code>wpmz/template.kml</code> + <code>wpmz/waylines.wpml</code>) siap pakai.</li>
+          </ul>
+        </div>
+        <div class="lang-en">
+          <ul>
+            <li>Built for modern aircraft featuring native <strong>Waypoint Flight</strong> without open SDK flight control (<strong>Mavic 4 Pro, Mini 5 Pro, Lito X1, Air 3S, Air 3, Mavic 3 / Classic / Pro / Cine, Inspire 3</strong>, plus <strong>Mini 4 Pro on DJI RC 2</strong>).</li>
+            <li>Outputs DJI-compliant WPML <code>.kmz</code> packages (<code>wpmz/template.kml</code> + <code>wpmz/waylines.wpml</code>) ready for execution.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG Diagram 1: Architecture -->
+    <div class="diagram-box">
+      <svg viewBox="0 0 980 250" width="940" role="img" aria-label="3-Tier DJI Execution Architecture">
+        <defs>
+          <linearGradient id="gCyan" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.22"/>
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="960" height="230" rx="12" fill="#0B1120" stroke="#1E293B"/>
+        <text x="28" y="34" fill="#00E5FF" font-family="monospace" font-size="12" font-weight="bold">ARCHITECTURE DIAGRAM // 1 CORE ENGINE -&gt; 2 APKs -&gt; 3 PROVEN EXECUTION PATHWAYS</text>
+
+        <rect x="28" y="55" width="230" height="160" rx="10" fill="url(#gCyan)" stroke="#00E5FF" stroke-width="1.5"/>
+        <text x="143" y="82" text-anchor="middle" fill="#F8FAFC" font-size="13" font-weight="bold">OKTO CORE ENGINE V.9.2</text>
+        <text x="143" y="106" text-anchor="middle" fill="#CBD5E1" font-size="11">• Polygon / Corridor Planner</text>
+        <text x="143" y="124" text-anchor="middle" fill="#CBD5E1" font-size="11">• True Lawnmower (4 Dir) + E-W</text>
+        <text x="143" y="142" text-anchor="middle" fill="#CBD5E1" font-size="11">• GeoTIFF DEM Terrain Follow</text>
+        <text x="143" y="160" text-anchor="middle" fill="#CBD5E1" font-size="11">• WPML KMZ + KML + DXF + STA</text>
+        <text x="143" y="178" text-anchor="middle" fill="#F5B731" font-size="11" font-weight="bold">39 Proven Mapping Presets</text>
+
+        <line x1="258" y1="95" x2="328" y2="75" stroke="#00E5FF" stroke-width="2"/>
+        <line x1="258" y1="135" x2="328" y2="135" stroke="#F5B731" stroke-width="2"/>
+        <line x1="258" y1="175" x2="328" y2="195" stroke="#8B5CF6" stroke-width="2"/>
+
+        <rect x="330" y="48" width="260" height="52" rx="8" fill="#111C33" stroke="#00E5FF"/>
+        <text x="460" y="70" text-anchor="middle" fill="#00E5FF" font-size="12" font-weight="bold">SKU 1: Pro APK (MSDK V5)</text>
+        <text x="460" y="88" text-anchor="middle" fill="#94A3B8" font-size="10">com.oktodrone.mapper // Android 7–15</text>
+
+        <rect x="330" y="110" width="260" height="52" rx="8" fill="#1B192E" stroke="#F5B731"/>
+        <text x="460" y="132" text-anchor="middle" fill="#F5B731" font-size="12" font-weight="bold">SKU 2: Old APK (MSDK V4)</text>
+        <text x="460" y="150" text-anchor="middle" fill="#94A3B8" font-size="10">com.oktodrone.mapper.old // Classic DJI</text>
+
+        <rect x="330" y="172" width="260" height="48" rx="8" fill="#17142F" stroke="#8B5CF6"/>
+        <text x="460" y="193" text-anchor="middle" fill="#C4B5FD" font-size="12" font-weight="bold">Universal Exporter (Both APKs)</text>
+        <text x="460" y="210" text-anchor="middle" fill="#94A3B8" font-size="10">Strict DJI WPML .kmz + Standard .kml</text>
+
+        <line x1="590" y1="74" x2="650" y2="74" stroke="#00E5FF" stroke-width="2"/>
+        <line x1="590" y1="136" x2="650" y2="136" stroke="#F5B731" stroke-width="2"/>
+        <line x1="590" y1="196" x2="650" y2="196" stroke="#8B5CF6" stroke-width="2"/>
+
+        <rect x="650" y="48" width="300" height="52" rx="8" fill="#0F172A" stroke="#22C55E"/>
+        <text x="800" y="69" text-anchor="middle" fill="#86EFAC" font-size="11.5" font-weight="bold">PATH 1: Onboard Waypoint (20 Drones)</text>
+        <text x="800" y="87" text-anchor="middle" fill="#CBD5E1" font-size="10">V5: M3E/M4/M30/M300/M350 | V4: P3/P4/Mavic1-2/Inspire</text>
+
+        <rect x="650" y="110" width="300" height="52" rx="8" fill="#0F172A" stroke="#38BDF8"/>
+        <text x="800" y="131" text-anchor="middle" fill="#7DD3FC" font-size="11.5" font-weight="bold">PATH 2: Closed-Loop Virtual Stick (9 Drones)</text>
+        <text x="800" y="149" text-anchor="middle" fill="#CBD5E1" font-size="10">V5: Mini 4Pro/3Pro/3 | V4: Air 2S/Air 2/Mini 1-SE-2/Spark</text>
+
+        <rect x="650" y="172" width="300" height="48" rx="8" fill="#0F172A" stroke="#C4B5FD"/>
+        <text x="800" y="192" text-anchor="middle" fill="#DDD6FE" font-size="11.5" font-weight="bold">PATH 3: Native DJI Fly / Pilot 2 WPML KMZ (10+)</text>
+        <text x="800" y="209" text-anchor="middle" fill="#CBD5E1" font-size="10">Mavic 4 Pro • Mini 5 Pro • Lito X1 • Air 3/3S • Mavic 3 • Inspire 3</text>
       </svg>
-    </button>
+    </div>
+  </section>
 
+  <!-- SECTION 2: 39 PROVEN MAPPING DRONES & REMOTE CONTROLLER MATRIX -->
+  <section class="section" id="sec-drones">
+    <div class="section-head">
+      <h2 class="section-title">// 02. 39 PROVEN DJI MAPPING DRONES &amp; CONTROLLER MATRIX</h2>
+      <span class="stat-pill" id="droneVisibleBadge">Showing 39 / 39 drones</span>
+    </div>
 
-    <footer style="padding:40px 0;color:rgba(255,255,255,0.45);text-align:center">© 2024 Drone Autopilot Mapper Pro V.9<br>Designed By Okto<br><a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-instagram"></i></a></li> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-facebook"></i></a> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-twitter"></i></a> &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-youtube"></i></a>  &nbsp; <a href="https://www.tiktok.com/@depoknightride69"><i class="bi bi-tiktok"></i></a></footer>
-  </main>
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">ID — Terverifikasi DJI Developer &amp; Industri Mapping</span>
+        Daftar di bawah telah disesuaikan dengan referensi resmi <strong>DJI Mobile SDK V5 &amp; V4</strong> serta aplikasi pemetaan pro (<em>DroneDeploy, Dronelink, Map Pilot Pro, WaypointMap</em>). Gunakan filter atau kotak pencarian untuk melihat <strong>APK wajib</strong>, remote yang kompatibel, dan spesifikasi optik tiap drone.
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">EN — Verified via DJI Developer &amp; Pro Mapping Standards</span>
+        Cross-checked against <strong>DJI Mobile SDK V5 &amp; V4</strong> release matrices and commercial mapping platforms (<em>DroneDeploy, Dronelink, Map Pilot Pro, WaypointMap</em>). Filter below to verify the <strong>required APK</strong>, compatible controller, and sensor specs.
+      </div>
+    </div>
 
-  <script>
-    // Smooth scroll for header buttons
-    function scrollTo(sel){document.querySelector(sel).scrollIntoView({behavior:'smooth',block:'start'})}
+    <!-- Dedicated Remote Controller Compatibility Matrix Card -->
+    <div class="card" style="margin-top:14px; border-top:3px solid var(--cyan);">
+      <h3>🎮 <span class="lang-id-inline">Matriks Kompatibilitas Remote Controller (Sangat Penting!)</span><span class="lang-en-inline">Remote Controller Compatibility Matrix (Crucial Field Check!)</span></h3>
+      <div class="grid-3">
+        <div class="lang-box lang-id" style="border-left-color:var(--cyan);">
+          <span class="lang-tag id">1. Remote Layar Enterprise</span><br>
+          <strong>DJI RC Plus, RC Pro Enterprise, Smart Controller Enterprise</strong><br>
+          ✅ Bisa langsung install APK <code>Okto Pro (V5)</code> / <code>Okto Old (V4)</code> ke dalam layar remote.
+        </div>
+        <div class="lang-box lang-id" style="border-left-color:var(--success);">
+          <span class="lang-tag id">2. Remote Tanpa Layar (USB ke HP)</span><br>
+          <strong>DJI RC-N1, RC-N2, RC-N3, Remote Phantom/Mavic 1-2</strong><br>
+          ✅ Wajib dihubungkan ke <strong>HP/Tablet Android 7.0+</strong> yang terpasang APK Okto Pro V5 atau Old V4. (Khusus <em>Mini 4 Pro</em> via V5, wajib pakai RC-N2/N3!).
+        </div>
+        <div class="lang-box lang-id" style="border-left-color:var(--purple);">
+          <span class="lang-tag id">3. Remote Layar Consumer Terkunci</span><br>
+          <strong>DJI RC (abu-abu) &amp; DJI RC 2 (layar built-in)</strong><br>
+          ⚠️ OS Android-nya dikunci DJI untuk APK pihak ke-3. Gunakan metode <strong>Ekspor WPML <code>.kmz</code> (Tier 5)</strong> untuk impor langsung ke menu Waypoints <strong>DJI Fly</strong> di RC/RC 2.
+        </div>
+      </div>
+      <div class="lang-en" style="margin-top:10px; font-size:12.5px; color:#CBD5E1;">
+        <strong>EN Summary:</strong> <strong>(1) Enterprise Android RCs</strong> (RC Plus, RC Pro Ent, SC Ent) install Okto APKs directly. <strong>(2) Screenless RCs</strong> (RC-N1/N2/N3, Phantom/Mavic 1-2) pair via USB to any Android 7.0+ phone/tablet running Okto (required for Mini 4 Pro MSDK V5). <strong>(3) Locked Screen Consumer RCs</strong> (DJI RC / DJI RC 2) block third-party APKs — export Okto WPML <code>.kmz</code> packages into DJI Fly Waypoints instead.
+      </div>
+    </div>
 
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add('is-visible');
-      });
-    },{threshold:0.12});
-    reveals.forEach(r=>io.observe(r));
+    <div class="filter-panel" style="margin-top:16px;">
+      <div class="search-row">
+        <input type="text" id="droneSearchInput" class="search-input" placeholder="Search drone name / SKU / controller / sensor (e.g., Mini 4 Pro, P4 RTK, M3E, Mavic 2, Air 3S)...">
+        <button class="hud-btn" onclick="resetDroneFilters()">Reset</button>
+      </div>
+      <div class="chip-row" id="tierChips">
+        <button class="chip active" data-filter="ALL" onclick="setTierFilter('ALL')">All Presets (39)</button>
+        <button class="chip" data-filter="MSDK_V5_WAYPOINT" onclick="setTierFilter('MSDK_V5_WAYPOINT')">Pro V5 Onboard (9)</button>
+        <button class="chip" data-filter="MSDK_V5_VIRTUAL_STICK" onclick="setTierFilter('MSDK_V5_VIRTUAL_STICK')">Pro V5 Virtual Stick (3)</button>
+        <button class="chip" data-filter="MSDK_V4_WAYPOINT" onclick="setTierFilter('MSDK_V4_WAYPOINT')">Old V4 Onboard (11)</button>
+        <button class="chip" data-filter="MSDK_V4_VIRTUAL_STICK" onclick="setTierFilter('MSDK_V4_VIRTUAL_STICK')">Old V4 Virtual Stick (6)</button>
+        <button class="chip" data-filter="DJI_FLY_KMZ_EXPORT" onclick="setTierFilter('DJI_FLY_KMZ_EXPORT')">DJI Fly / Pilot 2 KMZ (10)</button>
+      </div>
+    </div>
 
-    // tiny parallax effect for background shimmer
-    const shimmer = document.querySelector('.gold-shimmer');
-    window.addEventListener('scroll',()=>{
-      const y = window.scrollY;
-      shimmer.style.transform = `translateY(${y*0.05}px) rotate(-12deg)`;
+    <div class="table-wrap">
+      <table id="droneMatrixTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Drone Model</th>
+            <th>Required App SKU</th>
+            <th>Execution Mode</th>
+            <th>Sensor Format / Width</th>
+            <th>Focal (mm)</th>
+            <th>WPML Enum / Payload</th>
+            <th><span class="lang-id-inline">Catatan Lapangan &amp; Controller</span><span class="lang-en-inline">Field Notes &amp; Controller</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Pro V5 Onboard Waypoint V3 (9) -->
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>01</td><td><strong>DJI Mavic 3 Enterprise (M3E)</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>4/3" CMOS (17.3 mm)</td><td>12.29</td><td>77 / 66</td><td><span class="lang-id-inline">Mechanical shutter gold standard; RC Pro Enterprise upload KMZ langsung</span><span class="lang-en-inline">Mechanical shutter gold standard; direct KMZ on RC Pro Ent</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>02</td><td><strong>DJI Mavic 3 Thermal (M3T / M3TA)</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>1/2" Wide (6.4 mm)</td><td>4.40</td><td>77 / 67</td><td><span class="lang-id-inline">Inspeksi &amp; pemetaan thermal VOx via RC Pro Enterprise</span><span class="lang-en-inline">VOx thermal inspection &amp; mapping on RC Pro Enterprise</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>03</td><td><strong>DJI Mavic 3 Multispectral (M3M)</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>4/3" RGB+MS (17.3 mm)</td><td>12.29</td><td>77 / 68</td><td><span class="lang-id-inline">Survei agrikultur NDVI + RGB RTK presisi tinggi</span><span class="lang-en-inline">Precision agriculture NDVI + RGB RTK mapping</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>04</td><td><strong>DJI Matrice 4 Series (Matrice 4E - Wide)</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>4/3" CMOS (17.3 mm)</td><td>12.29</td><td>99 / 88</td><td><span class="lang-id-inline">Survei enterprise generasi baru (Smart 3D/Nadir) + MSDK V5 KMZ via RC Plus 2</span><span class="lang-en-inline">Next-gen geospatial enterprise with native MSDK V5 WPML on RC Plus 2</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>05</td><td><strong>DJI Matrice 4T</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>1/1.3" CMOS (9.6 mm)</td><td>6.72</td><td>99 / 89</td><td><span class="lang-id-inline">Inspeksi utilitas, laser rangefinder &amp; thermal MSDK V5</span><span class="lang-en-inline">Thermal, NIR &amp; laser rangefinder inspections on MSDK V5</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>06</td><td><strong>DJI Matrice 350 RTK</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>Full-Frame P1 (35.9 mm)</td><td>35.00</td><td>89 / 50</td><td><span class="lang-id-inline">Flagship koridor &amp; DEM Terrain Follow via RC Plus (P1 / L2 / H30)</span><span class="lang-en-inline">Flagship industrial mapping &amp; DEM Follow via RC Plus (P1/L2/H30)</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>07</td><td><strong>DJI Matrice 300 RTK</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>Full-Frame P1 (35.9 mm)</td><td>35.00</td><td>60 / 50</td><td><span class="lang-id-inline">Baseline Zenmuse P1; sesuaikan sensor di CAM bila pakai H20/L1/P1</span><span class="lang-en-inline">Zenmuse P1 baseline; adjust sensor in CAM for H20/L1 payloads</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>08</td><td><strong>DJI Matrice 30</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>1/2" CMOS (6.4 mm)</td><td>4.50</td><td>67 / 52</td><td><span class="lang-id-inline">Weather-sealed IP55, upload Wayline KMZ langsung via RC Plus</span><span class="lang-en-inline">Weather-sealed IP55, direct Wayline KMZ execution via RC Plus</span></td></tr>
+          <tr data-tier="MSDK_V5_WAYPOINT"><td>09</td><td><strong>DJI Matrice 30T</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5">MSDK V5 Waypoint V3</span></td><td>1/2" CMOS (6.4 mm)</td><td>4.50</td><td>67 / 53</td><td><span class="lang-id-inline">Payload Triple (Wide + Zoom + Thermal) didukung penuh</span><span class="lang-en-inline">Triple payload supported for industrial &amp; SAR inspections</span></td></tr>
+
+          <!-- Pro V5 Virtual Stick (3) -->
+          <tr data-tier="MSDK_V5_VIRTUAL_STICK"><td>10</td><td><strong>DJI Mini 4 Pro</strong> <span class="badge b-kmz">DUAL MODE</span></td><td><code>Pro V5 / KMZ</code></td><td><span class="badge b-v5vs">MSDK V5 VS / DJI Fly KMZ</span></td><td>1/1.3" CMOS (9.6 mm)</td><td>6.72</td><td>68 / -</td><td><span class="lang-id-inline">Terbukti di MSDK V5 (RC-N2/N3 + HP Android) ATAU impor Share KMZ ke DJI Fly (jika pakai layar DJI RC 2)</span><span class="lang-en-inline">Proven in MSDK V5 (RC-N2/N3 + Android) OR Share WPML KMZ into DJI Fly (for locked DJI RC 2)</span></td></tr>
+          <tr data-tier="MSDK_V5_VIRTUAL_STICK"><td>11</td><td><strong>DJI Mini 3 Pro</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5vs">MSDK V5 Virtual Stick + KMZ</span></td><td>1/1.3" CMOS (9.6 mm)</td><td>6.72</td><td>68 / -</td><td><span class="lang-id-inline">Autopilot Virtual Stick V5 via remote RC-N1 + Android</span><span class="lang-en-inline">MSDK V5 Virtual Stick mapping via RC-N1 + Android</span></td></tr>
+          <tr data-tier="MSDK_V5_VIRTUAL_STICK"><td>12</td><td><strong>DJI Mini 3</strong></td><td><code>Pro V5</code></td><td><span class="badge b-v5vs">MSDK V5 Virtual Stick + KMZ</span></td><td>1/1.3" CMOS (9.6 mm)</td><td>6.72</td><td>68 / -</td><td><span class="lang-id-inline">Mapping sub-250g via MSDK V5 Virtual Stick (RC-N1 + Android)</span><span class="lang-en-inline">Sub-250g mapping via MSDK V5 Virtual Stick (RC-N1 + Android)</span></td></tr>
+
+          <!-- Old V4 Onboard Waypoint (11) -->
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>13</td><td><strong>DJI Phantom 4 RTK</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1-inch (13.2 mm)</td><td>8.80</td><td>59 / 5000</td><td><span class="lang-id-inline">Workhorse survei RTK klasik + mechanical shutter; mendukung P4R enum 59</span><span class="lang-en-inline">Classic RTK survey workhorse + mechanical shutter; P4R enum 59</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>14</td><td><strong>DJI Phantom 4 Pro V2.0</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1-inch (13.2 mm)</td><td>8.80</td><td>18 / 28</td><td><span class="lang-id-inline">OcuSync 2.0 + mechanical shutter 20MP untuk ortofoto tanpa distorsi</span><span class="lang-en-inline">OcuSync 2.0 + 20MP mechanical shutter for zero-skew orthos</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>15</td><td><strong>DJI Phantom 4 Pro (V1) / Adv</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1-inch (13.2 mm)</td><td>8.80</td><td>18 / 13</td><td><span class="lang-id-inline">Mechanical shutter 20MP sangat handal untuk pemetaan luas</span><span class="lang-en-inline">Proven 20MP mechanical shutter workhorse</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>16</td><td><strong>DJI Phantom 3 Pro / Adv / 4K / Std</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2.3" CMOS (6.17 mm)</td><td>3.61</td><td>68 / -</td><td><span class="lang-id-inline">Phantom 3 klasik tetap bisa mapping otomatis penuh di Okto Mapper Old V4</span><span class="lang-en-inline">Classic Phantom 3 supported natively via Okto Mapper Old V4</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>17</td><td><strong>DJI Mavic 2 Pro (Hasselblad)</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1-inch Hasselblad (13.2 mm)</td><td>10.26</td><td>68 / -</td><td><span class="lang-id-inline">Upload waypoint onboard stabil, sensor 1-inci GSD sangat tajam</span><span class="lang-en-inline">Stable onboard mission upload, crisp 1-inch GSD</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>18</td><td><strong>DJI Mavic 2 Zoom</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2.3" (6.17 mm)</td><td>4.30</td><td>68 / -</td><td><span class="lang-id-inline">Onboard Waypoint V4 pada wide 24mm eq</span><span class="lang-en-inline">Onboard V4 waypoints at wide 24mm eq setting</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>19</td><td><strong>DJI Mavic 2 Enterprise / Dual / Adv</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2" CMOS (6.4 mm)</td><td>4.40</td><td>68 / 40</td><td><span class="lang-id-inline">Dual 48MP + thermal 640px di aplikasi Okto Mapper Old V4</span><span class="lang-en-inline">48MP + thermal dual payload via Okto Mapper Old V4</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>20</td><td><strong>DJI Mavic Pro (legacy / Platinum)</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2.3" CMOS (6.17 mm)</td><td>4.73</td><td>68 / -</td><td><span class="lang-id-inline">Upload penuh misi otonom via WaypointMissionOperator V4</span><span class="lang-en-inline">Full onboard autonomous waypoint upload via MSDK V4</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>21</td><td><strong>DJI Mavic Air (original)</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2.3" CMOS (6.17 mm)</td><td>4.30</td><td>68 / -</td><td><span class="lang-id-inline">Onboard V4 (atau Virtual Stick fallback sesuai versi firmware)</span><span class="lang-en-inline">Onboard V4 (or Virtual Stick fallback per firmware)</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>22</td><td><strong>DJI Inspire 2</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>4/3" X5S baseline (17.3 mm)</td><td>15.00</td><td>68 / -</td><td><span class="lang-id-inline">Survei berat dual-operator; edit sensor/fokal di CAM bila ganti lensa</span><span class="lang-en-inline">Edit focal/sensor in CAM tab when swapping MFT lenses</span></td></tr>
+          <tr data-tier="MSDK_V4_WAYPOINT"><td>23</td><td><strong>DJI Inspire 1 / 1 Pro / RAW</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4">MSDK V4 Onboard Waypoint</span></td><td>1/2.3" X3 (6.17 mm)</td><td>3.61</td><td>68 / -</td><td><span class="lang-id-inline">Ubah sensor/fokal ke 17.3/15mm bila memakai payload Zenmuse X5</span><span class="lang-en-inline">Adjust sensor/focal to 17.3/15mm for Zenmuse X5</span></td></tr>
+
+          <!-- Old V4 Virtual Stick (6) -->
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>24</td><td><strong>DJI Air 2S</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1-inch (13.2 mm)</td><td>8.38</td><td>68 / -</td><td><span class="lang-id-inline">Favorit pemetaan sensor 1-inci via MSDK V4 Virtual Stick (RC-N1 + HP)</span><span class="lang-en-inline">Popular 1-inch sensor for V4 Virtual Stick mapping (RC-N1)</span></td></tr>
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>25</td><td><strong>DJI Mavic Air 2</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1/2" CMOS (6.4 mm)</td><td>4.50</td><td>68 / -</td><td><span class="lang-id-inline">Autopilot Virtual Stick presisi pada Okto Mapper Old V4</span><span class="lang-en-inline">Closed-loop Virtual Stick autopilot in Okto Mapper Old V4</span></td></tr>
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>26</td><td><strong>DJI Mini 2</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1/2.3" (6.17 mm)</td><td>4.49</td><td>68 / -</td><td><span class="lang-id-inline">Sub-250g populer; wajib sinyal RC-N1 stabil saat misi VS</span><span class="lang-en-inline">Popular sub-250g; maintain stable RC-N1 link during VS flight</span></td></tr>
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>27</td><td><strong>DJI Mini SE</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1/2.3" (6.17 mm)</td><td>4.49</td><td>68 / -</td><td><span class="lang-id-inline">Didukung via Virtual Stick di Okto Mapper Old V4</span><span class="lang-en-inline">Supported via Virtual Stick in Okto Mapper Old V4</span></td></tr>
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>28</td><td><strong>DJI Mavic Mini (1st Gen)</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1/2.3" (6.17 mm)</td><td>4.49</td><td>68 / -</td><td><span class="lang-id-inline">Mavic Mini generasi pertama didukung Virtual Stick V4</span><span class="lang-en-inline">Original Mavic Mini supported via MSDK V4 Virtual Stick</span></td></tr>
+          <tr data-tier="MSDK_V4_VIRTUAL_STICK"><td>29</td><td><strong>DJI Spark</strong></td><td><code>Old V4</code></td><td><span class="badge b-v4vs">MSDK V4 Virtual Stick + KMZ</span></td><td>1/2.3" (6.17 mm)</td><td>4.49</td><td>68 / -</td><td><span class="lang-id-inline">Hanya via Virtual Stick V4 (perhatikan batas durasi baterai ±12 menit)</span><span class="lang-en-inline">Virtual Stick V4 only (~12 min effective battery window)</span></td></tr>
+
+          <!-- Native DJI Fly / Pilot 2 WPML KMZ (10) -->
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>30</td><td><strong>DJI Mavic 4 Pro (Hasselblad)</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>4/3" (17.3 mm)</td><td>14.30</td><td>68 / -</td><td><span class="lang-id-inline">Kamera Hasselblad resolusi tinggi; ekspor &amp; impor WPML .kmz ke DJI Fly</span><span class="lang-en-inline">High-res Hasselblad; import WPML .kmz into DJI Fly Waypoints</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>31</td><td><strong>DJI Mini 5 Pro</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>1" CMOS (13.2 mm)</td><td>8.80</td><td>68 / -</td><td><span class="lang-id-inline">Sensor 1-inci 50MP + ekspor WPML .kmz ke DJI Fly Waypoints</span><span class="lang-en-inline">1-inch 50MP sensor + WPML .kmz into DJI Fly Waypoints</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>32</td><td><strong>DJI Lito X1</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>1/1.3" CMOS (9.6 mm)</td><td>6.72</td><td>68 / -</td><td><span class="lang-id-inline">Pemetaan grid 48MP LiDAR + ekspor WPML .kmz resmi ke DJI Fly</span><span class="lang-en-inline">48MP LiDAR grid planning + official WPML .kmz export</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>33</td><td><strong>DJI Air 3S</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>1-inch Main (13.2 mm)</td><td>8.80</td><td>68 / -</td><td><span class="lang-id-inline">Sensor 1-inci main; impor KMZ murni WPML ke DJI Fly Waypoints</span><span class="lang-en-inline">1-inch main sensor; import pure WPML KMZ into DJI Fly</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>34</td><td><strong>DJI Air 3</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>1/1.3" Main (9.6 mm)</td><td>6.72</td><td>68 / -</td><td><span class="lang-id-inline">Baterai ±46 mnt ideal survei luas; ekspor WPML .kmz ke DJI Fly</span><span class="lang-en-inline">~46 min endurance; execute via DJI Fly Waypoints KMZ</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>35</td><td><strong>DJI Mavic 3 (Hasselblad)</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>4/3" (17.3 mm)</td><td>12.29</td><td>68 / -</td><td><span class="lang-id-inline">Consumer Mavic 3 non-Enterprise memakai Waypoints bawaan DJI Fly</span><span class="lang-en-inline">Consumer Mavic 3 executes grid via DJI Fly Waypoints</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>36</td><td><strong>DJI Mavic 3 Classic (Hasselblad)</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>4/3" (17.3 mm)</td><td>12.29</td><td>68 / -</td><td><span class="lang-id-inline">Impor WPML KMZ ke fitur Waypoints DJI Fly</span><span class="lang-en-inline">Import WPML KMZ into DJI Fly Waypoints</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>37</td><td><strong>DJI Mavic 3 Pro (Hasselblad)</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>4/3" (17.3 mm)</td><td>12.29</td><td>68 / -</td><td><span class="lang-id-inline">Lensa utama 4/3" 24mm eq; impor KMZ ke DJI Fly</span><span class="lang-en-inline">24mm eq 4/3" main camera; import KMZ in DJI Fly</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>38</td><td><strong>DJI Mavic 3 Pro Cine</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Fly WPML Waypoint</span></td><td>4/3" (17.3 mm)</td><td>12.29</td><td>68 / -</td><td><span class="lang-id-inline">Alur Share / Impor KMZ ke DJI Fly Waypoints</span><span class="lang-en-inline">Execute grids via WPML KMZ in DJI Fly Waypoints</span></td></tr>
+          <tr data-tier="DJI_FLY_KMZ_EXPORT"><td>39</td><td><strong>DJI Inspire 3</strong></td><td><code>Pro V5 / Any</code></td><td><span class="badge b-kmz">DJI Pilot 2 Waypoint Pro</span></td><td>Full-Frame (36.0 mm)</td><td>35.00</td><td>68 / -</td><td><span class="lang-id-inline">Ekspor WPML .kmz &amp; KML Waypoint Pro untuk Pilot 2</span><span class="lang-en-inline">WPML .kmz &amp; KML export for Pilot 2 Waypoint Pro</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Note on Industrial Dock & M200 Legacy Extensions -->
+    <div class="callout info" style="margin-top:14px;">
+      <div class="callout-title">🛰️ <span class="lang-id-inline">Dukungan Tambahan Seri Industri (Custom Sensor di Tab CAM)</span><span class="lang-en-inline">Extended Industrial Fleet Compatibility (Custom Sensor in CAM Tab)</span></div>
+      <div class="lang-id">
+        • <strong>DJI Matrice 4D / 4TD (Dock) &amp; Matrice 400:</strong> Mendukung protokol <strong>MSDK V5 Waypoint V3</strong> pada Okto Drone Mapper Pro.<br>
+        • <strong>DJI Matrice 200 / 210 / 210 RTK (V1 &amp; V2) &amp; Matrice 600 / 600 Pro:</strong> Mendukung <strong>MSDK V4 Onboard Waypoint</strong> pada Okto Mapper Old V4 (atur manual lebar sensor &amp; focal length Zenmuse X4S / X5S / X7 / XT2 di tab <code>CAM</code>).
+      </div>
+      <div class="lang-en">
+        • <strong>DJI Matrice 4D / 4TD &amp; Matrice 400:</strong> Run native <strong>MSDK V5 Waypoint V3</strong> on Okto Drone Mapper Pro.<br>
+        • <strong>Legacy Matrice 200 / 210 / 210 RTK (V1 &amp; V2) &amp; Matrice 600 Pro:</strong> Run <strong>MSDK V4 Onboard Waypoint</strong> on Okto Mapper Old V4 (configure custom Zenmuse X4S / X5S / X7 / XT2 optics in the <code>CAM</code> tab).
+      </div>
+    </div>
+
+    <!-- Red Warning Callout: Unsupported Drones -->
+    <div class="callout danger">
+      <div class="callout-title">🚫 <span class="lang-id-inline">PENTING: Drone DJI yang TIDAK DIDUKUNG untuk Pemetaan Autopilot</span><span class="lang-en-inline">IMPORTANT: DJI Drones NOT Supported for Autopilot Mapping</span></div>
+      <div class="bilingual-grid">
+        <div class="lang-box lang-id" style="border-left-color:var(--danger); background:rgba(239,68,68,0.06);">
+          <ul>
+            <li><span class="badge b-no">NO SDK / NO WP</span> <strong>DJI Neo &amp; Ryze Tello:</strong> Drone selfie/edukasi micro tanpa port MSDK maupun fitur Waypoint Flight.</li>
+            <li><span class="badge b-no">FPV ACRO</span> <strong>DJI Avata, Avata 2 &amp; DJI FPV:</strong> Drone balap/cinewhoop Goggles; dikunci dari misi autopilot grid fotogrametri.</li>
+            <li><span class="badge b-no">LOCKED FW</span> <strong>DJI Mini 2 SE &amp; DJI Mini 4K:</strong> Firmware consumer tidak memiliki MSDK (V4/V5) dan tidak memiliki fitur Waypoint di DJI Fly.</li>
+            <li><span class="badge b-no">AGRA SYSTEM</span> <strong>DJI Agras Series (T10–T60):</strong> Menggunakan ekosistem tertutup <em>DJI Agriculture</em> khusus penyemprotan.</li>
+            <li><span class="badge b-no">PRE-SDK</span> <strong>DJI Phantom 1 &amp; Phantom 2 / Vision+:</strong> Flight controller analog purba (NAZA-M) tanpa komunikasi SDK modern.</li>
+          </ul>
+        </div>
+        <div class="lang-box lang-en" style="border-left-color:var(--danger); background:rgba(239,68,68,0.06);">
+          <ul>
+            <li><span class="badge b-no">NO SDK / NO WP</span> <strong>DJI Neo &amp; Ryze Tello:</strong> Palm/micro drones lacking third-party MSDK and native Waypoint Flight.</li>
+            <li><span class="badge b-no">FPV ACRO</span> <strong>DJI Avata, Avata 2 &amp; DJI FPV:</strong> Manual Goggles/Motion FPV cinewhoops excluded from mapping automation.</li>
+            <li><span class="badge b-no">LOCKED FW</span> <strong>DJI Mini 2 SE &amp; DJI Mini 4K:</strong> Consumer firmware lacks both MSDK (V4/V5) and native DJI Fly Waypoint execution.</li>
+            <li><span class="badge b-no">AGRA SYSTEM</span> <strong>DJI Agras Series (T10–T60):</strong> Closed agricultural spraying OS (<em>DJI Agriculture App</em>).</li>
+            <li><span class="badge b-no">PRE-SDK</span> <strong>DJI Phantom 1 &amp; Phantom 2 / Vision+:</strong> Legacy analog controllers (NAZA-M) without Android SDK telemetry.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: HUD COCKPIT & 6 TABS -->
+  <section class="section" id="sec-cockpit">
+    <div class="section-head">
+      <h2 class="section-title">// 03. FIGHTER HUD COCKPIT &amp; 6 TACTICAL TABS</h2>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 980 310" width="940" role="img" aria-label="Okto Fighter HUD Cockpit Map">
+        <rect x="10" y="10" width="960" height="290" rx="12" fill="#09101E" stroke="#1E293B"/>
+        <rect x="24" y="22" width="932" height="38" rx="6" fill="#111C33" stroke="#00E5FF"/>
+        <text x="42" y="45" fill="#00E5FF" font-family="monospace" font-size="11.5" font-weight="bold">TOP HUD BAR: [≡ DECK] | [Model + V5/V4] | [ALT • SPD • HDG • SAT • BAT] | [OPEN] [SAVE] [FPV] [RTH]</text>
+
+        <rect x="24" y="70" width="66" height="216" rx="6" fill="#0E1525" stroke="#8B5CF6"/>
+        <text x="57" y="92" text-anchor="middle" fill="#DDD6FE" font-family="monospace" font-size="10" font-weight="bold">6 TABS</text>
+        <text x="57" y="118" text-anchor="middle" fill="#00E5FF" font-family="monospace" font-size="10">SETUP</text>
+        <text x="57" y="142" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10">CAM</text>
+        <text x="57" y="166" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10">DEM</text>
+        <text x="57" y="190" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10">STA</text>
+        <text x="57" y="214" text-anchor="middle" fill="#F5B731" font-family="monospace" font-size="10">SDK</text>
+        <text x="57" y="238" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="10">NEWS</text>
+
+        <rect x="98" y="70" width="275" height="216" rx="6" fill="#111A2E" stroke="#334155"/>
+        <text x="114" y="94" fill="#F1F5F9" font-size="12" font-weight="bold">SLIDE-OUT INSTRUMENT DECK</text>
+        <text x="114" y="114" fill="#94A3B8" font-size="10.5">• 39 Proven Drone Presets + Params</text>
+        <text x="114" y="132" fill="#94A3B8" font-size="10.5">• Gimbal Mode (2D / 3D / Manual Custom)</text>
+        <text x="114" y="150" fill="#94A3B8" font-size="10.5">• Lawnmower Dir &amp; Force H (E-W)</text>
+        <text x="114" y="168" fill="#94A3B8" font-size="10.5">• GeoTIFF DEM + Offline Tiles</text>
+        <text x="114" y="186" fill="#94A3B8" font-size="10.5">• Export KML / KMZ / Share KMZ</text>
+        <text x="114" y="204" fill="#00E5FF" font-size="10.5" font-weight="bold">• Live Mission Output Summary</text>
+        <rect x="114" y="220" width="242" height="52" rx="6" fill="#091122" stroke="#22C55E"/>
+        <text x="235" y="242" text-anchor="middle" fill="#86EFAC" font-family="monospace" font-size="10.5" font-weight="bold">FLOATING MISSION POD</text>
+        <text x="235" y="260" text-anchor="middle" fill="#CBD5E1" font-size="10">Calculate Plan &amp; 1-Tap Share KMZ</text>
+
+        <rect x="384" y="70" width="572" height="216" rx="6" fill="#0B1528" stroke="#00E5FF"/>
+        <text x="402" y="94" fill="#00E5FF" font-family="monospace" font-size="11.5" font-weight="bold">TACTICAL LEAFLET MAP + TELEMETRY AIRCRAFT MARKER</text>
+        <rect x="720" y="82" width="224" height="28" rx="4" fill="#151F35" stroke="#8B5CF6"/>
+        <text x="832" y="100" text-anchor="middle" fill="#E2E8F0" font-size="10">🔍 Search | 📍 GPS | ⤢ Fit | ⚙ Layers</text>
+
+        <polygon points="430,128 660,128 660,224 430,224" fill="rgba(0,229,255,0.08)" stroke="#00E5FF" stroke-dasharray="5,4" stroke-width="1.5"/>
+        <polyline points="445,144 645,144 645,176 445,176 445,208 645,208" fill="none" stroke="#22C55E" stroke-width="2.5"/>
+        <circle cx="445" cy="144" r="6" fill="#F5B731"/>
+        <text x="457" y="148" fill="#F5B731" font-size="10" font-weight="bold">WPT 1 (GIMBAL INIT)</text>
+
+        <rect x="520" y="246" width="424" height="30" rx="5" fill="#151F35" stroke="#00E5FF"/>
+        <text x="732" y="265" text-anchor="middle" fill="#E2E8F0" font-size="10">↶ Undo | ↷ Redo | ⌖ Pick | 📐 Measure | Overlay | Load | Save | Clear</text>
+      </svg>
+    </div>
+
+    <div class="grid-3">
+      <div class="card"><h3><code>01 // SETUP</code> — Flight Setup</h3><p class="lang-id">Pilih preset 39 drone pemetaan, unduh peta offline, atur Altitude, Speed, Gimbal Tilt, Overlap, Endpoints-only, Calculate Plan, Force H (E-W), ekspor KML/KMZ/Share, dan pantau Mission Output Summary.</p><p class="lang-en">Select from 39 proven mapping drone presets, download offline tiles, configure Altitude, Speed, Gimbal Tilt, Overlap, Endpoints-only, Calculate Plan, Force H (E-W), export KML/KMZ/Share, and inspect live Mission Summary.</p></div>
+      <div class="card"><h3><code>02 // CAM</code> — Camera &amp; Grid</h3><p class="lang-id">Atur manual Sensor Width, Focal Length, Resolution, centang <strong>True lawn-mower (boustrophedon)</strong> + 4 arah sudut start, interval foto, foto tiap waypoint, dan opsi <strong>Include RTH</strong>.</p><p class="lang-en">Override Sensor Width, Focal Length, Resolution, toggle <strong>True lawn-mower (boustrophedon)</strong> + 4 start corners, photo interval, photo at each waypoint, and <strong>Include RTH</strong>.</p></div>
+      <div class="card"><h3><code>03 // DEM</code> — Terrain Follow</h3><p class="lang-id">Muat file GeoTIFF DEM (<code>.tif</code>), tampilkan overlay elevasi di peta, atur ketinggian AGL konstan mengikuti kontur bukit/lembah, vertical offset, atau bypass sementara.</p><p class="lang-en">Load GeoTIFF DEM (<code>.tif</code>), preview heatmap overlay on the map, maintain constant AGL across hills/valleys, apply vertical offset, or force fixed altitude override.</p></div>
+      <div class="card"><h3><code>04 // STA</code> — Corridor STA Tool</h3><p class="lang-id">Hitung stasiun koridor jalan/tol (<code>STA KM+m</code>), kecepatan, dan altitude pada file <code>.srt</code> DJI, lalu mux langsung ke MP4 atau ekstrak subtitle tertanam.</p><p class="lang-en">Compute highway/corridor stationing (<code>STA KM+m</code>), ground speed, and altitude inside DJI <code>.srt</code> logs, mux directly into MP4, or extract embedded subtitle tracks.</p></div>
+      <div class="card"><h3><code>05 // SDK</code> — DJI MSDK Flight</h3><p class="lang-id">Registrasi DJI App Key, buka layar FPV live, jalankan misi Onboard KMZ / Virtual Stick / Share KMZ, kontrol Start-Pause-Resume-Stop, Takeoff/Land/RTH, dan trigger kamera/gimbal.</p><p class="lang-en">Register DJI App Key, toggle live FPV feed, run Onboard KMZ / Virtual Stick / Share KMZ flights, control Start-Pause-Resume-Stop, Takeoff/Land/RTH, and camera/gimbal actions.</p></div>
+      <div class="card"><h3><code>06 // NEWS</code> — Dispatch Feed</h3><p class="lang-id">Portal berita &amp; modul web interaktif langsung di dalam aplikasi (mendukung scroll penuh, zoom jari, tombol kembali, musik latar, serta cache offline otomatis).</p><p class="lang-en">Live interactive web manual &amp; release news right inside the app (supports full smooth touch scrolling, pinch zoom, back navigation, BGM playback, and automatic offline caching).</p></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: MISSION PLANNING STEP BY STEP -->
+  <section class="section" id="sec-planning">
+    <div class="section-head">
+      <h2 class="section-title">// 04. MISSION PLANNING, LAWNMOWER 4-DIR &amp; GIMBAL WPT-1 FLOW</h2>
+    </div>
+
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <strong><span class="lang-id-inline">Muat Peta &amp; Overlay Referensi Sipil (Opsional)</span><span class="lang-en-inline">Open Base Map &amp; Load Civil Reference Overlay (Optional)</span></strong>
+          <p class="lang-id">Klik tombol <code>OPEN</code> di HUD atas atau <code>Overlay</code> di dock bawah untuk membuka file <code>.kml</code>, <code>.kmz</code> (seperti <em>CL STA</em> / <em>ROW Tol</em>), <code>.dxf</code> (pilih CRS UTM/TM-3/lokal), <code>.geojson</code>, atau shapefile <code>.zip</code> sebagai penunjuk batas survei. Gunakan <code>⚙ Layers</code> di kanan atas untuk mengganti peta Satelit Esri, Google, OSM, Topo, atau <em>Offline map cache</em>.</p>
+          <p class="lang-en">Tap <code>OPEN</code> on the top HUD or <code>Overlay</code> on the bottom dock to display reference <code>.kml</code>, <code>.kmz</code> (centerline/ROW), <code>.dxf</code> (with UTM/TM-3 CRS reprojection), <code>.geojson</code>, or zipped Shapefiles. Use top-right <code>⚙ Layers</code> to switch between Esri Hybrid, Google Satellite/Road, OSM, OpenTopo, or <em>Offline map cache</em>.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <strong><span class="lang-id-inline">Gambar Area Survei (AOI) atau Koridor / Import Polygon</span><span class="lang-en-inline">Draw Survey Polygon / Corridor Line or Import Polygon</span></strong>
+          <p class="lang-id">Gunakan toolbar gambar Leaflet di sisi kanan peta (<strong>Polygon</strong> untuk pemetaan area luas, atau <strong>Polyline</strong> untuk survei koridor jalan/sungai), atau klik <code>Import Polygon</code> di tab <code>SETUP</code> untuk mengambil AOI dari KML/DXF/GeoJSON. Gunakan ikon pensil untuk edit vertex atau <code>Clear</code> untuk mengulang.</p>
+          <p class="lang-en">Use the right-hand Leaflet drawing tools (<strong>Polygon</strong> for area grids, or <strong>Polyline</strong> for linear road/river corridors), or tap <code>Import Polygon</code> inside <code>SETUP</code> to import AOI geometry from KML/DXF/GeoJSON. Edit vertices anytime with Undo/Redo support.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <strong><span class="lang-id-inline">Pilih Drone, Parameter Terbang, Gimbal &amp; Arah Lawnmower</span><span class="lang-en-inline">Select Drone Preset, Altitude, Gimbal Mode &amp; Lawnmower Direction</span></strong>
+          <p class="lang-id">Pilih drone Anda di tab <code>SETUP</code>. Isi <strong>Altitude (m)</strong>, <strong>Speed (m/s)</strong>, <strong>Front Overlap (%)</strong>, <strong>Side Overlap (%)</strong>. Di mode <strong>Gimbal Tilt</strong>: pilih <code>2D (Nadir)</code> (-90°), <code>3D (Oblique -45°)</code>, atau <code>Manual Custom</code> (mis. <code>-45</code> atau sudut miring lainnya). Pada V.9.2, perintah gimbal ditempatkan khusus di <strong>Waypoint #1 (WPT 0)</strong> sehingga drone langsung mengunci sudut gimbal sebelum mulai memotret tanpa jeda ulang di waypoint berikutnya.</p>
+          <p class="lang-en">Pick your aircraft in <code>SETUP</code>. Set <strong>Altitude (m)</strong>, <strong>Speed (m/s)</strong>, <strong>Front Overlap (%)</strong>, and <strong>Side Overlap (%)</strong>. Choose <strong>Gimbal Tilt</strong>: <code>2D (Nadir)</code> (-90°), <code>3D (Oblique -45°)</code>, or <code>Manual Custom</code> (e.g. <code>-45°</code>). In V.9.2, the gimbal pitch command is injected once cleanly at <strong>Waypoint #1 (WPT 0)</strong> before the first shutter trigger.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <strong><span class="lang-id-inline">Klik Calculate Plan / Force H (E-W) &amp; Atur di Peta</span><span class="lang-en-inline">Tap Calculate Plan / Force H (E-W) &amp; Fine-Tune on Map</span></strong>
+          <p class="lang-id">Tekan <code>Calculate Plan</code> (otomatis memilih sumbu terhemat baterai, atau mengikuti arah N-S dengan sudut start pilihan Anda jika <em>True lawn-mower</em> dicentang di tab <code>CAM</code>), atau tekan <code>Force H (E–W)</code> untuk jalur lurus Timur–Barat. Anda dapat menggeser misi dengan handle cyan (<code>⌖ Move</code>) atau memutar misi dengan handle emas (<code>↻ Rotate</code>), lalu periksa hasil estimasi waktu &amp; kebutuhan baterai di <strong>Mission Output / Summary</strong>.</p>
+          <p class="lang-en">Tap <code>Calculate Plan</code> (optimal axis, or N-S boustrophedon from your chosen start corner when <em>True lawn-mower</em> is enabled in <code>CAM</code>) or <code>Force H (E–W)</code> for pure East-West parallel tracks. Drag the cyan handle (<code>⌖ Move</code>) or gold handle (<code>↻ Rotate</code>) directly on the map and verify flight duration &amp; battery estimates inside <strong>Mission Output / Summary</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px;">
+      <div class="diagram-box" style="margin:0;">
+        <svg viewBox="0 0 460 230" width="440" role="img" aria-label="True Lawnmower 4 Start Corners and Force E-W">
+          <rect x="4" y="4" width="452" height="222" rx="10" fill="#0B1120" stroke="#1E293B"/>
+          <text x="16" y="24" fill="#00E5FF" font-family="monospace" font-size="11" font-weight="bold">LAWNMOWER 4 START CORNERS &amp; FORCE H (E-W)</text>
+
+          <rect x="16" y="38" width="98" height="82" rx="5" fill="#111C33" stroke="#334155"/>
+          <text x="65" y="52" text-anchor="middle" fill="#F1F5F9" font-size="9" font-weight="bold">Top-Bottom (L)</text>
+          <polyline points="30,62 30,110 52,110 52,62 74,62 74,110 98,110" fill="none" stroke="#22C55E" stroke-width="2"/>
+          <circle cx="30" cy="62" r="4" fill="#F5B731"/>
+
+          <rect x="124" y="38" width="98" height="82" rx="5" fill="#111C33" stroke="#334155"/>
+          <text x="173" y="52" text-anchor="middle" fill="#F1F5F9" font-size="9" font-weight="bold">Top-Bottom (R)</text>
+          <polyline points="208,62 208,110 185,110 185,62 162,62 162,110 138,110" fill="none" stroke="#22C55E" stroke-width="2"/>
+          <circle cx="208" cy="62" r="4" fill="#F5B731"/>
+
+          <rect x="16" y="130" width="98" height="82" rx="5" fill="#111C33" stroke="#334155"/>
+          <text x="65" y="144" text-anchor="middle" fill="#F1F5F9" font-size="9" font-weight="bold">Bottom-Top (L)</text>
+          <polyline points="30,202 30,154 52,154 52,202 74,202 74,154 98,154" fill="none" stroke="#00E5FF" stroke-width="2"/>
+          <circle cx="30" cy="202" r="4" fill="#F5B731"/>
+
+          <rect x="124" y="130" width="98" height="82" rx="5" fill="#111C33" stroke="#334155"/>
+          <text x="173" y="144" text-anchor="middle" fill="#F1F5F9" font-size="9" font-weight="bold">Bottom-Top (R)</text>
+          <polyline points="208,202 208,154 185,154 185,202 162,202 162,154 138,154" fill="none" stroke="#00E5FF" stroke-width="2"/>
+          <circle cx="208" cy="202" r="4" fill="#F5B731"/>
+
+          <rect x="236" y="38" width="206" height="174" rx="5" fill="#111C33" stroke="#8B5CF6"/>
+          <text x="339" y="56" text-anchor="middle" fill="#DDD6FE" font-size="10.5" font-weight="bold">FORCE H (EAST ↔ WEST)</text>
+          <polyline points="256,78 424,78 424,108 256,108 256,138 424,138 424,168 256,168" fill="none" stroke="#8B5CF6" stroke-width="2.5"/>
+          <circle cx="256" cy="78" r="5" fill="#F5B731"/>
+          <text x="339" y="196" text-anchor="middle" fill="#94A3B8" font-size="9.5">Yellow Dot = Waypoint #1 (Start)</text>
+        </svg>
+      </div>
+
+      <div class="diagram-box" style="margin:0;">
+        <svg viewBox="0 0 460 230" width="440" role="img" aria-label="Gimbal Payload at Waypoint 1 &amp; DEM Terrain Follow">
+          <rect x="4" y="4" width="452" height="222" rx="10" fill="#0B1120" stroke="#1E293B"/>
+          <text x="16" y="24" fill="#F5B731" font-family="monospace" font-size="11" font-weight="bold">WPT #1 GIMBAL PAYLOAD &amp; DEM TERRAIN FOLLOW</text>
+
+          <rect x="16" y="38" width="428" height="72" rx="6" fill="#111C33" stroke="#334155"/>
+          <circle cx="62" cy="74" r="16" fill="#0E7490" stroke="#00E5FF" stroke-width="2"/>
+          <text x="62" y="78" text-anchor="middle" fill="#FFF" font-size="10" font-weight="bold">WPT 1</text>
+          <text x="62" y="102" text-anchor="middle" fill="#00E5FF" font-size="8.5" font-weight="bold">Gimbal Pitch + Cam</text>
+
+          <line x1="80" y1="74" x2="178" y2="74" stroke="#64748B" stroke-width="2" stroke-dasharray="4,3"/>
+          <circle cx="196" cy="74" r="14" fill="#1E293B" stroke="#22C55E" stroke-width="2"/>
+          <text x="196" y="78" text-anchor="middle" fill="#FFF" font-size="10" font-weight="bold">WPT 2</text>
+          <text x="196" y="102" text-anchor="middle" fill="#86EFAC" font-size="8.5">Cam / Cruise Only</text>
+
+          <line x1="212" y1="74" x2="310" y2="74" stroke="#64748B" stroke-width="2" stroke-dasharray="4,3"/>
+          <circle cx="328" cy="74" r="14" fill="#1E293B" stroke="#22C55E" stroke-width="2"/>
+          <text x="328" y="78" text-anchor="middle" fill="#FFF" font-size="10" font-weight="bold">WPT N</text>
+          <text x="328" y="102" text-anchor="middle" fill="#DDD6FE" font-size="8.5">Stop Rec / RTH</text>
+
+          <rect x="16" y="120" width="428" height="92" rx="6" fill="#0F172A" stroke="#334155"/>
+          <path d="M 28 202 Q 110 198 180 172 T 320 156 T 430 185 L 430 206 L 28 206 Z" fill="rgba(245,183,49,0.18)" stroke="#F5B731" stroke-width="2"/>
+          <path d="M 28 154 Q 110 150 180 128 T 320 116 L 430 140" fill="none" stroke="#00E5FF" stroke-width="2.5" stroke-dasharray="5,3"/>
+          <text x="32" y="140" fill="#00E5FF" font-size="9.5" font-weight="bold">Constant AGL + Vertical Offset (WGS84 / Relative Home)</text>
+          <text x="32" y="198" fill="#F5B731" font-size="9.5">GeoTIFF Terrain Profile</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: DEM TERRAIN FOLLOW & OFFLINE MAPS -->
+  <section class="section" id="sec-dem">
+    <div class="section-head">
+      <h2 class="section-title">// 05. GEOTIFF DEM TERRAIN FOLLOW &amp; OFFLINE MAP CACHE</h2>
+    </div>
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Bahasa Indonesia</span>
+        <ul>
+          <li><strong>Peta Satelit Offline (Tab <code>SETUP</code>):</strong> Arahkan viewport peta ke area proyek saat masih ada internet, lalu klik <code>Download map for offline use</code> (maks. 2.500 tile). Saat di lapangan tanpa sinyal, buka <code>⚙ Layers</code> &gt; Base Map &gt; <strong>Offline map cache</strong>.</li>
+          <li><strong>Terrain Follow (Tab <code>DEM</code>):</strong> Tekan <code>Load DEM</code> (GeoTIFF <code>.tif</code> SRTM/DSM WGS84 atau UTM). Klik <code>Show DEM</code> untuk overlay warna ketinggian, atur <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong> (selisih elevasi tanah di titik Home agar konversi ke ketinggian relatif drone akurat), lalu klik <code>Apply DEM to WPTs</code>.</li>
+          <li>Jika proyek membutuhkan ketinggian datar (bypass DEM sementara), centang <code>Force altitude override (ignore DEM)</code>.</li>
+        </ul>
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">English</span>
+        <ul>
+          <li><strong>Offline Satellite Cache (<code>SETUP</code> Tab):</strong> Pan/zoom the map to your project site while online, then tap <code>Download map for offline use</code> (up to 2,500 tiles). In the field, switch Base Map in <code>⚙ Layers</code> to <strong>Offline map cache</strong>.</li>
+          <li><strong>DEM Terrain Follow (<code>DEM</code> Tab):</strong> Tap <code>Load DEM</code> (GeoTIFF <code>.tif</code> in WGS84 or UTM). Use <code>Show DEM</code> to visualize terrain, enter <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong> (Home point terrain elevation for accurate AGL-to-relative altitude conversion), then tap <code>Apply DEM to WPTs</code>.</li>
+          <li>Check <code>Force altitude override (ignore DEM)</code> whenever you need a flat mission altitude without unloading the GeoTIFF.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: FLIGHT EXECUTION (3 PATHWAYS) -->
+  <section class="section" id="sec-flight">
+    <div class="section-head">
+      <h2 class="section-title">// 06. EXECUTING MISSIONS ACROSS ALL 39 DRONES (3 FLIGHT PATHWAYS)</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card v5">
+        <h3>A. Onboard Waypoint / Wayline</h3>
+        <div class="lang-id">
+          <ol>
+            <li>Pastikan memakai APK sesuai drone (<code>Pro V5</code> atau <code>Old V4</code>).</li>
+            <li>Hubungkan kabel USB RC ke HP/tablet, izinkan akses USB, buka tab <code>SDK</code>, lalu tekan <code>Register SDK</code> hingga status produk terhubung.</li>
+            <li>Pastikan area bebas halangan, lalu tekan <code>Upload KMZ &amp; Start Mission (SDK)</code>. Gunakan tombol <code>Pause</code>, <code>Resume</code>, <code>Stop</code>, atau <code>RTH</code> bila diperlukan.</li>
+          </ol>
+        </div>
+        <div class="lang-en">
+          <ol>
+            <li>Verify you are using the matching APK (<code>Pro V5</code> or <code>Old V4</code>).</li>
+            <li>Connect RC via USB OTG, approve USB prompt, open the <code>SDK</code> tab, tap <code>Register SDK</code>, and confirm aircraft connection.</li>
+            <li>Tap <code>Upload KMZ &amp; Start Mission (SDK)</code> after verifying clearance. Use <code>Pause</code>, <code>Resume</code>, <code>Stop</code>, or <code>RTH</code> anytime.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card v4">
+        <h3>B. Closed-Loop Virtual Stick</h3>
+        <div class="lang-id">
+          <ol>
+            <li>Khusus <strong>Mini 4 Pro (RC-N2/N3), Mini 3/3 Pro (RC-N1)</strong> di Pro V5, serta <strong>Air 2S, Air 2, Mini 2, Mini SE, Mini 1, Spark</strong> di Old V4.</li>
+            <li>Pastikan GPS drone <strong>&ge; 10 satelit</strong> dan baterai &ge; 40%. Letakkan RC pada mode Flight Normal (bukan Sport/Cine).</li>
+            <li>Tekan <code>Takeoff</code> (atau terbang manual ke ±15m), lalu klik <code>Start Virtual Stick Autopilot</code>. Geser tuas RC ke Sport / tekan <code>Stop VS</code> untuk ambil alih instan.</li>
+          </ol>
+        </div>
+        <div class="lang-en">
+          <ol>
+            <li>For <strong>Mini 4 Pro (RC-N2/N3), Mini 3/3 Pro (RC-N1)</strong> in Pro V5, and <strong>Air 2S, Air 2, Mini 2, Mini SE, Mini 1, Spark</strong> in Old V4.</li>
+            <li>Confirm GPS <strong>&ge; 10 satellites</strong>, battery &ge; 40%, and RC switch in Normal flight mode.</li>
+            <li>Tap <code>Takeoff</code> (or climb manually to safe hover), then press <code>Start Virtual Stick Autopilot</code>. Switch RC to Sport or tap <code>Stop VS</code> for instant manual control.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card kmz">
+        <h3>C. Native DJI Fly / Pilot 2 WPML KMZ</h3>
+        <div class="lang-id">
+          <ol>
+            <li>Untuk <strong>Mavic 4 Pro, Mini 5 Pro, Lito X1, Mini 4 Pro (DJI RC 2), Air 3/3S, Mavic 3 / Classic / Pro / Cine, Inspire 3</strong>.</li>
+            <li><strong>Metode 1 (1-Tap Android Share):</strong> Setelah <code>Calculate Plan</code>, tekan <code>Share KMZ</code> lalu pilih aplikasi <strong>DJI Fly</strong> / <strong>Pilot 2</strong>.</li>
+            <li><strong>Metode 2 (Workflow Pro untuk DJI RC / RC 2):</strong> Buat 1 misi dummy 2-titik di DJI Fly untuk memunculkan folder WPML di penyimpanan RC, salin file <code>.kmz</code> hasil ekspor Okto Mapper dan timpa nama file misi dummy tersebut, lalu buka kembali misi di DJI Fly — grid otomatis langsung siap terbang otonom!</li>
+          </ol>
+        </div>
+        <div class="lang-en">
+          <ol>
+            <li>For <strong>Mavic 4 Pro, Mini 5 Pro, Lito X1, Mini 4 Pro (DJI RC 2), Air 3/3S, Mavic 3 / Classic / Pro / Cine, Inspire 3</strong>.</li>
+            <li><strong>Method 1 (1-Tap Android Share):</strong> After <code>Calculate Plan</code>, tap <code>Share KMZ</code> and select <strong>DJI Fly</strong> / <strong>Pilot 2</strong>.</li>
+            <li><strong>Method 2 (Pro Mapper Placeholder Replace for DJI RC / RC 2):</strong> Save a quick 2-point dummy mission inside DJI Fly to create its local Waypoint folder, overwrite that dummy <code>.kmz</code> with Okto Mapper's exported WPML <code>.kmz</code> via USB/file manager, then reopen it in DJI Fly for full onboard grid execution!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: STA GENERATOR & MP4 TOOL -->
+  <section class="section" id="sec-sta">
+    <div class="section-head">
+      <h2 class="section-title">// 07. STA CORRIDOR SUBTITLE GENERATOR &amp; MP4 TOOL</h2>
+    </div>
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Bahasa Indonesia</span>
+        <ol>
+          <li>Buka tab <code>STA</code>. Aktifkan video subtitle/captions di pengaturan kamera DJI agar drone merekam file <code>.srt</code> atau track subtitle MP4.</li>
+          <li>Pilih file <code>.srt</code> (<code>Browse...</code>), atau pilih video <code>.mp4</code> terlebih dahulu lalu klik <code>Extract embedded SRT</code> jika drone menyimpan telemetry di dalam MP4.</li>
+          <li>Klik <code>⌖ Pick</code> di dock bawah peta untuk mengetuk titik STA awal pada overlay Centerline (CL), lalu isi <strong>Starting STA (km)</strong> &amp; <strong>Starting meter</strong> (mendukung offset negatif).</li>
+          <li>Klik <code>Create STA Text</code> untuk mengekspor <code>*_with_STA.srt</code>, atau <code>Mix video with .srt</code> untuk menanamkan subtitle STA ke dalam file <code>.mp4</code> secara offline di Android tanpa server eksternal.</li>
+        </ol>
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">English</span>
+        <ol>
+          <li>Open the <code>STA</code> tab. Ensure video captions/telemetry logging is enabled in DJI camera settings during corridor flights.</li>
+          <li>Select your <code>.srt</code> telemetry file, or pick an <code>.mp4</code> video and tap <code>Extract embedded SRT</code> when telemetry is muxed inside the video stream.</li>
+          <li>Tap <code>⌖ Pick</code> on the map dock to tap your starting centerline point, then verify <strong>Starting STA (km)</strong> &amp; <strong>Starting meter</strong> (negative initial offsets supported).</li>
+          <li>Tap <code>Create STA Text</code> to export <code>*_with_STA.srt</code>, or <code>Mix video with .srt</code> to mux formatted STA overlays cleanly into an MP4 completely offline on-device.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: SOP CHECKLIST & TROUBLESHOOTING -->
+  <section class="section" id="sec-sop">
+    <div class="section-head">
+      <h2 class="section-title">// 08. PRE-FLIGHT SOP CHECKLIST &amp; TROUBLESHOOTING</h2>
+      <button class="hud-btn no-print" onclick="resetChecklist()">Reset Checklist</button>
+    </div>
+
+    <div class="checklist" id="preflightChecklist">
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Kecocokan APK, Drone &amp; Remote:</strong><strong class="lang-en-inline">SKU &amp; Controller Match:</strong> <span class="lang-id-inline">Pakai Pro V5 (Enterprise/Mini 3-4Pro RC-N1/N2/N3), Old V4 (Phantom/Mavic1-2/Mini1-2/Spark/Air2S), atau WPML KMZ (DJI RC / RC 2 / Consumer Waypoints).</span><span class="lang-en-inline">Verified Pro V5 (Enterprise / Mini 3-4Pro RC-N1/N2/N3), Old V4 (P3/P4/Mavic1-2/Mini1-2/Spark/Air2S), or WPML KMZ (DJI RC / RC 2).</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Ketinggian Aman &amp; RTH:</strong><strong class="lang-en-inline">Clearance &amp; RTH Altitude:</strong> <span class="lang-id-inline">Altitude misi dan ketinggian RTH berada aman di atas puncak pohon, menara, SUTET, dan bukit (cek profil DEM bila berbukit).</span><span class="lang-en-inline">Mission &amp; RTH altitudes exceed all trees, towers, power lines, and terrain ridges (apply DEM Terrain Follow in hilly sites).</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Baterai &amp; Satelit GPS:</strong><strong class="lang-en-inline">Battery &amp; GPS Lock:</strong> <span class="lang-id-inline">Baterai drone &ge; 50%, RC cukup, HP/tablet cukup, dan kunci GPS &ge; 10 satelit sebelum Upload atau Virtual Stick.</span><span class="lang-en-inline">Aircraft battery &ge; 50%, RC/tablet charged, and GPS lock &ge; 10 satellites before Upload KMZ or Virtual Stick start.</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Mode Kamera &amp; Memori SD:</strong><strong class="lang-en-inline">SD Card &amp; Camera Action:</strong> <span class="lang-id-inline">Kartu microSD terpasang dengan ruang kosong cukup; aplikasi otomatis mengunci mode Photo/Video &amp; gimbal tilt pada WPT #1.</span><span class="lang-en-inline">MicroSD inserted with free space; app switches Photo/Video mode automatically and locks gimbal tilt cleanly at WPT #1.</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Siaga VLOS &amp; Ambil Alih Manual:</strong><strong class="lang-en-inline">VLOS &amp; Manual Override Ready:</strong> <span class="lang-id-inline">Pilot menjaga jarak pandang langsung (VLOS) dan siap menggeser switch Sport/Pause pada RC bila diperlukan.</span><span class="lang-en-inline">Pilot maintains VLOS and keeps fingers near Pause/Flight-Mode switch on the RC for instant manual override.</span></span></label>
+    </div>
+
+    <div class="table-wrap" style="margin-top:16px;">
+      <table>
+        <thead>
+          <tr>
+            <th><span class="lang-id-inline">Masalah</span><span class="lang-en-inline">Symptom</span></th>
+            <th><span class="lang-id-inline">Penyebab Utama</span><span class="lang-en-inline">Root Cause</span></th>
+            <th><span class="lang-id-inline">Solusi</span><span class="lang-en-inline">Resolution</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>SDK Not Registered</code> / Tidak konek USB</td><td><span class="lang-id-inline">Tidak ada internet saat registrasi App Key pertama kali, atau kabel OTG / aplikasi DJI lain masih mengunci port USB</span><span class="lang-en-inline">No internet on first-ever SDK registration, faulty OTG cable, or DJI Fly/GO4 holding USB port</span></td><td><span class="lang-id-inline">Tutup paksa DJI Fly/GO4 (Force Stop), aktifkan internet saat klik Register SDK pertama kali, colok ulang kabel USB data ke RC</span><span class="lang-en-inline">Force-stop DJI Fly/GO4, provide internet on initial SDK registration, reconnect USB data cable</span></td></tr>
+          <tr><td>Mini 4 Pro tidak konek di Okto V5</td><td><span class="lang-id-inline">Menggunakan remote DJI RC 2 berlayar (OS dikunci DJI untuk aplikasi pihak ke-3)</span><span class="lang-en-inline">Using screen-equipped DJI RC 2 (closed OS blocking third-party MSDK apps)</span></td><td><span class="lang-id-inline">Gunakan remote tanpa layar <code>RC-N2/N3</code> + HP Android untuk Virtual Stick, atau pakai metode <code>Share / Impor KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Pair <code>RC-N2/N3</code> + Android phone for MSDK V5 Virtual Stick, or use <code>WPML KMZ</code> in DJI Fly</span></td></tr>
+          <tr><td>Misi ditolak saat Upload MSDK V4/V5</td><td><span class="lang-id-inline">Salah APK untuk generasi drone, waypoint di luar zona NFZ/ketinggian &gt;500m, atau baterai terlalu rendah</span><span class="lang-en-inline">Wrong SKU installed for aircraft generation, NFZ boundary, altitude &gt;500m, or low battery</span></td><td><span class="lang-id-inline">Cek badge peringatan di tab <code>SDK</code>, pindah ke APK yang cocok, atau gunakan alur <code>Share KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Check compatibility alert in <code>SDK</code> tab, switch SKU, or export via <code>Share KMZ</code></span></td></tr>
+          <tr><td>Overlay DXF muncul di laut / meleset jauh</td><td><span class="lang-id-inline">Koordinat CAD masih memakai UTM/TM-3 tetapi CRS dibiarkan Auto/WGS84 atau satuan mm</span><span class="lang-en-inline">CAD file uses UTM/TM-3 meters or millimeters while CRS prompt defaulted</span></td><td><span class="lang-id-inline">Pilih zona UTM spesifik (mis. <code>EPSG:32748</code> / UTM 48S) &amp; skala unit di dialog DXF saat impor</span><span class="lang-en-inline">Explicitly pick the site UTM EPSG zone and unit scale in the DXF import dialog</span></td></tr>
+          <tr><td>Virtual Stick berhenti / drone hover diam</td><td><span class="lang-id-inline">Tuas mode RC tidak di Normal, jarak WPT menunggu fix GPS, atau tombol Stop ditekan</span><span class="lang-en-inline">RC flight switch not in Normal mode, weak GPS lock, or manual Stop triggered</span></td><td><span class="lang-id-inline">Pastikan switch RC Normal, GPS &ge;10 satelit, cek log live di tab <code>SDK</code></span><span class="lang-en-inline">Switch RC back to Normal, confirm GPS &ge;10 sats, inspect live console logs in <code>SDK</code></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 9: COMMERCIAL & PLAY STORE -->
+  <section class="section" id="sec-commercial">
+    <div class="section-head">
+      <h2 class="section-title">// 09. COMMERCIAL LICENSING &amp; DISTRIBUTION STRATEGY</h2>
+    </div>
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Strategi Penjualan Lintas-SKU (Indonesia)</span>
+        <ul>
+          <li><strong>1 Akun / 1 Lisensi untuk 2 Aplikasi:</strong> Berikan sistem aktivasi akun/lisensi bersama sehingga pembeli yang membayar 1 kali via <strong>Lynk.id / WhatsApp / Website</strong> langsung membuka fitur penuh baik di <strong>Okto Drone Mapper Pro (V5)</strong> maupun <strong>Okto Mapper Old (V4)</strong>.</li>
+          <li><strong>Kompatibilitas OS Luas (Android 7.0+):</strong> Mendukung HP Android jadul hingga terbaru (API 24+), dengan dukungan prosesor 32-bit &amp; 64-bit khusus di versi Old V4 untuk pilot drone klasik.</li>
+        </ul>
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">Cross-SKU Commercial Strategy (English)</span>
+        <ul>
+          <li><strong>One License Across Both APKs:</strong> Provide unified licensing so buyers unlock both <strong>Okto Drone Mapper Pro (MSDK V5)</strong> and <strong>Okto Mapper Old (MSDK V4)</strong> in one bundle.</li>
+          <li><strong>Broad Device Compatibility (Android 7.0+):</strong> Runs cleanly across legacy and flagship Android devices (API 24+), including 32-bit ARM support on Old V4 for cost-effective field controllers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Scroll to top button -->
+<button class="top-float-btn no-print" id="backToTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+
+<!-- Floating Glassmorphic Neon Audio Pod (bgm.mp3) -->
+<div class="bgm-pod no-print" id="bgmPod" role="region" aria-label="Background Music Controls">
+  <div class="eq-bars" id="eqBars" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="bgm-meta">
+    <div class="bgm-title">OKTO FLIGHT BGM</div>
+    <div class="bgm-status" id="bgmStatus">Loading bgm.mp3...</div>
+  </div>
+  <div class="bgm-controls">
+    <button class="bgm-icon-btn" id="bgmPlayBtn" onclick="toggleBgmPlayback()" title="Play / Pause">▶</button>
+    <button class="bgm-icon-btn" id="bgmMuteBtn" onclick="toggleBgmMute()" title="Mute / Unmute">🔊</button>
+    <input type="range" class="bgm-vol" id="bgmVolSlider" min="0" max="1" step="0.05" value="0.45" aria-label="BGM Volume">
+  </div>
+</div>
+
+<script>
+(function() {
+  var currentTier = 'ALL';
+  var htmlEl = document.documentElement;
+  var searchEl = document.getElementById('droneSearchInput');
+  var badgeEl = document.getElementById('droneVisibleBadge');
+
+  window.setLangMode = function(mode) {
+    htmlEl.setAttribute('data-lang-mode', mode);
+    document.getElementById('btnLangId').classList.toggle('active', mode === 'id');
+    document.getElementById('btnLangEn').classList.toggle('active', mode === 'en');
+    document.getElementById('btnLangDual').classList.toggle('active', mode === 'dual');
+  };
+
+  window.setTierFilter = function(tier) {
+    currentTier = tier;
+    var chips = document.querySelectorAll('#tierChips .chip');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.toggle('active', chips[i].getAttribute('data-filter') === tier);
+    }
+    applyDroneFilter();
+  };
+
+  window.resetDroneFilters = function() {
+    searchEl.value = '';
+    setTierFilter('ALL');
+  };
+
+  function applyDroneFilter() {
+    var q = (searchEl.value || '').trim().toLowerCase();
+    var rows = document.querySelectorAll('#droneMatrixTable tbody tr');
+    var shown = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var tier = row.getAttribute('data-tier');
+      var txt = row.textContent.toLowerCase();
+      var okTier = (currentTier === 'ALL' || tier === currentTier);
+      var okText = (!q || txt.indexOf(q) !== -1);
+      var vis = okTier && okText;
+      row.classList.toggle('hidden-row', !vis);
+      if (vis) shown++;
+    }
+    badgeEl.textContent = 'Showing ' + shown + ' / ' + rows.length + ' drones';
+  }
+
+  searchEl.addEventListener('input', applyDroneFilter);
+
+  var checks = document.querySelectorAll('#preflightChecklist input[type="checkbox"]');
+  for (var c = 0; c < checks.length; c++) {
+    checks[c].addEventListener('change', function() {
+      this.closest('.check-row').classList.toggle('checked', this.checked);
     });
+  }
 
-    // keyboard accessibility: jump to sections with number keys (1..5)
-    window.addEventListener('keydown', (e)=>{
-      if(/^[1-5]$/.test(e.key)){
-        const map = ['#home','#donation','#news','#tutorial','#about'];
-        document.querySelector(map[Number(e.key)-1]).scrollIntoView({behavior:'smooth'});
+  window.resetChecklist = function() {
+    for (var c = 0; c < checks.length; c++) {
+      checks[c].checked = false;
+      checks[c].closest('.check-row').classList.remove('checked');
+    }
+  };
+
+  // QR Modal Controls
+  var qrModal = document.getElementById('qrModal');
+  window.openQrModal = function() {
+    qrModal.classList.add('open');
+  };
+  window.closeQrModal = function() {
+    qrModal.classList.remove('open');
+  };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && qrModal.classList.contains('open')) {
+      closeQrModal();
+    }
+  });
+
+  // Reading Progress & Back to Top
+  var progressEl = document.getElementById('readProgress');
+  var backTopBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', function() {
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docH > 0 ? Math.min(100, Math.max(0, (window.scrollY / docH) * 100)) : 0;
+    progressEl.style.width = pct.toFixed(1) + '%';
+    backTopBtn.classList.toggle('visible', window.scrollY > 360);
+  }, { passive: true });
+
+  // Smart Autoplay BGM Controller (bgm.mp3)
+  var audio = document.getElementById('oktoBgm');
+  var eqBars = document.getElementById('eqBars');
+  var bgmPod = document.getElementById('bgmPod');
+  var bgmStatus = document.getElementById('bgmStatus');
+  var bgmPlayBtn = document.getElementById('bgmPlayBtn');
+  var bgmMuteBtn = document.getElementById('bgmMuteBtn');
+  var bgmVolSlider = document.getElementById('bgmVolSlider');
+  var topBgmBtn = document.getElementById('topBgmBtn');
+
+  var targetVol = 0.45;
+  var userPaused = false;
+  var awaitingGesture = false;
+  var audioMissing = false;
+  var wasPlayingBeforeHide = false;
+  var fadeTimer = null;
+
+  function syncAudioUi() {
+    var isPlaying = !audio.paused && !audio.ended && !audioMissing;
+    eqBars.classList.toggle('playing', isPlaying);
+    bgmPod.classList.toggle('awaiting', awaitingGesture && !isPlaying && !audioMissing);
+    topBgmBtn.classList.toggle('bgm-pulse', awaitingGesture && !isPlaying && !audioMissing);
+    topBgmBtn.classList.toggle('active', isPlaying);
+    bgmPlayBtn.textContent = isPlaying ? '⏸' : '▶';
+    bgmMuteBtn.textContent = (audio.muted || targetVol === 0) ? '🔇' : '🔊';
+
+    if (audioMissing) {
+      bgmStatus.textContent = '⚠ bgm.mp3 not found';
+      topBgmBtn.textContent = '🎵 BGM';
+    } else if (isPlaying) {
+      bgmStatus.textContent = audio.muted ? 'Muted (playing)' : '♪ Playing bgm.mp3';
+      topBgmBtn.textContent = '🎵 ON';
+    } else if (awaitingGesture && !userPaused) {
+      bgmStatus.textContent = 'Tap anywhere for BGM';
+      topBgmBtn.textContent = '🎵 PLAY';
+    } else {
+      bgmStatus.textContent = 'Paused';
+      topBgmBtn.textContent = '🎵 OFF';
+    }
+  }
+
+  function fadeInVolume(goal) {
+    if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
+    audio.volume = 0.02;
+    fadeTimer = setInterval(function() {
+      var next = Math.min(goal, audio.volume + 0.05);
+      audio.volume = next;
+      if (next >= goal) {
+        clearInterval(fadeTimer);
+        fadeTimer = null;
       }
-    });
+    }, 55);
+  }
 
-    /* ================= Audio + Reactive Text (paste di akhir <script> atau buat script baru) ================= */
-    // Smooth scroll / reveal / other scripts di atas tetap (tidak diubah).
-    (function(){
-      const audioEl = document.getElementById('bg-audio');
-      const controlBtn = document.getElementById('audio-control');
-      const audioHint = document.getElementById('audio-hint');
-
-      // visualizer vars
-      let audioCtx = null, sourceNode = null, analyser = null, rafId = null;
-      let reactiveEls = [], elPhases = [];
-
-      // visualizer params (bisa diubah)
-      const MAX_Y = 3, MAX_ROT = 0.6, SMOOTH = 0.12, FFT_SIZE = 256;
-
-      // collect reactive elements for subtle motion
-      function collectReactiveElements(){
-        reactiveEls = []; elPhases = [];
-        const candidates = document.querySelectorAll('h1,h2,h3,h4,h5,h6,p,a,button,span,label,li,small');
-        candidates.forEach(el=>{
-          const txt = (el.textContent || '').trim();
-          if(!txt) return;
-          if(el.offsetParent === null) return;
-          if(txt.length > 800) return;
-          if(el.closest('#audio-control')) return;
-          el.classList.add('reactive');
-          reactiveEls.push(el);
-          elPhases.push(Math.random()*Math.PI*2);
-          el._prevY = 0;
-        });
-      }
-
-      // audio context setup
-      function setupAudioContext(){
-        if(!window.AudioContext && !window.webkitAudioContext) return false;
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          sourceNode = audioCtx.createMediaElementSource(audioEl);
-          analyser = audioCtx.createAnalyser();
-          analyser.fftSize = FFT_SIZE;
-          analyser.smoothingTimeConstant = 0.7;
-          sourceNode.connect(analyser);
-          analyser.connect(audioCtx.destination);
-          return true;
-        } catch(e) {
-          console.warn('AudioContext failed', e);
-          return false;
-        }
-      }
-
-      // animation loop
-      function startAnimationLoop(){
-        if(!analyser) return;
-        const freqData = new Uint8Array(analyser.frequencyBinCount);
-        const startTime = performance.now();
-        function frame(){
-          analyser.getByteFrequencyData(freqData);
-          const lowCount = Math.max(8, Math.floor(freqData.length * 0.12));
-          let sumLow = 0;
-          for(let i=0;i<lowCount;i++) sumLow += freqData[i];
-          const avg = sumLow / lowCount;
-          const norm = avg / 255;
-          const time = performance.now() - startTime;
-
-          reactiveEls.forEach((el, idx)=>{
-            const phase = elPhases[idx];
-            const oscill = Math.sin(time * 0.004 + phase);
-            const amp = norm * (0.8 + 0.4 * Math.sin(phase*0.23 + time*0.0009));
-            let y = oscill * amp * MAX_Y;
-            let r = Math.cos(time*0.001 + phase) * amp * MAX_ROT;
-            y = el._prevY * (1 - SMOOTH) + y * SMOOTH;
-            el._prevY = y;
-            el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0) rotate(${r.toFixed(2)}deg)`;
-          });
-
-          rafId = requestAnimationFrame(frame);
-        }
-        if(!rafId) frame();
-      }
-
-      function stopAnimationLoop(){
-        if(rafId) cancelAnimationFrame(rafId);
-        rafId = null;
-        reactiveEls.forEach(el => el.style.transform = '');
-      }
-
-      function setControlIconPlaying(isPlaying){
-        const playPath = document.getElementById('play-path');
-        const pauseGroup = document.getElementById('pause-path');
-        if(isPlaying){
-          if(playPath) playPath.style.display = 'none';
-          if(pauseGroup) pauseGroup.style.display = 'inline';
-        } else {
-          if(playPath) playPath.style.display = 'inline';
-          if(pauseGroup) pauseGroup.style.display = 'none';
-        }
-      }
-
-      // fade helper
-      function fadeInVolume(audio, target = 0.6, duration = 700) {
-        try {
-          audio.volume = audio.volume ?? 0;
-          const start = performance.now();
-          const initial = audio.volume;
-          function step(now) {
-            const t = Math.min((now - start) / duration, 1);
-            audio.volume = initial + (target - initial) * t;
-            if (t < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-        } catch(e) { /* ignore */ }
-      }
-
-      // Toggle audio when user clicks control button
-      async function toggleAudio(){
-        try {
-          if(!audioCtx) setupAudioContext();
-          if(audioCtx && audioCtx.state === 'suspended') await audioCtx.resume();
-
-          if(audioEl.paused){
-            if(audioEl.muted) audioEl.muted = false;
-            await audioEl.play();
-            fadeInVolume(audioEl, 0.6, 600);
-            controlBtn.classList.add('playing');
-            controlBtn.setAttribute('aria-pressed','true');
-          } else {
-            audioEl.pause();
-            controlBtn.classList.remove('playing');
-            controlBtn.setAttribute('aria-pressed','false');
-          }
-        } catch(err) {
-          console.warn('toggleAudio error', err);
-          audioHint.style.display = 'block';
-          setTimeout(()=> audioHint.style.display = 'none', 2400);
-        }
-      }
-
-      // Event binding for control button
-      controlBtn.addEventListener('click', async (e)=>{
-        e.preventDefault();
-        await toggleAudio();
+  function startBgm(useFade) {
+    if (audioMissing) return;
+    audio.volume = useFade ? 0.02 : targetVol;
+    var promise = audio.play();
+    if (promise && typeof promise.then === 'function') {
+      promise.then(function() {
+        awaitingGesture = false;
+        if (useFade) { fadeInVolume(targetVol); } else { audio.volume = targetVol; }
+        syncAudioUi();
+      }).catch(function() {
+        awaitingGesture = true;
+        syncAudioUi();
       });
-      controlBtn.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); controlBtn.click(); }
-      });
+    } else {
+      awaitingGesture = false;
+      audio.volume = targetVol;
+      syncAudioUi();
+    }
+  }
 
-      // Main autopPlay logic:
-      // 1) Try unmuted play (best UX)
-      // 2) If blocked, try muted autoplay (often allowed)
-      // 3) If muted autoplay works, attach one-time gesture listeners to unmute+fade on first user interaction
-      // 4) If muted autoplay fails, attach gesture listeners that play+unmute on gesture
-      async function initAutoplayFlow(){
-        collectReactiveElements();
-        setupAudioContext();
-        audioEl.loop = true;
-        audioEl.preload = 'auto';
+  function unlockOnGesture(e) {
+    if (!awaitingGesture || userPaused || audioMissing) return;
+    if (e.target && (e.target.closest('#bgmPod') || e.target.closest('#topBgmBtn'))) return;
+    startBgm(true);
+    if (!awaitingGesture) {
+      removeGestureHooks();
+    }
+  }
 
-        // helper to remove gesture listeners after first fire
-        let fired = false;
-        function removeGestureListeners(listeners){
-          listeners.forEach(({ev,fn})=>window.removeEventListener(ev,fn, {passive:true}));
-        }
+  function removeGestureHooks() {
+    document.removeEventListener('pointerdown', unlockOnGesture);
+    document.removeEventListener('touchstart', unlockOnGesture);
+    document.removeEventListener('keydown', unlockOnGesture);
+  }
 
-        async function onFirstGesture(ev){
-          if(fired) return;
-          fired = true;
-          // resume audio context if needed (must be in user gesture)
-          try{
-            if(audioCtx && audioCtx.state === 'suspended') await audioCtx.resume();
-          }catch(e){}
-          try {
-            // play/unmute and fade
-            if(audioEl.paused) await audioEl.play().catch(()=>{});
-            audioEl.muted = false;
-            fadeInVolume(audioEl, 0.6, 600);
-            controlBtn.classList.add('playing');
-            controlBtn.setAttribute('aria-pressed','true');
-            if(analyser && !rafId) startAnimationLoop();
-          } catch(e) {
-            console.warn('onFirstGesture play failed', e);
-          } finally {
-            removeGestureListeners(gestureListeners);
-            audioHint.style.display = 'none';
-          }
-        }
+  document.addEventListener('pointerdown', unlockOnGesture, { passive: true });
+  document.addEventListener('touchstart', unlockOnGesture, { passive: true });
+  document.addEventListener('keydown', unlockOnGesture, { passive: true });
 
-        const gestureListeners = [
-          {ev:'pointerdown', fn:onFirstGesture},
-          {ev:'touchstart', fn:onFirstGesture},
-          {ev:'keydown', fn:(e)=>{ if(e.key && e.key.length===1) onFirstGesture(e); }},
-          {ev:'pointerover', fn:onFirstGesture},
-          {ev:'scroll', fn:onFirstGesture}
-        ];
-        gestureListeners.forEach(({ev,fn})=> window.addEventListener(ev,fn, {passive:true}));
+  window.toggleBgmPlayback = function() {
+    if (audioMissing) { syncAudioUi(); return; }
+    if (!audio.paused) {
+      userPaused = true;
+      awaitingGesture = false;
+      if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
+      audio.pause();
+      syncAudioUi();
+    } else {
+      userPaused = false;
+      startBgm(true);
+      removeGestureHooks();
+    }
+  };
 
-        // 1) Try unmuted play first (best)
-        try{
-          audioEl.muted = false;
-          await audioEl.play();
-          // success
-          controlBtn.classList.add('playing');
-          controlBtn.setAttribute('aria-pressed','true');
-          if(!audioCtx) setupAudioContext();
-          if(analyser) startAnimationLoop();
-          // remove listeners because we already started
-          removeGestureListeners(gestureListeners);
-          return;
-        }catch(err){
-          console.warn('Unmuted autoplay failed (expected on some browsers):', err);
-        }
+  window.toggleBgmMute = function() {
+    audio.muted = !audio.muted;
+    syncAudioUi();
+  };
 
-        // 2) Try muted autoplay (most browsers allow muted autoplay)
-        try{
-          audioEl.muted = true;
-          audioEl.volume = 0;
-          await audioEl.play();
-          // muted autoplay succeeded — show playing state visually but still muted
-          controlBtn.classList.add('playing');
-          controlBtn.setAttribute('aria-pressed','true');
-          if(!audioCtx) setupAudioContext();
-          if(analyser) startAnimationLoop();
+  bgmVolSlider.addEventListener('input', function() {
+    targetVol = parseFloat(this.value) || 0;
+    audio.volume = targetVol;
+    if (targetVol > 0 && audio.muted) { audio.muted = false; }
+    syncAudioUi();
+  });
 
-          // keep gesture listeners active: first gesture will unmute + fade-in
-          audioHint.style.display = 'block';
-          setTimeout(()=>{ if(!fired) audioHint.style.display = 'none'; }, 3000);
-          return;
-        }catch(err){
-          console.warn('Muted autoplay failed too:', err);
-        }
+  audio.addEventListener('playing', syncAudioUi);
+  audio.addEventListener('pause', syncAudioUi);
+  audio.addEventListener('error', function() {
+    audioMissing = true;
+    awaitingGesture = false;
+    removeGestureHooks();
+    syncAudioUi();
+  });
 
-        // 3) All autoplay attempts failed — show hint and wait for gesture (listeners already attached)
-        audioHint.style.display = 'block';
-        // listeners will handle when user interacts
-      }
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      wasPlayingBeforeHide = !audio.paused && !userPaused;
+      if (!audio.paused) { audio.pause(); }
+    } else if (wasPlayingBeforeHide && !userPaused && !audioMissing) {
+      startBgm(false);
+    }
+  });
 
-      // audio element events to manage UI & visualizer
-      audioEl.addEventListener('play', ()=>{
-        setControlIconPlaying(true);
-        if(!audioCtx) setupAudioContext();
-        if(!rafId && analyser) startAnimationLoop();
-      });
-      audioEl.addEventListener('pause', ()=>{
-        setControlIconPlaying(false);
-        stopAnimationLoop();
-      });
-
-      // Start the flow after a short delay to allow DOM elements to settle
-      window.addEventListener('DOMContentLoaded', ()=> {
-        // try immediately, but do not block page
-        initAutoplayFlow().catch(e=>console.warn('initAutoplayFlow error', e));
-      });
-
-    })();
-
-
-    // Donation list animations & helpers
-    (function(){
-      const donorsWrap = document.getElementById('donorsList');
-      if(!donorsWrap) return;
-
-      const donorCards = Array.from(donorsWrap.querySelectorAll('.donor-card'));
-
-      // Intersection Observer untuk trigger staggered reveal
-      const revealDonor = (entries, obs) => {
-        entries.forEach(entry => {
-          if(!entry.isIntersecting) return;
-          donorCards.forEach((card, i) => {
-            // use dataset attr to control
-            const delay = parseFloat(card.style.getPropertyValue('--delay')) || (i*0.06);
-            setTimeout(()=> card.setAttribute('data-visible','true'), Math.round(delay*1000));
-          });
-          obs.unobserve(entry.target);
-        });
-      };
-      const io = new IntersectionObserver(revealDonor, { threshold: 0.15 });
-      io.observe(document.querySelector('#donation'));
-
-      // hover auto-scroll: gentle nudge to reveal more cards on hover (desktop)
-      let scrollAnim = null;
-      const parent = donorsWrap.parentElement;
-      parent.addEventListener('mouseenter', ()=> {
-        if(window.matchMedia('(max-width:980px)').matches) return;
-        // slow left-right ping-pong
-        const el = donorsWrap;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        if(maxScroll <= 2) return;
-        let dir = 1;
-        let pos = el.scrollLeft;
-        const step = () => {
-          pos += dir * 0.4; // slow
-          if(pos <= 0){ pos = 0; dir = 1; }
-          if(pos >= maxScroll){ pos = maxScroll; dir = -1; }
-          el.scrollLeft = pos;
-          scrollAnim = requestAnimationFrame(step);
-        };
-        scrollAnim = requestAnimationFrame(step);
-      });
-      parent.addEventListener('mouseleave', ()=> {
-        if(scrollAnim) cancelAnimationFrame(scrollAnim);
-        scrollAnim = null;
-      });
-
-      // helper untuk menambah donor (gunakan server data / realtime feed)
-      window.addDonor = function(name, handle, job, amount){
-        const initials = (name.split(' ').map(w=>w[0]||'').slice(0,2).join('') || name.slice(0,2)).toUpperCase();
-        const card = document.createElement('article');
-        card.className = 'donor-card';
-        card.setAttribute('role','listitem');
-        card.setAttribute('data-visible','false');
-        card.style.setProperty('--delay', (donorsWrap.children.length * 0.06) + 's');
-        card.innerHTML = `
-          <div class="donor-avatar">${initials}</div>
-          <div class="donor-info">
-            <div class="donor-name">${name}</div>
-            <div class="donor-meta"><span class="platform-pill">${handle}</span><span class="job">${job}</span></div>
-          </div>
-          <div class="donor-amount">${amount}</div>
-          <div class="shine" aria-hidden="true"></div>
-        `;
-        donorsWrap.appendChild(card);
-        // small delay then reveal
-        setTimeout(()=> card.setAttribute('data-visible','true'), 120);
-        return card;
-      };
-    })();
-
-
-  </script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { startBgm(false); });
+  } else {
+    startBgm(false);
+  }
+})();
+</script>
 </body>
 </html>
-
