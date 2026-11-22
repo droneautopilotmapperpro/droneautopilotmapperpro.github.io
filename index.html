@@ -740,9 +740,276 @@
     pointer-events: auto;
   }
 
+  /* 10 Pro Innovator Skills Cards & Interactive Pro Avionics Lab */
+  .skills-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+    gap: 14px;
+  }
+  .skill-card {
+    background: linear-gradient(155deg, rgba(16, 25, 45, 0.98), rgba(10, 15, 30, 0.98));
+    border: 1px solid var(--border-subtle);
+    border-top: 3px solid var(--cyan);
+    border-radius: 12px;
+    padding: 14px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+  .skill-card[data-accent="purple"] { border-top-color: var(--purple); }
+  .skill-card[data-accent="gold"] { border-top-color: var(--gold); }
+  .skill-card[data-accent="green"] { border-top-color: var(--success); }
+  .skill-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-accent);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42), 0 0 16px rgba(0, 229, 255, 0.12);
+  }
+  .skill-card.hidden-skill { display: none; }
+  .skill-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .skill-num {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #060913;
+    background: linear-gradient(90deg, var(--cyan), #7DD3FC);
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+  }
+  .skill-card[data-accent="purple"] .skill-num { background: linear-gradient(90deg, #C4B5FD, var(--purple)); }
+  .skill-card[data-accent="gold"] .skill-num { background: linear-gradient(90deg, #FDE68A, var(--gold)); }
+  .skill-card[data-accent="green"] .skill-num { background: linear-gradient(90deg, #86EFAC, var(--success)); }
+  .skill-loc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(245, 183, 49, 0.12);
+    border: 1px solid rgba(245, 183, 49, 0.38);
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .skill-card h3 {
+    margin: 2px 0 0;
+    font-size: 14.5px;
+    line-height: 1.35;
+    color: #F8FAFC;
+  }
+  .skill-svg-box {
+    background: #070C17;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .skill-svg-box svg { max-width: 100%; height: auto; }
+  .skill-desc { font-size: 12.2px; color: #CBD5E1; line-height: 1.5; }
+  .skill-toggle-btn {
+    align-self: flex-start;
+    background: rgba(0, 229, 255, 0.09);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: auto;
+  }
+  .skill-toggle-btn:hover { background: rgba(0, 229, 255, 0.18); }
+  .skill-howto {
+    display: none;
+    background: rgba(6, 9, 19, 0.78);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--cyan);
+    border-radius: 7px;
+    padding: 8px 10px;
+    font-size: 11.5px;
+    color: #E2E8F0;
+  }
+  .skill-howto.open { display: block; }
+
+  /* Interactive Pro Avionics Lab */
+  .pro-lab {
+    margin-top: 20px;
+    background: linear-gradient(145deg, rgba(8, 14, 28, 0.98), rgba(14, 18, 40, 0.98));
+    border: 1px solid var(--border-accent);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(139, 92, 246, 0.12);
+  }
+  .pro-lab-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .pro-lab-title {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+  }
+  .lab-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .lab-tab-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.14s ease;
+  }
+  .lab-tab-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .lab-tab-btn.active {
+    background: linear-gradient(135deg, rgba(0,229,255,0.22), rgba(139,92,246,0.28));
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0,229,255,0.22);
+  }
+  .lab-panel { display: none; }
+  .lab-panel.active { display: block; }
+  .lab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .lab-controls {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 12px 13px;
+    display: grid;
+    gap: 10px;
+  }
+  .lab-field label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .lab-field label span { color: var(--cyan); font-weight: 700; }
+  .lab-field input[type="range"] { width: 100%; accent-color: var(--cyan); cursor: pointer; }
+  .lab-field select {
+    width: 100%;
+    padding: 7px 9px;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    border: 1px solid var(--border-accent);
+    border-radius: 7px;
+    font-size: 12px;
+  }
+  .lab-results {
+    background: rgba(6, 10, 20, 0.78);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 12px 13px;
+    display: grid;
+    gap: 10px;
+  }
+  .lab-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .lab-kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .lab-kpi .k-lbl {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+  .lab-kpi .k-val {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--cyan);
+    margin-top: 2px;
+  }
+  .lab-gauge-bar {
+    height: 9px;
+    width: 100%;
+    border-radius: 999px;
+    background: #1E293B;
+    overflow: hidden;
+    border: 1px solid rgba(148,163,184,0.2);
+  }
+  .lab-gauge-fill {
+    height: 100%;
+    width: 35%;
+    background: var(--success);
+    transition: width 0.2s ease, background-color 0.2s ease;
+  }
+  .lab-status-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--cyan);
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--cyan);
+  }
+  .lab-svg-stage {
+    background: #060A14;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 6px;
+    text-align: center;
+  }
+  .lab-svg-stage svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  .lab-check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 6px;
+  }
+  .lab-check-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(15, 23, 42, 0.7);
+  }
+  .lab-check-pill.pass { border-color: rgba(34,197,94,0.5); color: #86EFAC; background: rgba(34,197,94,0.1); }
+  .lab-check-pill.warn { border-color: rgba(245,158,11,0.55); color: #FDE68A; background: rgba(245,158,11,0.12); }
+  .lab-check-pill.fail { border-color: rgba(239,68,68,0.65); color: #FCA5A5; background: rgba(239,68,68,0.15); }
+
   /* Mobile & News Drawer WebView Responsive Optimization (down to 320px) */
   @media (max-width: 820px) {
     html[data-lang-mode="dual"] .bilingual-grid { grid-template-columns: 1fr; }
+    .lab-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
     .topbar { padding: 8px 12px; }
     .container { padding: 14px 10px 80px; }
     .qr-showcase { grid-template-columns: 1fr; text-align: center; padding: 16px; }
@@ -764,7 +1031,8 @@
 
   @media print {
     body { background: #FFFFFF !important; color: #0F172A !important; padding-bottom: 0; }
-    .topbar, .filter-panel, .no-print, .bgm-pod, .top-float-btn, .read-progress-track, .qr-modal { display: none !important; }
+    .topbar, .filter-panel, .skills-filter-bar, .lab-tabs, .skill-toggle-btn, .no-print, .bgm-pod, .top-float-btn, .read-progress-track, .qr-modal { display: none !important; }
+    .skill-howto { display: block !important; }
     .section, .hero, .qr-showcase, .card, .lang-box, .step-item, .diagram-box, .check-row, .ref-metric {
       background: #FFFFFF !important;
       color: #0F172A !important;
@@ -843,10 +1111,11 @@
         <span class="stat-pill">MSDK V5.20.1 + V4.18</span>
         <span class="stat-pill purple">39 PROVEN DJI MAPPING DRONES</span>
         <span class="stat-pill gold">WPML KMZ CERTIFIED</span>
-        <span class="stat-pill green">ANDROID 7.0+ COMPATIBLE</span>
+        <span class="stat-pill green">+10 PRO INNOVATOR SKILLS</span>
       </div>
       <div class="qr-actions no-print">
         <button class="hud-btn active" onclick="openQrModal()">🔍 <span class="lang-id-inline">Zoom QR Penuh</span><span class="lang-en-inline">Full-Screen QR</span></button>
+        <a class="hud-btn" href="#sec-pro10" style="text-decoration:none; border-color:rgba(34,197,94,0.5); color:#86EFAC;">⚡ <span class="lang-id-inline">10 Skill Pro Baru</span><span class="lang-en-inline">10 New Pro Skills</span></a>
         <button class="hud-btn" onclick="toggleBgmPlayback()">🎵 <span class="lang-id-inline">Putar / Jeda Musik</span><span class="lang-en-inline">Play / Pause BGM</span></button>
         <a class="hud-btn gold" href="#sec-drones" style="text-decoration:none;">🛸 <span class="lang-id-inline">Cek Drone Anda</span><span class="lang-en-inline">Check Your Drone</span></a>
       </div>
@@ -873,13 +1142,14 @@
   <nav class="toc-nav no-print">
     <a href="#sec-overview"><span class="lang-id-inline">1. Arsitektur 2 APK</span><span class="lang-en-inline">1. Dual-SKU Architecture</span></a>
     <a href="#sec-drones"><span class="lang-id-inline">2. 39 Drone Terbukti &amp; RC</span><span class="lang-en-inline">2. 39 Proven Drones &amp; RCs</span></a>
-    <a href="#sec-cockpit"><span class="lang-id-inline">3. Kokpit HUD &amp; 6 Tab</span><span class="lang-en-inline">3. HUD Cockpit &amp; 6 Tabs</span></a>
-    <a href="#sec-planning"><span class="lang-id-inline">4. Perencanaan Misi &amp; Grid</span><span class="lang-en-inline">4. Mission &amp; Grid Planning</span></a>
-    <a href="#sec-dem"><span class="lang-id-inline">5. DEM &amp; Peta Offline</span><span class="lang-en-inline">5. DEM &amp; Offline Maps</span></a>
-    <a href="#sec-flight"><span class="lang-id-inline">6. Eksekusi Terbang (3 Jalur)</span><span class="lang-en-inline">6. 3-Tier Execution</span></a>
-    <a href="#sec-sta"><span class="lang-id-inline">7. STA SRT &amp; MP4</span><span class="lang-en-inline">7. STA SRT &amp; MP4 Tool</span></a>
-    <a href="#sec-sop"><span class="lang-id-inline">8. Checklist &amp; Solusi</span><span class="lang-en-inline">8. SOP &amp; Troubleshooting</span></a>
-    <a href="#sec-commercial"><span class="lang-id-inline">9. Lisensi &amp; Distribusi</span><span class="lang-en-inline">9. Licensing &amp; Distribution</span></a>
+    <a href="#sec-pro10" style="border-color:rgba(0,229,255,0.48);color:var(--cyan);">⚡ <span class="lang-id-inline">3. 10 Skill Pro + Lab Sim</span><span class="lang-en-inline">3. 10 Pro Skills + Live Lab</span></a>
+    <a href="#sec-cockpit"><span class="lang-id-inline">4. Kokpit HUD &amp; 6 Tab</span><span class="lang-en-inline">4. HUD Cockpit &amp; 6 Tabs</span></a>
+    <a href="#sec-planning"><span class="lang-id-inline">5. Perencanaan Misi &amp; Grid</span><span class="lang-en-inline">5. Mission &amp; Grid Planning</span></a>
+    <a href="#sec-dem"><span class="lang-id-inline">6. DEM &amp; Peta Offline</span><span class="lang-en-inline">6. DEM &amp; Offline Maps</span></a>
+    <a href="#sec-flight"><span class="lang-id-inline">7. Eksekusi Terbang (3 Jalur)</span><span class="lang-en-inline">7. 3-Tier Execution</span></a>
+    <a href="#sec-sta"><span class="lang-id-inline">8. STA SRT &amp; MP4</span><span class="lang-en-inline">8. STA SRT &amp; MP4 Tool</span></a>
+    <a href="#sec-sop"><span class="lang-id-inline">9. Checklist &amp; Solusi</span><span class="lang-en-inline">9. SOP &amp; Troubleshooting</span></a>
+    <a href="#sec-commercial"><span class="lang-id-inline">10. Lisensi &amp; Distribusi</span><span class="lang-en-inline">10. Licensing &amp; Distribution</span></a>
   </nav>
 
   <!-- HERO -->
@@ -1205,10 +1475,542 @@
     </div>
   </section>
 
-  <!-- SECTION 3: HUD COCKPIT & 6 TABS -->
+  <!-- SECTION 3: 10 NEW PRO INNOVATOR SKILLS & INTERACTIVE AVIONICS LAB -->
+  <section class="section" id="sec-pro10">
+    <div class="section-head">
+      <h2 class="section-title">// 03. 10 NEW PRO INNOVATOR SKILLS &amp; LIVE AVIONICS LAB</h2>
+      <span class="stat-pill green" id="skillVisibleBadge">Showing 10 / 10 skills</span>
+    </div>
+
+    <div class="bilingual-grid">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Bahasa Indonesia — Pembaruan Fitur Pro</span>
+        Versi ini menambahkan <strong>10 skill pemetaan profesional</strong> yang berjalan penuh baik di <strong>Okto Pro (MSDK V5)</strong> maupun <strong>Okto Old (MSDK V4)</strong>. Filter berdasarkan kategori, buka tutorial lapangan di tiap kartu dan uji simulasi angkanya secara langsung di <strong>Live Pro Avionics Lab</strong> di bagian bawah!
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">English — Pro Upgrade Suite</span>
+        This release adds <strong>10 professional photogrammetry &amp; flight safety skills</strong> with full parity across <strong>Okto Pro (MSDK V5)</strong> and <strong>Okto Old (MSDK V4)</strong>. Filter by workflow category, expand field step-by-step guides and test real telemetry math in the <strong>Live Pro Avionics Lab</strong> below!
+      </div>
+    </div>
+
+    <div class="skills-filter-bar no-print" style="margin-top:14px;">
+      <div class="chip-row" id="skillChips">
+        <button class="chip active" data-skill-cat="ALL" onclick="setSkillFilter('ALL')">⚡ All 10 Skills</button>
+        <button class="chip" data-skill-cat="GRID3D" onclick="setSkillFilter('GRID3D')">📐 Grid &amp; 3D (3)</button>
+        <button class="chip" data-skill-cat="OPTICS" onclick="setSkillFilter('OPTICS')">📷 Optics &amp; Wind (2)</button>
+        <button class="chip" data-skill-cat="SAFETY" onclick="setSkillFilter('SAFETY')">🛡️ Safety &amp; DEM (3)</button>
+        <button class="chip" data-skill-cat="OPS" onclick="setSkillFilter('OPS')">🔋 Battery &amp; Export (2)</button>
+      </div>
+      <button class="hud-btn" id="toggleAllSkillsBtn" onclick="toggleAllSkillHowTo()">📖 <span class="lang-id-inline">Buka Semua Tutorial</span><span class="lang-en-inline">Expand All Guides</span></button>
+    </div>
+
+    <div class="skills-grid" id="skillsGrid">
+      <!-- SKILL 1 -->
+      <article class="skill-card" data-skill-cat="GRID3D" data-accent="cyan">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 01</span>
+          <span class="skill-loc">TAB: CAM &amp; SETUP</span>
+        </div>
+        <h3><span class="lang-id-inline">3D Double-Grid (Crosshatch +90°)</span><span class="lang-en-inline">3D Double-Grid Crosshatch (+90°)</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <polyline points="24,14 236,14 236,28 24,28 24,42 236,42 236,54 24,54" fill="none" stroke="#00E5FF" stroke-width="2"/>
+            <polyline points="42,10 42,56 76,56 76,10 110,10 110,56 144,56 144,10 178,10 178,56 212,56 212,10" fill="none" stroke="#8B5CF6" stroke-width="1.8" stroke-dasharray="4,2"/>
+            <circle cx="24" cy="14" r="3.5" fill="#22C55E"/><circle cx="212" cy="10" r="3.5" fill="#F5B731"/>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Menghasilkan dua grid tegak lurus otomatis untuk pemodelan 3D bangunan, lereng tambang &amp; stockpile. Pass ke-2 menyambung ke titik ujung terdekat agar hemat baterai, plus tombol cepat <strong>-60° Oblique Gimbal</strong>.</span>
+          <span class="lang-en">Generates dual orthogonal passes for crisp 3D building, quarry &amp; stockpile meshes. Pass 2 connects cleanly from the nearest endpoint, with a 1-tap <strong>-60° Oblique Gimbal</strong> shortcut.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Buka tab <code>CAM</code> &rarr; centang <strong>3D Double-Grid Crosshatch</strong> &rarr; ketuk <code>Set -60° Oblique Gimbal</code> &rarr; tekan <code>Calculate Plan</code>.</span>
+          <span class="lang-en">Open <code>CAM</code> &rarr; enable <strong>3D Double-Grid Crosshatch</strong> &rarr; tap <code>Set -60° Oblique Gimbal</code> &rarr; press <code>Calculate Plan</code>.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 2 -->
+      <article class="skill-card" data-skill-cat="OPS" data-accent="gold">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 02</span>
+          <span class="skill-loc">TAB: SETUP &amp; SDK</span>
+        </div>
+        <h3><span class="lang-id-inline">Smart Multi-Battery Split &amp; Resume WPT</span><span class="lang-en-inline">Smart Multi-Battery Split &amp; Resume WPT</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <rect x="20" y="16" width="66" height="34" rx="4" fill="rgba(34,197,94,0.16)" stroke="#22C55E"/>
+            <text x="53" y="31" text-anchor="middle" fill="#86EFAC" font-family="monospace" font-size="9" font-weight="bold">BATT 1</text>
+            <text x="53" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="8">W1–W45</text>
+            <rect x="97" y="16" width="66" height="34" rx="4" fill="rgba(245,183,49,0.18)" stroke="#F5B731"/>
+            <text x="130" y="31" text-anchor="middle" fill="#FDE68A" font-family="monospace" font-size="9" font-weight="bold">BATT 2</text>
+            <text x="130" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="8">W45–W90</text>
+            <rect x="174" y="16" width="66" height="34" rx="4" fill="rgba(0,229,255,0.14)" stroke="#00E5FF"/>
+            <text x="207" y="31" text-anchor="middle" fill="#00E5FF" font-family="monospace" font-size="9" font-weight="bold">RESUME #</text>
+            <text x="207" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="8">Max 99 V4</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Membagi misi besar menjadi leg <code>B1, B2..BN</code> sesuai reserve RTH (<code>10–50%</code>), overlap 1 WPT per batas leg, serta batas <strong>&le; 99 WPT</strong> otomatis di MSDK V4 dan kontrol <code>Resume WPT #</code>.</span>
+          <span class="lang-en">Splits large missions into <code>B1..BN</code> legs respecting RTH reserve (<code>10–50%</code>), 1-WPT continuity overlap, automatic <strong>&le; 99 WPT</strong> cap on MSDK V4 and manual <code>Resume WPT #</code> slicing.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Setelah <code>Calculate Plan</code>, pilih chip <code>B1</code> / <code>B2</code> atau isi <code>Resume WPT #</code> di tab <code>SETUP</code>/<code>SDK</code> — tombol Upload/Share KMZ otomatis mengirim leg aktif saja.</span>
+          <span class="lang-en">After <code>Calculate Plan</code>, tap <code>B1</code>/<code>B2</code> chips or set <code>Resume WPT #</code> in <code>SETUP</code>/<code>SDK</code> — Upload/Share KMZ runs only that battery slice.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 3 -->
+      <article class="skill-card" data-skill-cat="OPTICS" data-accent="purple">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 03</span>
+          <span class="skill-loc">TAB: CAM</span>
+        </div>
+        <h3><span class="lang-id-inline">Target GSD Solver &amp; Motion-Blur Guard</span><span class="lang-en-inline">Target GSD Solver &amp; Motion-Blur Guard</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <text x="20" y="23" fill="#00E5FF" font-family="monospace" font-size="9" font-weight="bold">TARGET: 2.0 cm/px → ALT 74.9 m</text>
+            <rect x="20" y="30" width="220" height="8" rx="4" fill="#1E293B"/>
+            <rect x="20" y="30" width="110" height="8" rx="4" fill="#22C55E"/>
+            <text x="20" y="51" fill="#86EFAC" font-family="monospace" font-size="8.5">SHARP 0.38 px @ 1/1000s • Safe &le; 8.5 m/s</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Ketuk target GSD (<code>1.0–5.0 cm/px</code>) untuk menghitung ketinggian tepat sesuai sensor drone, lalu pantau risiko foto buram terhadap Shutter Speed (<code>1/125s–1/2000s</code>) dengan tombol <strong>Apply Safe Speed</strong>.</span>
+          <span class="lang-en">Tap a target GSD (<code>1.0–5.0 cm/px</code>) to solve exact flight altitude, then monitor frame smear against Shutter Speed (<code>1/125s–1/2000s</code>) with 1-tap <strong>Apply Safe Speed</strong>.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Di tab <code>CAM</code> &rarr; pilih pill <code>1.5cm</code> / <code>2.0cm</code> &rarr; cek badge <code>SHARP</code> &rarr; tekan <code>Safe Speed</code> jika muncul peringatan blur kuning/merah.</span>
+          <span class="lang-en">In <code>CAM</code> &rarr; tap a GSD pill &rarr; confirm green <code>SHARP</code> badge &rarr; tap <code>Safe Speed</code> whenever caution/severe blur appears.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 4 -->
+      <article class="skill-card" data-skill-cat="GRID3D" data-accent="cyan">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 04</span>
+          <span class="skill-loc">TAB: CAM</span>
+        </div>
+        <h3><span class="lang-id-inline">Smart Flight-Angle Auto-Optimizer (0°–180°)</span><span class="lang-en-inline">Smart Flight-Angle Auto-Optimizer (0°–180°)</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <polygon points="35,48 92,16 142,26 85,56" fill="rgba(0,229,255,0.1)" stroke="#00E5FF" stroke-width="1.3"/>
+            <line x1="45" y1="45" x2="98" y2="20" stroke="#22C55E" stroke-width="2"/>
+            <line x1="65" y1="50" x2="118" y2="25" stroke="#22C55E" stroke-width="2"/>
+            <text x="155" y="27" fill="#86EFAC" font-family="monospace" font-size="9" font-weight="bold">BEST: 35° AZIMUTH</text>
+            <text x="155" y="42" fill="#FDE68A" font-family="monospace" font-size="8.5">-28% TURNS SAVED</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Menyapu sudut azimut grid setiap <code>5°</code> pada poligon miring untuk mencari sudut belokan paling sedikit dan waktu paling singkat (termasuk vektor angin), plus input manual sudut kustom <code>0°–180°</code>.</span>
+          <span class="lang-en">Sweeps grid azimuth in <code>5°</code> increments on skewed AOIs to minimize turns and wind-adjusted time, plus supports exact numeric <code>0°–180°</code> manual angle input.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Gambar poligon miring di peta &rarr; buka tab <code>CAM</code> &rarr; tekan <code>Optimize Angle ⚡</code> &rarr; rute otomatis terhitung ulang di sudut terbaik.</span>
+          <span class="lang-en">Draw an angled AOI polygon &rarr; open <code>CAM</code> &rarr; tap <code>Optimize Angle ⚡</code> &rarr; grid recalculates at the fastest azimuth.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 5 -->
+      <article class="skill-card" data-skill-cat="SAFETY" data-accent="gold">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 05</span>
+          <span class="skill-loc">TAB: DEM</span>
+        </div>
+        <h3><span class="lang-id-inline">Grafik Profil Elevasi 2D &amp; Clearance Terrain</span><span class="lang-en-inline">2D Mission Elevation &amp; Terrain Clearance Chart</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <path d="M18 54 L65 44 L125 28 L185 38 L242 46 L242 56 L18 56 Z" fill="rgba(245,183,49,0.28)" stroke="#F5B731" stroke-width="1.6"/>
+            <path d="M18 32 L65 24 L125 12 L185 20 L242 26" fill="none" stroke="#00E5FF" stroke-width="2"/>
+            <path d="M18 46 L65 36 L125 20 L185 30 L242 38" fill="none" stroke="#EF4444" stroke-width="1" stroke-dasharray="4,3"/>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Grafik Canvas langsung di tab <code>DEM</code> menampilkan kurva elevasi tanah vs lintasan terbang, garis aman AGL, nilai <code>MIN AGL</code>, puncak bukit, total climb dan kemiringan tanjakan maksimum.</span>
+          <span class="lang-en">Real-time Canvas chart in <code>DEM</code> plotting ground terrain vs aircraft path, dashed safety AGL floor, <code>MIN AGL</code>, peak ground elevation, total climb and max slope angle.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Buka tab <code>DEM</code> setelah <code>Apply DEM to WPTs</code>; titik merah di kurva menandakan waypoint dengan jarak aman &lt; 20 m dari permukaan bukit.</span>
+          <span class="lang-en">Open <code>DEM</code> after <code>Apply DEM to WPTs</code>; red dots mark any waypoint dropping below 20 m AGL threshold.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 6 -->
+      <article class="skill-card" data-skill-cat="SAFETY" data-accent="purple">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 06</span>
+          <span class="skill-loc">TAB: SETUP (PRO TOOLS)</span>
+        </div>
+        <h3><span class="lang-id-inline">No-Fly Zone (NFZ) Keep-Out &amp; Auto-Carve</span><span class="lang-en-inline">No-Fly Zone (NFZ) Keep-Out Cutout &amp; Audit</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <polyline points="22,16 105,16" stroke="#00E5FF" stroke-width="1.8"/>
+            <polyline points="155,16 238,16" stroke="#00E5FF" stroke-width="1.8"/>
+            <polyline points="238,48 155,48" stroke="#00E5FF" stroke-width="1.8"/>
+            <polyline points="105,48 22,48" stroke="#00E5FF" stroke-width="1.8"/>
+            <circle cx="130" cy="33" r="19" fill="rgba(239,68,68,0.22)" stroke="#EF4444" stroke-width="1.8" stroke-dasharray="4,3"/>
+            <text x="130" y="36" text-anchor="middle" fill="#FCA5A5" font-family="monospace" font-size="8" font-weight="bold">NFZ</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Tambahkan zona larangan rintangan (SUTET, tower, crane) via radius peta atau poligon gambar. Engine memotong lubang NFZ dari jalur grid tanpa zigzag berlebih &amp; membunyikan blokir jika ada WPT masuk NFZ.</span>
+          <span class="lang-en">Define obstacle keep-out zones (towers, cranes, no-fly compounds) from map center or drawn polygons. JTS geometry carves clean NFZ holes and blocks upload on breaches.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Tab <code>SETUP</code> &rarr; <strong>Pro Tools &gt; NFZ</strong> &rarr; atur Radius + Buffer &rarr; tekan <code>+ Circle @ Map Center</code> lalu <code>Calculate Plan</code> ulang.</span>
+          <span class="lang-en"><code>SETUP</code> &rarr; <strong>Pro Tools &gt; NFZ</strong> &rarr; set Radius + Buffer &rarr; tap <code>+ Circle @ Map Center</code> then re-run <code>Calculate Plan</code>.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 7 -->
+      <article class="skill-card" data-skill-cat="GRID3D" data-accent="gold">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 07</span>
+          <span class="skill-loc">TAB: SETUP (3D ORBIT)</span>
+        </div>
+        <h3><span class="lang-id-inline">3D Orbit Helikal &amp; Inspeksi POI Menara</span><span class="lang-en-inline">3D Helical Orbit &amp; Tower POI Inspector</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <ellipse cx="130" cy="44" rx="58" ry="12" fill="none" stroke="#8B5CF6" stroke-width="1.6"/>
+            <ellipse cx="130" cy="24" rx="58" ry="12" fill="none" stroke="#00E5FF" stroke-width="1.8"/>
+            <rect x="124" y="18" width="12" height="34" fill="rgba(245,183,49,0.28)" stroke="#F5B731"/>
+            <line x1="72" y1="24" x2="130" y2="38" stroke="#F5B731" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <circle cx="72" cy="24" r="3" fill="#22C55E"/>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Buat misi orbit melingkar atau spiral naik (<em>helical</em>) multi-cincin mengelilingi objek/tower dengan hidung drone selalu mengarah ke pusat POI (<code>Toward POI</code> WPML) dan gimbal tilt terhitung otomatis.</span>
+          <span class="lang-en">Generates multi-ring circular or helical climbs around towers/assets with aircraft nose locked inward (<code>Toward POI</code> in WPML) and automatic oblique gimbal angle calculation.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Pusatkan peta pada gedung/menara &rarr; tab <code>SETUP</code> &rarr; <strong>Pro Tools &gt; 3D ORBIT</strong> &rarr; tekan <code>Set @ Map Center</code> &rarr; klik <code>Generate 3D Orbit Mission</code>.</span>
+          <span class="lang-en">Center map on tower/asset &rarr; <code>SETUP</code> &rarr; <strong>Pro Tools &gt; 3D ORBIT</strong> &rarr; tap <code>Set @ Map Center</code> &rarr; hit <code>Generate 3D Orbit Mission</code>.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 8 -->
+      <article class="skill-card" data-skill-cat="OPTICS" data-accent="cyan">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 08</span>
+          <span class="skill-loc">TAB: SETUP (WIND SIM)</span>
+        </div>
+        <h3><span class="lang-id-inline">Simulator Angin &amp; Daya Tahan Baterai</span><span class="lang-en-inline">Wind-Aware Endurance &amp; Vector Simulator</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <line x1="28" y1="33" x2="110" y2="33" stroke="#00E5FF" stroke-width="2.5"/>
+            <polygon points="110,33 102,29 102,37" fill="#00E5FF"/>
+            <line x1="110" y1="33" x2="86" y2="17" stroke="#F59E0B" stroke-width="2"/>
+            <text x="128" y="25" fill="#FDE68A" font-family="monospace" font-size="8.5">HEADWIND / CRAB</text>
+            <text x="128" y="40" fill="#86EFAC" font-family="monospace" font-size="8.5">REC CROSSWIND: 90°</text>
+            <text x="128" y="53" fill="#CBD5E1" font-family="monospace" font-size="8">STALL &amp; BATT CHECK</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Masukkan kecepatan &amp; arah angin lapangan untuk menghitung vektor *wind triangle* per segmen, koreksi durasi baterai asli, risiko *stall*, serta saran arah grid silang-angin paling efisien.</span>
+          <span class="lang-en">Input live wind speed &amp; direction to solve per-leg wind-triangle kinematics, adjust realistic battery endurance, warn on stall/airframe limits and recommend optimal crosswind azimuth.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Tab <code>SETUP</code> &rarr; <strong>Pro Tools &gt; WIND SIM</strong> &rarr; isi kec. angin (m/s) dan ketuk kompas N/E/S/W &rarr; baca dampak ETA &amp; baterai langsung.</span>
+          <span class="lang-en"><code>SETUP</code> &rarr; <strong>Pro Tools &gt; WIND SIM</strong> &rarr; set wind speed &amp; N/E/S/W bearing &rarr; review adjusted battery penalty &amp; track advice.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 9 -->
+      <article class="skill-card" data-skill-cat="SAFETY" data-accent="green">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 09</span>
+          <span class="skill-loc">TAB: SDK</span>
+        </div>
+        <h3><span class="lang-id-inline">Pre-Flight Safety Gate 10-Poin (Go/No-Go)</span><span class="lang-en-inline">Automated 10-Point Pre-Flight Safety Gate</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <rect x="20" y="15" width="90" height="22" rx="4" fill="rgba(34,197,94,0.2)" stroke="#22C55E"/>
+            <text x="65" y="29" text-anchor="middle" fill="#86EFAC" font-family="monospace" font-size="9" font-weight="bold">GO • 100%</text>
+            <text x="120" y="24" fill="#CBD5E1" font-family="monospace" font-size="8.5">10✓ PLAN • V4/V5 • SAT</text>
+            <text x="120" y="38" fill="#CBD5E1" font-family="monospace" font-size="8.5">BATT • AGL • NFZ • WIND</text>
+            <rect x="20" y="44" width="220" height="6" rx="3" fill="#22C55E"/>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Audit keselamatan otomatis <code>0–100%</code> sebelum lepas landas: memeriksa sinkronisasi WPT, SDK/99-WPT V4, GNSS, margin baterai, batas 120m/500m, clearance DEM, NFZ, angin dan *motion blur*.</span>
+          <span class="lang-en">Automated <code>0–100%</code> avionics scorecard before takeoff checking plan freshness, SDK/V4-99 cap, GNSS lock, battery margin, ceiling, DEM clearance, NFZ breaches, wind and motion blur.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Buka tab <code>SDK</code> &rarr; lihat kartu <strong>Pre-Flight Safety Gate</strong> &rarr; ketuk <code>CHECKS ▼</code> untuk melihat rincian tiap poin hingga status hijau <code>GO FOR FLIGHT</code>.</span>
+          <span class="lang-en">Open <code>SDK</code> &rarr; inspect <strong>Pre-Flight Safety Gate</strong> &rarr; tap <code>CHECKS ▼</code> to inspect all 10 telemetry &amp; geometry gates before flight.</span>
+        </div>
+      </article>
+
+      <!-- SKILL 10 -->
+      <article class="skill-card" data-skill-cat="OPS" data-accent="purple">
+        <div class="skill-head">
+          <span class="skill-num">SKILL 10</span>
+          <span class="skill-loc">TAB: SETUP &amp; SAVE</span>
+        </div>
+        <h3><span class="lang-id-inline">Ekspor Laporan Brief HTML, CSV &amp; GeoJSON</span><span class="lang-en-inline">Client Brief (.html), GIS CSV &amp; GeoJSON Exporter</span></h3>
+        <div class="skill-svg-box">
+          <svg viewBox="0 0 260 66" width="240" aria-hidden="true">
+            <rect x="10" y="6" width="240" height="54" rx="5" fill="#0B1324" stroke="#1E293B"/>
+            <rect x="22" y="15" width="66" height="36" rx="4" fill="rgba(0,229,255,0.14)" stroke="#00E5FF"/>
+            <text x="55" y="31" text-anchor="middle" fill="#00E5FF" font-family="monospace" font-size="9.5" font-weight="bold">.HTML</text>
+            <text x="55" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="7.5">+SVG Map</text>
+            <rect x="97" y="15" width="66" height="36" rx="4" fill="rgba(245,183,49,0.14)" stroke="#F5B731"/>
+            <text x="130" y="31" text-anchor="middle" fill="#FDE68A" font-family="monospace" font-size="9.5" font-weight="bold">.CSV</text>
+            <text x="130" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="7.5">Survey Log</text>
+            <rect x="172" y="15" width="66" height="36" rx="4" fill="rgba(139,92,246,0.18)" stroke="#8B5CF6"/>
+            <text x="205" y="31" text-anchor="middle" fill="#DDD6FE" font-family="monospace" font-size="9" font-weight="bold">.GEOJSON</text>
+            <text x="205" y="43" text-anchor="middle" fill="#CBD5E1" font-family="monospace" font-size="7.5">QGIS/ArcGIS</text>
+          </svg>
+        </div>
+        <div class="skill-desc">
+          <span class="lang-id">Sekali ketuk ekspor <strong>Client Field Brief (<code>.html</code>)</strong> lengkap dengan peta SVG vektor, jadwal baterai &amp; tanda tangan, <strong>tabel koordinat <code>.csv</code></strong>, serta paket spasial <strong><code>.geojson</code></strong> untuk QGIS/ArcGIS.</span>
+          <span class="lang-en">One-tap export of standalone print-to-PDF <strong>Client Field Brief (<code>.html</code>)</strong> with inline vector SVG track, battery plan &amp; sign-off block, <strong><code>.csv</code> table</strong> and <strong><code>.geojson</code></strong> for QGIS/ArcGIS.</span>
+        </div>
+        <button class="skill-toggle-btn" onclick="toggleSkillHowTo(this)">▸ <span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span></button>
+        <div class="skill-howto">
+          <span class="lang-id">Tekan <code>Brief HTML</code> / <code>CSV Table</code> / <code>GeoJSON</code> di tab <code>SETUP</code> (atau tombol <code>SAVE</code> HUD atas) untuk langsung berbagi ke WhatsApp/Email/Drive klien.</span>
+          <span class="lang-en">Tap <code>Brief HTML</code> / <code>CSV Table</code> / <code>GeoJSON</code> inside <code>SETUP</code> (or top HUD <code>SAVE</code>) to share or archive mission briefs instantly.</span>
+        </div>
+      </article>
+    </div>
+
+    <!-- INTERACTIVE 4-TAB PRO AVIONICS SIMULATOR LAB -->
+    <div class="pro-lab no-print" id="proLab">
+      <div class="pro-lab-head">
+        <div class="pro-lab-title">🧪 LIVE PRO AVIONICS SIMULATOR LAB (INTERACTIVE SANDBOX)</div>
+        <span class="stat-pill"><span class="lang-id-inline">Coba Rumus Asli Engine Di Sini</span><span class="lang-en-inline">Real-Time On-Page Engine Math</span></span>
+      </div>
+
+      <div class="lab-tabs" id="labTabs">
+        <button class="lab-tab-btn active" data-lab="gsd" onclick="switchProLab('gsd')">🎯 1. GSD &amp; Motion-Blur Lab</button>
+        <button class="lab-tab-btn" data-lab="wind" onclick="switchProLab('wind')">💨 2. Wind-Triangle &amp; Battery</button>
+        <button class="lab-tab-btn" data-lab="orbit" onclick="switchProLab('orbit')">🌀 3. 3D Orbit Helical Lab</button>
+        <button class="lab-tab-btn" data-lab="gate" onclick="switchProLab('gate')">🛡️ 4. Pre-Flight Safety Gate</button>
+      </div>
+
+      <!-- TAB 1: GSD & MOTION BLUR -->
+      <div class="lab-panel active" id="labPanel-gsd">
+        <div class="lab-grid">
+          <div class="lab-controls">
+            <div class="lab-field">
+              <label>Drone / Camera Preset</label>
+              <select id="simDroneSelect" onchange="updateGsdLab()">
+                <option value="17.3,12.29,5280,3956">DJI Mavic 3 Enterprise (4/3" • 12.29mm • 5280px)</option>
+                <option value="13.2,8.8,5472,3648">DJI Phantom 4 RTK (1" • 8.80mm • 5472px)</option>
+                <option value="9.6,6.72,4000,3000">DJI Mini 4 Pro / Air 3 (1/1.3" • 6.72mm • 4000px)</option>
+                <option value="35.9,35.0,8192,5460">DJI Matrice 350 RTK P1 (Full Frame • 35mm • 8192px)</option>
+                <option value="13.2,8.8,8192,6144">DJI Air 3S / Mini 5 Pro 50MP (1" • 8.8mm • 8192px)</option>
+              </select>
+            </div>
+            <div class="lab-field">
+              <label>Target GSD <span id="simGsdVal">2.0 cm/px</span></label>
+              <input type="range" id="simGsdSlider" min="0.5" max="5.0" step="0.1" value="2.0" oninput="updateGsdLab()">
+            </div>
+            <div class="lab-field">
+              <label>Cruise Speed <span id="simSpeedVal">6.0 m/s</span></label>
+              <input type="range" id="simSpeedSlider" min="1.0" max="15.0" step="0.5" value="6.0" oninput="updateGsdLab()">
+            </div>
+            <div class="lab-field">
+              <label>Shutter Speed</label>
+              <select id="simShutterSelect" onchange="updateGsdLab()">
+                <option value="2000">1 / 2000 s (Very Fast / Bright Day)</option>
+                <option value="1600">1 / 1600 s</option>
+                <option value="1000" selected>1 / 1000 s (Standard Pro Mapping)</option>
+                <option value="800">1 / 800 s</option>
+                <option value="500">1 / 500 s (Overcast)</option>
+                <option value="250">1 / 250 s (Low Light Risk)</option>
+                <option value="125">1 / 125 s (Heavy Smear Risk)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="lab-results">
+            <div class="lab-kpi-grid">
+              <div class="lab-kpi"><div class="k-lbl">Solved Altitude AGL</div><div class="k-val" id="outSolvedAlt">-- m</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Nadir Footprint</div><div class="k-val" id="outFootprint">-- m</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Motion Smear</div><div class="k-val" id="outBlurPx">-- px</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Max Safe Speed (&le;0.75px)</div><div class="k-val" id="outSafeSpd">-- m/s</div></div>
+            </div>
+            <div>
+              <div style="font-family:var(--mono);font-size:10px;color:var(--text-secondary);margin-bottom:4px;">OPTICAL SHARPNESS METER</div>
+              <div class="lab-gauge-bar"><div class="lab-gauge-fill" id="blurGaugeFill"></div></div>
+            </div>
+            <div class="lab-status-pill" id="outBlurStatus">Calculating optics...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: WIND TRIANGLE & BATTERY -->
+      <div class="lab-panel" id="labPanel-wind">
+        <div class="lab-grid">
+          <div class="lab-controls">
+            <div class="lab-field">
+              <label>Cruise Airspeed <span id="simAirVal">6.0 m/s</span></label>
+              <input type="range" id="simAirSlider" min="3.0" max="15.0" step="0.5" value="6.0" oninput="updateWindLab()">
+            </div>
+            <div class="lab-field">
+              <label>Field Wind Speed <span id="simWindSpdVal">5.0 m/s</span></label>
+              <input type="range" id="simWindSpdSlider" min="0.0" max="14.5" step="0.5" value="5.0" oninput="updateWindLab()">
+            </div>
+            <div class="lab-field">
+              <label>Wind FROM Bearing <span id="simWindDirVal">90° (E)</span></label>
+              <input type="range" id="simWindDirSlider" min="0" max="355" step="5" value="90" oninput="updateWindLab()">
+            </div>
+            <div class="lab-field">
+              <label>Grid Track Azimuth <span id="simTrackVal">90°</span></label>
+              <input type="range" id="simTrackSlider" min="0" max="175" step="5" value="90" oninput="updateWindLab()">
+            </div>
+            <div class="lab-field">
+              <label>Survey Distance / Endurance <span id="simDistVal">6.0 km • 30 min spec</span></label>
+              <input type="range" id="simDistSlider" min="1.0" max="14.0" step="0.5" value="6.0" oninput="updateWindLab()">
+            </div>
+          </div>
+
+          <div class="lab-results">
+            <div class="lab-svg-stage">
+              <svg viewBox="0 0 280 124" width="270" id="windCompassSvg" aria-label="Wind Triangle Compass">
+                <rect x="2" y="2" width="276" height="120" rx="8" fill="#070B15" stroke="#1E293B"/>
+                <circle cx="72" cy="62" r="46" fill="#0B1324" stroke="#334155" stroke-width="1.4"/>
+                <text x="72" y="13" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="9">N</text>
+                <text x="123" y="65" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="9">E</text>
+                <text x="72" y="117" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="9">S</text>
+                <text x="21" y="65" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="9">W</text>
+                <line id="svgTrackLine" x1="72" y1="24" x2="72" y2="100" stroke="#00E5FF" stroke-width="2.5"/>
+                <line id="svgOptTrackLine" x1="34" y1="62" x2="110" y2="62" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <line id="svgWindArrow" x1="112" y1="62" x2="78" y2="62" stroke="#F59E0B" stroke-width="2.8"/>
+                <circle cx="72" cy="62" r="3.5" fill="#F8FAFC"/>
+                <text x="142" y="28" fill="#00E5FF" font-family="monospace" font-size="9.5" font-weight="bold">BLUE = Active Grid Track</text>
+                <text x="142" y="46" fill="#F59E0B" font-family="monospace" font-size="9.5" font-weight="bold">AMBER = Wind Vector</text>
+                <text x="142" y="64" fill="#86EFAC" font-family="monospace" font-size="9.5" font-weight="bold">GREEN = Rec Crosswind</text>
+                <text x="142" y="90" fill="#CBD5E1" font-family="monospace" font-size="9" id="svgWindHint">Crosswind track balances legs</text>
+              </svg>
+            </div>
+            <div class="lab-kpi-grid">
+              <div class="lab-kpi"><div class="k-lbl">Groundspeed Out / Back</div><div class="k-val" id="outWindGs">-- m/s</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Wind ETA vs Calm</div><div class="k-val" id="outWindEta">-- min</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Batteries (25% Res)</div><div class="k-val" id="outWindBatts">--</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Recommended Azimuth</div><div class="k-val" id="outWindRec">--°</div></div>
+            </div>
+            <div class="lab-status-pill" id="outWindAdvisory">Simulating wind triangle...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: 3D ORBIT HELICAL LAB -->
+      <div class="lab-panel" id="labPanel-orbit">
+        <div class="lab-grid">
+          <div class="lab-controls">
+            <div class="lab-field">
+              <label>Orbit Radius (R) <span id="simOrbRadVal">45 m</span></label>
+              <input type="range" id="simOrbRad" min="10" max="200" step="5" value="45" oninput="updateOrbitLab()">
+            </div>
+            <div class="lab-field">
+              <label>Base Ring Altitude <span id="simOrbAltVal">40 m</span></label>
+              <input type="range" id="simOrbAlt" min="15" max="160" step="5" value="40" oninput="updateOrbitLab()">
+            </div>
+            <div class="lab-field">
+              <label>Rings / Step +Alt <span id="simOrbRingVal">3 rings • +15m</span></label>
+              <input type="range" id="simOrbRings" min="1" max="5" step="1" value="3" oninput="updateOrbitLab()">
+            </div>
+            <div class="lab-field">
+              <label>Target Focus Height <span id="simOrbFocusVal">12 m</span></label>
+              <input type="range" id="simOrbFocus" min="0" max="80" step="2" value="12" oninput="updateOrbitLab()">
+            </div>
+            <div class="lab-field">
+              <label>Points per Ring <span id="simOrbPtsVal">16 WPT/ring</span></label>
+              <input type="range" id="simOrbPts" min="8" max="36" step="2" value="16" oninput="updateOrbitLab()">
+            </div>
+          </div>
+
+          <div class="lab-results">
+            <div class="lab-svg-stage">
+              <svg viewBox="0 0 280 124" width="270" aria-label="3D Helical Orbit Geometry">
+                <rect x="2" y="2" width="276" height="120" rx="8" fill="#070B15" stroke="#1E293B"/>
+                <rect x="132" y="42" width="16" height="70" fill="rgba(245,183,49,0.28)" stroke="#F5B731"/>
+                <circle cx="140" cy="88" r="4" fill="#F5B731"/>
+                <ellipse cx="140" cy="30" rx="80" ry="14" fill="none" stroke="#8B5CF6" stroke-width="1.4" stroke-dasharray="4,3"/>
+                <ellipse cx="140" cy="54" rx="80" ry="14" fill="none" stroke="#00E5FF" stroke-width="1.8"/>
+                <ellipse cx="140" cy="78" rx="80" ry="14" fill="none" stroke="#22C55E" stroke-width="1.6"/>
+                <circle id="svgOrbDrone" cx="60" cy="54" r="4.5" fill="#00E5FF"/>
+                <line id="svgOrbSight" x1="60" y1="54" x2="140" y2="88" stroke="#F5B731" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="12" y="18" fill="#00E5FF" font-family="monospace" font-size="9" font-weight="bold" id="svgOrbLabel">PITCH -31.9° TOWARD POI</text>
+              </svg>
+            </div>
+            <div class="lab-kpi-grid">
+              <div class="lab-kpi"><div class="k-lbl">Gimbal Tilt @ Base Ring</div><div class="k-val" id="outOrbBasePitch">--°</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Gimbal Tilt @ Top Ring</div><div class="k-val" id="outOrbTopPitch">--°</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Total Waypoints</div><div class="k-val" id="outOrbTotalWpt">-- WPT</div></div>
+              <div class="lab-kpi"><div class="k-lbl">Total Helical Path</div><div class="k-val" id="outOrbPathLen">-- m</div></div>
+            </div>
+            <div class="lab-status-pill">Heading Mode: Toward POI (WPML smoothTransition + inward yaw lock)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PRE-FLIGHT SAFETY GATE -->
+      <div class="lab-panel" id="labPanel-gate">
+        <div class="lab-grid">
+          <div class="lab-controls">
+            <div class="lab-field">
+              <label>App Flavor &amp; Waypoints <span id="simGateWptVal">MSDK V4 • 92 WPT</span></label>
+              <select id="simGateSdk" onchange="updateGateLab()" style="margin-bottom:6px;">
+                <option value="V5">Okto Drone Mapper Pro (MSDK V5 — Cap 1000 WPT)</option>
+                <option value="V4" selected>Okto Mapper Old (MSDK V4 — Cap 99 WPT/Leg)</option>
+              </select>
+              <input type="range" id="simGateWpt" min="20" max="130" step="5" value="92" oninput="updateGateLab()">
+            </div>
+            <div class="lab-field">
+              <label>GPS Satellites Locked <span id="simGateSatVal">14 sats</span></label>
+              <input type="range" id="simGateSat" min="2" max="20" step="1" value="14" oninput="updateGateLab()">
+            </div>
+            <div class="lab-field">
+              <label>Live Aircraft Battery <span id="simGateBattVal">92%</span></label>
+              <input type="range" id="simGateBatt" min="15" max="100" step="1" value="92" oninput="updateGateLab()">
+            </div>
+            <div class="lab-field">
+              <label>Min DEM Clearance (AGL) <span id="simGateAglVal">45 m</span></label>
+              <input type="range" id="simGateAgl" min="5" max="120" step="5" value="45" oninput="updateGateLab()">
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; font-size:12px;">
+              <label style="cursor:pointer;"><input type="checkbox" id="simGateNfz" onchange="updateGateLab()"> NFZ Breach Active</label>
+              <label style="cursor:pointer;"><input type="checkbox" id="simGateStale" onchange="updateGateLab()"> Plan Stale (Changed Settings)</label>
+            </div>
+          </div>
+
+          <div class="lab-results">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span class="lab-status-pill" id="outGateVerdict">GO FOR FLIGHT</span>
+              <span style="font-family:var(--mono); font-size:14px; font-weight:800; color:var(--cyan);" id="outGateScore">100%</span>
+            </div>
+            <div class="lab-gauge-bar"><div class="lab-gauge-fill" id="gateGaugeFill"></div></div>
+            <div class="lab-check-grid" id="outGateChecks"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: HUD COCKPIT & 6 TABS -->
   <section class="section" id="sec-cockpit">
     <div class="section-head">
-      <h2 class="section-title">// 03. FIGHTER HUD COCKPIT &amp; 6 TACTICAL TABS</h2>
+      <h2 class="section-title">// 04. FIGHTER HUD COCKPIT &amp; 6 TACTICAL TABS</h2>
     </div>
 
     <div class="diagram-box">
@@ -1228,23 +2030,24 @@
 
         <rect x="98" y="70" width="275" height="216" rx="6" fill="#111A2E" stroke="#334155"/>
         <text x="114" y="94" fill="#F1F5F9" font-size="12" font-weight="bold">SLIDE-OUT INSTRUMENT DECK</text>
-        <text x="114" y="114" fill="#94A3B8" font-size="10.5">• 39 Proven Drone Presets + Params</text>
-        <text x="114" y="132" fill="#94A3B8" font-size="10.5">• Gimbal Mode (2D / 3D / Manual Custom)</text>
-        <text x="114" y="150" fill="#94A3B8" font-size="10.5">• Lawnmower Dir &amp; Force H (E-W)</text>
-        <text x="114" y="168" fill="#94A3B8" font-size="10.5">• GeoTIFF DEM + Offline Tiles</text>
-        <text x="114" y="186" fill="#94A3B8" font-size="10.5">• Export KML / KMZ / Share KMZ</text>
-        <text x="114" y="204" fill="#00E5FF" font-size="10.5" font-weight="bold">• Live Mission Output Summary</text>
-        <rect x="114" y="220" width="242" height="52" rx="6" fill="#091122" stroke="#22C55E"/>
-        <text x="235" y="242" text-anchor="middle" fill="#86EFAC" font-family="monospace" font-size="10.5" font-weight="bold">FLOATING MISSION POD</text>
-        <text x="235" y="260" text-anchor="middle" fill="#CBD5E1" font-size="10">Calculate Plan &amp; 1-Tap Share KMZ</text>
+        <text x="114" y="113" fill="#94A3B8" font-size="10">• 3D Crosshatch + Angle Optimizer</text>
+        <text x="114" y="130" fill="#94A3B8" font-size="10">• Target GSD + Motion-Blur Guard</text>
+        <text x="114" y="147" fill="#94A3B8" font-size="10">• Wind Sim + NFZ Cutout + 3D Orbit</text>
+        <text x="114" y="164" fill="#94A3B8" font-size="10">• DEM Profile + Multi-Battery Split</text>
+        <text x="114" y="181" fill="#94A3B8" font-size="10">• Brief .html / .csv / .geojson / KMZ</text>
+        <text x="114" y="198" fill="#00E5FF" font-size="10" font-weight="bold">• Auto DJI SDK + 10-Point Go/No-Go</text>
+        <rect x="114" y="216" width="242" height="54" rx="6" fill="#091122" stroke="#22C55E"/>
+        <text x="235" y="239" text-anchor="middle" fill="#86EFAC" font-family="monospace" font-size="10.5" font-weight="bold">FLOATING MISSION POD</text>
+        <text x="235" y="257" text-anchor="middle" fill="#CBD5E1" font-size="10">Calculate Plan &amp; 1-Tap Share KMZ</text>
 
         <rect x="384" y="70" width="572" height="216" rx="6" fill="#0B1528" stroke="#00E5FF"/>
-        <text x="402" y="94" fill="#00E5FF" font-family="monospace" font-size="11.5" font-weight="bold">TACTICAL LEAFLET MAP + TELEMETRY AIRCRAFT MARKER</text>
+        <text x="402" y="94" fill="#00E5FF" font-family="monospace" font-size="11.5" font-weight="bold">TACTICAL LEAFLET MAP + NFZ CUTOUT + 3D ORBIT POI RING</text>
         <rect x="720" y="82" width="224" height="28" rx="4" fill="#151F35" stroke="#8B5CF6"/>
         <text x="832" y="100" text-anchor="middle" fill="#E2E8F0" font-size="10">🔍 Search | 📍 GPS | ⤢ Fit | ⚙ Layers</text>
 
         <polygon points="430,128 660,128 660,224 430,224" fill="rgba(0,229,255,0.08)" stroke="#00E5FF" stroke-dasharray="5,4" stroke-width="1.5"/>
         <polyline points="445,144 645,144 645,176 445,176 445,208 645,208" fill="none" stroke="#22C55E" stroke-width="2.5"/>
+        <circle cx="545" cy="176" r="18" fill="rgba(239,68,68,0.22)" stroke="#EF4444" stroke-dasharray="4,3"/>
         <circle cx="445" cy="144" r="6" fill="#F5B731"/>
         <text x="457" y="148" fill="#F5B731" font-size="10" font-weight="bold">WPT 1 (GIMBAL INIT)</text>
 
@@ -1254,19 +2057,19 @@
     </div>
 
     <div class="grid-3">
-      <div class="card"><h3><code>01 // SETUP</code> — Flight Setup</h3><p class="lang-id">Pilih preset 39 drone pemetaan, unduh peta offline, atur Altitude, Speed, Gimbal Tilt, Overlap, Endpoints-only, Calculate Plan, Force H (E-W), ekspor KML/KMZ/Share dan pantau Mission Output Summary.</p><p class="lang-en">Select from 39 proven mapping drone presets, download offline tiles, configure Altitude, Speed, Gimbal Tilt, Overlap, Endpoints-only, Calculate Plan, Force H (E-W), export KML/KMZ/Share and inspect live Mission Summary.</p></div>
-      <div class="card"><h3><code>02 // CAM</code> — Camera &amp; Grid</h3><p class="lang-id">Atur manual Sensor Width, Focal Length, Resolution, centang <strong>True lawn-mower (boustrophedon)</strong> + 4 arah sudut start, interval foto, foto tiap waypoint dan opsi <strong>Include RTH</strong>.</p><p class="lang-en">Override Sensor Width, Focal Length, Resolution, toggle <strong>True lawn-mower (boustrophedon)</strong> + 4 start corners, photo interval, photo at each waypoint and <strong>Include RTH</strong>.</p></div>
-      <div class="card"><h3><code>03 // DEM</code> — Terrain Follow</h3><p class="lang-id">Muat file GeoTIFF DEM (<code>.tif</code>), tampilkan overlay elevasi di peta, atur ketinggian AGL konstan mengikuti kontur bukit/lembah, vertical offset atau bypass sementara.</p><p class="lang-en">Load GeoTIFF DEM (<code>.tif</code>), preview heatmap overlay on the map, maintain constant AGL across hills/valleys, apply vertical offset or force fixed altitude override.</p></div>
+      <div class="card"><h3><code>01 // SETUP</code> — Flight &amp; Pro Tools</h3><p class="lang-id">Preset 39 drone, Peta Offline, Parameter Terbang, <strong>Pro Tools (Wind Sim, NFZ Cutout, 3D Orbit POI)</strong>, <strong>Multi-Battery Split &amp; Resume WPT #</strong>, serta ekspor <strong>KMZ/KML/Brief HTML/CSV/GeoJSON</strong>.</p><p class="lang-en">39 presets, Offline Map, Flight Params, <strong>Pro Tools (Wind Sim, NFZ Cutout, 3D Orbit POI)</strong>, <strong>Multi-Battery Split &amp; Resume WPT #</strong>, plus <strong>KMZ/KML/HTML Brief/CSV/GeoJSON</strong> export.</p></div>
+      <div class="card"><h3><code>02 // CAM</code> — Optics, GSD &amp; Grid</h3><p class="lang-id"><strong>Target GSD Solver</strong>, <strong>Shutter Motion-Blur Guard</strong>, toggle <strong>3D Double-Grid Crosshatch</strong>, <strong>Optimize Angle ⚡ (0°–180°)</strong>, True Lawnmower 4 sudut start &amp; RTH.</p><p class="lang-en"><strong>Target GSD Solver</strong>, <strong>Shutter Motion-Blur Guard</strong>, <strong>3D Double-Grid Crosshatch</strong>, <strong>Optimize Angle ⚡ (0°–180°)</strong>, True Lawnmower &amp; RTH metrics.</p></div>
+      <div class="card"><h3><code>03 // DEM</code> — Terrain Follow &amp; 2D Profile</h3><p class="lang-id">Muat GeoTIFF DEM (<code>.tif</code>), atur AGL &amp; vertical offset dan pantau <strong>Grafik Profil Elevasi 2D</strong> (Kontur vs Lintasan, min AGL, climb &amp; slope°) sebelum terbang.</p><p class="lang-en">Load GeoTIFF DEM (<code>.tif</code>), apply AGL &amp; offset and inspect the <strong>2D Elevation &amp; Clearance Profile</strong> (ground contour vs flight track, min AGL, climb &amp; max slope).</p></div>
       <div class="card"><h3><code>04 // STA</code> — Corridor STA Tool</h3><p class="lang-id">Hitung stasiun koridor jalan/tol (<code>STA KM+m</code>), kecepatan dan altitude pada file <code>.srt</code> DJI, lalu mux langsung ke MP4 atau ekstrak subtitle tertanam.</p><p class="lang-en">Compute highway/corridor stationing (<code>STA KM+m</code>), ground speed and altitude inside DJI <code>.srt</code> logs, mux directly into MP4 or extract embedded subtitle tracks.</p></div>
-      <div class="card"><h3><code>05 // SDK</code> — DJI MSDK Flight</h3><p class="lang-id">Registrasi DJI App Key, buka layar FPV live, jalankan misi Onboard KMZ / Virtual Stick / Share KMZ, kontrol Start-Pause-Resume-Stop, Takeoff/Land/RTH dan trigger kamera/gimbal.</p><p class="lang-en">Register DJI App Key, toggle live FPV feed, run Onboard KMZ / Virtual Stick / Share KMZ flights, control Start-Pause-Resume-Stop, Takeoff/Land/RTH and camera/gimbal actions.</p></div>
-      <div class="card"><h3><code>06 // NEWS</code> — Dispatch Feed</h3><p class="lang-id">Portal berita &amp; modul web interaktif langsung di dalam aplikasi (mendukung scroll penuh, zoom jari, tombol kembali, musik latar, serta cache offline otomatis).</p><p class="lang-en">Live interactive web manual &amp; release news right inside the app (supports full smooth touch scrolling, pinch zoom, back navigation, BGM playback and automatic offline caching).</p></div>
+      <div class="card"><h3><code>05 // SDK</code> — Auto-SDK &amp; Safety Gate</h3><p class="lang-id">Aktivasi DJI SDK otomatis di latar belakang, <strong>Pre-Flight Safety Gate 10-Poin (0–100%)</strong>, pemilih Leg Baterai (<code>B1..BN</code>), live FPV, Upload KMZ / Virtual Stick &amp; kontrol langsung.</p><p class="lang-en">Automatic background DJI SDK activation, <strong>10-Point Pre-Flight Safety Gate (0–100%)</strong>, Battery Leg switcher (<code>B1..BN</code>), live FPV, Upload KMZ / Virtual Stick &amp; telemetry console.</p></div>
+      <div class="card"><h3><code>06 // NEWS</code> — Dispatch Feed</h3><p class="lang-id">Portal berita &amp; modul web interaktif langsung di dalam aplikasi (mendukung scroll penuh, zoom jari, tombol kembali ◀, musik latar, serta cache offline otomatis).</p><p class="lang-en">Live interactive web manual &amp; release news right inside the app (supports full smooth touch scrolling, pinch zoom, back button ◀, BGM playback and automatic offline caching).</p></div>
     </div>
   </section>
 
-  <!-- SECTION 4: MISSION PLANNING STEP BY STEP -->
+  <!-- SECTION 5: MISSION PLANNING STEP BY STEP -->
   <section class="section" id="sec-planning">
     <div class="section-head">
-      <h2 class="section-title">// 04. MISSION PLANNING, LAWNMOWER 4-DIR &amp; GIMBAL WPT-1 FLOW</h2>
+      <h2 class="section-title">// 05. MISSION PLANNING, LAWNMOWER 4-DIR &amp; GIMBAL WPT-1 FLOW</h2>
     </div>
 
     <div class="steps-list">
@@ -1371,17 +2174,17 @@
     </div>
   </section>
 
-  <!-- SECTION 5: DEM TERRAIN FOLLOW & OFFLINE MAPS -->
+  <!-- SECTION 6: DEM TERRAIN FOLLOW & OFFLINE MAPS -->
   <section class="section" id="sec-dem">
     <div class="section-head">
-      <h2 class="section-title">// 05. GEOTIFF DEM TERRAIN FOLLOW &amp; OFFLINE MAP CACHE</h2>
+      <h2 class="section-title">// 06. GEOTIFF DEM TERRAIN FOLLOW, 2D PROFILE &amp; OFFLINE CACHE</h2>
     </div>
     <div class="bilingual-grid">
       <div class="lang-box lang-id">
         <span class="lang-tag id">Bahasa Indonesia</span>
         <ul>
           <li><strong>Peta Satelit Offline (Tab <code>SETUP</code>):</strong> Arahkan viewport peta ke area proyek saat masih ada internet, lalu klik <code>Download map for offline use</code> (maks. 2.500 tile). Saat di lapangan tanpa sinyal, buka <code>⚙ Layers</code> &gt; Base Map &gt; <strong>Offline map cache</strong>.</li>
-          <li><strong>Terrain Follow (Tab <code>DEM</code>):</strong> Tekan <code>Load DEM</code> (GeoTIFF <code>.tif</code> SRTM/DSM WGS84 atau UTM). Klik <code>Show DEM</code> untuk overlay warna ketinggian, atur <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong> (selisih elevasi tanah di titik Home agar konversi ke ketinggian relatif drone akurat), lalu klik <code>Apply DEM to WPTs</code>.</li>
+          <li><strong>Terrain Follow &amp; Grafik 2D (Tab <code>DEM</code>):</strong> Tekan <code>Load DEM</code> (GeoTIFF <code>.tif</code> SRTM/DSM WGS84 atau UTM). Atur <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong>, klik <code>Apply DEM to WPTs</code>, lalu tinjau <strong>Grafik Profil Elevasi 2D</strong> di bawahnya untuk memeriksa kurva tanah vs ketinggian terbang, titik aman (&ge; 20 m), total climb, serta kemiringan maksimum.</li>
           <li>Jika proyek membutuhkan ketinggian datar (bypass DEM sementara), centang <code>Force altitude override (ignore DEM)</code>.</li>
         </ul>
       </div>
@@ -1389,17 +2192,17 @@
         <span class="lang-tag en">English</span>
         <ul>
           <li><strong>Offline Satellite Cache (<code>SETUP</code> Tab):</strong> Pan/zoom the map to your project site while online, then tap <code>Download map for offline use</code> (up to 2,500 tiles). In the field, switch Base Map in <code>⚙ Layers</code> to <strong>Offline map cache</strong>.</li>
-          <li><strong>DEM Terrain Follow (<code>DEM</code> Tab):</strong> Tap <code>Load DEM</code> (GeoTIFF <code>.tif</code> in WGS84 or UTM). Use <code>Show DEM</code> to visualize terrain, enter <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong> (Home point terrain elevation for accurate AGL-to-relative altitude conversion), then tap <code>Apply DEM to WPTs</code>.</li>
+          <li><strong>DEM Terrain Follow &amp; 2D Profile (<code>DEM</code> Tab):</strong> Tap <code>Load DEM</code> (GeoTIFF <code>.tif</code> in WGS84 or UTM). Set <strong>AGL</strong> &amp; <strong>DEM vertical offset</strong>, tap <code>Apply DEM to WPTs</code>, then inspect the <strong>2D Elevation &amp; Terrain Clearance Chart</strong> below to verify safe clearance (&ge; 20 m), peak elevation, climb and max slope angle.</li>
           <li>Check <code>Force altitude override (ignore DEM)</code> whenever you need a flat mission altitude without unloading the GeoTIFF.</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 6: FLIGHT EXECUTION (3 PATHWAYS) -->
+  <!-- SECTION 7: FLIGHT EXECUTION (3 PATHWAYS) -->
   <section class="section" id="sec-flight">
     <div class="section-head">
-      <h2 class="section-title">// 06. EXECUTING MISSIONS ACROSS ALL 39 DRONES (3 FLIGHT PATHWAYS)</h2>
+      <h2 class="section-title">// 07. EXECUTING MISSIONS ACROSS ALL 39 DRONES (3 FLIGHT PATHWAYS)</h2>
     </div>
     <div class="grid-3">
       <div class="card v5">
@@ -1456,10 +2259,10 @@
     </div>
   </section>
 
-  <!-- SECTION 7: STA GENERATOR & MP4 TOOL -->
+  <!-- SECTION 8: STA GENERATOR & MP4 TOOL -->
   <section class="section" id="sec-sta">
     <div class="section-head">
-      <h2 class="section-title">// 07. STA CORRIDOR SUBTITLE GENERATOR &amp; MP4 TOOL</h2>
+      <h2 class="section-title">// 08. STA CORRIDOR SUBTITLE GENERATOR &amp; MP4 TOOL</h2>
     </div>
     <div class="bilingual-grid">
       <div class="lang-box lang-id">
@@ -1483,18 +2286,18 @@
     </div>
   </section>
 
-  <!-- SECTION 8: SOP CHECKLIST & TROUBLESHOOTING -->
+  <!-- SECTION 9: SOP CHECKLIST & TROUBLESHOOTING -->
   <section class="section" id="sec-sop">
     <div class="section-head">
-      <h2 class="section-title">// 08. PRE-FLIGHT SOP CHECKLIST &amp; TROUBLESHOOTING</h2>
+      <h2 class="section-title">// 09. PRE-FLIGHT SOP CHECKLIST &amp; TROUBLESHOOTING</h2>
       <button class="hud-btn no-print" onclick="resetChecklist()">Reset Checklist</button>
     </div>
 
     <div class="checklist" id="preflightChecklist">
       <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Kecocokan APK, Drone &amp; Remote:</strong><strong class="lang-en-inline">SKU &amp; Controller Match:</strong> <span class="lang-id-inline">Pakai Pro V5 (Enterprise/Mini 3-4Pro RC-N1/N2/N3), Old V4 (Phantom/Mavic1-2/Mini1-2/Spark/Air2S) atau WPML KMZ (DJI RC / RC 2 / Consumer Waypoints).</span><span class="lang-en-inline">Verified Pro V5 (Enterprise / Mini 3-4Pro RC-N1/N2/N3), Old V4 (P3/P4/Mavic1-2/Mini1-2/Spark/Air2S) or WPML KMZ (DJI RC / RC 2).</span></span></label>
-      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Ketinggian Aman &amp; RTH:</strong><strong class="lang-en-inline">Clearance &amp; RTH Altitude:</strong> <span class="lang-id-inline">Altitude misi dan ketinggian RTH berada aman di atas puncak pohon, menara, SUTET dan bukit (cek profil DEM bila berbukit).</span><span class="lang-en-inline">Mission &amp; RTH altitudes exceed all trees, towers, power lines and terrain ridges (apply DEM Terrain Follow in hilly sites).</span></span></label>
-      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Baterai &amp; Satelit GPS:</strong><strong class="lang-en-inline">Battery &amp; GPS Lock:</strong> <span class="lang-id-inline">Baterai drone &ge; 50%, RC cukup, HP/tablet cukup dan kunci GPS &ge; 10 satelit sebelum Upload atau Virtual Stick.</span><span class="lang-en-inline">Aircraft battery &ge; 50%, RC/tablet charged and GPS lock &ge; 10 satellites before Upload KMZ or Virtual Stick start.</span></span></label>
-      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Mode Kamera &amp; Memori SD:</strong><strong class="lang-en-inline">SD Card &amp; Camera Action:</strong> <span class="lang-id-inline">Kartu microSD terpasang dengan ruang kosong cukup; aplikasi otomatis mengunci mode Photo/Video &amp; gimbal tilt pada WPT #1.</span><span class="lang-en-inline">MicroSD inserted with free space; app switches Photo/Video mode automatically and locks gimbal tilt cleanly at WPT #1.</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Ketinggian Aman, NFZ &amp; RTH:</strong><strong class="lang-en-inline">Clearance, NFZ &amp; RTH Altitude:</strong> <span class="lang-id-inline">Altitude, RTH &amp; No-Fly Zone Keep-Out berada aman dari pohon, menara SUTET, crane dan puncak bukit (cek grafik Profil 2D DEM).</span><span class="lang-en-inline">Mission, RTH &amp; NFZ keep-outs clear all trees, towers, power lines and terrain ridges (inspect 2D DEM Elevation Chart).</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Pre-Flight Safety Gate &amp; Split Baterai:</strong><strong class="lang-en-inline">Safety Gate GO &amp; Battery Split:</strong> <span class="lang-id-inline">Skor Safety Gate di tab SDK berstatus GO/hijau, leg baterai aktif dipilih (maks &le;99 WPT di Old V4) dan angin di bawah limit drone.</span><span class="lang-en-inline">10-Point Safety Gate in SDK tab shows GO, active battery leg selected (&le;99 WPT in Old V4) and wind within aircraft limit.</span></span></label>
+      <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Baterai, Satelit GPS &amp; Ketajaman Kamera:</strong><strong class="lang-en-inline">Battery, GPS &amp; Motion-Blur Guard:</strong> <span class="lang-id-inline">Baterai drone &ge; 50%, satelit GPS &ge; 10, Motion-Blur Guard bernilai SHARP/OK dan microSD tersedia.</span><span class="lang-en-inline">Battery &ge; 50%, GPS &ge; 10 satellites, Motion-Blur Guard reads SHARP/OK and microSD has free space.</span></span></label>
       <label class="check-row"><input type="checkbox"><span><strong class="lang-id-inline">Siaga VLOS &amp; Ambil Alih Manual:</strong><strong class="lang-en-inline">VLOS &amp; Manual Override Ready:</strong> <span class="lang-id-inline">Pilot menjaga jarak pandang langsung (VLOS) dan siap menggeser switch Sport/Pause pada RC bila diperlukan.</span><span class="lang-en-inline">Pilot maintains VLOS and keeps fingers near Pause/Flight-Mode switch on the RC for instant manual override.</span></span></label>
     </div>
 
@@ -1508,20 +2311,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td><code>SDK Not Registered</code> / Tidak konek USB</td><td><span class="lang-id-inline">Tidak ada internet saat registrasi App Key pertama kali atau kabel OTG / aplikasi DJI lain masih mengunci port USB</span><span class="lang-en-inline">No internet on first-ever SDK registration, faulty OTG cable or DJI Fly/GO4 holding USB port</span></td><td><span class="lang-id-inline">Tutup paksa DJI Fly/GO4 (Force Stop), restart aplikasi aktifkan internet untuk pertama kali install</span><span class="lang-en-inline">Force-stop DJI Fly/GO4, provide internet on first installation apk, reconnect USB data cable</span></td></tr>
+          <tr><td>Status <code>Connecting Automatically...</code> / USB belum konek</td><td><span class="lang-id-inline">Belum ada internet saat aktivasi App Key pertama kali atau aplikasi DJI lain menahan port USB OTG</span><span class="lang-en-inline">No internet on first-ever background SDK activation or DJI Fly/GO4 holding the USB OTG port</span></td><td><span class="lang-id-inline">Aktifkan internet sejenak (otomatis berubah ke <code>System Ready</code>), tutup paksa DJI Fly/GO4 (Force Stop), colok ulang USB</span><span class="lang-en-inline">Enable internet briefly (auto-transitions to <code>System Ready</code>), Force-Stop DJI Fly/GO4 and reconnect USB</span></td></tr>
           <tr><td>Mini 4 Pro tidak konek di Okto V5</td><td><span class="lang-id-inline">Menggunakan remote DJI RC 2 berlayar (OS dikunci DJI untuk aplikasi pihak ke-3)</span><span class="lang-en-inline">Using screen-equipped DJI RC 2 (closed OS blocking third-party MSDK apps)</span></td><td><span class="lang-id-inline">Gunakan remote tanpa layar <code>RC-N2/N3</code> + HP Android untuk Virtual Stick atau pakai metode <code>Share / Impor KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Pair <code>RC-N2/N3</code> + Android phone for MSDK V5 Virtual Stick or use <code>WPML KMZ</code> in DJI Fly</span></td></tr>
-          <tr><td>Misi ditolak saat Upload MSDK V4/V5</td><td><span class="lang-id-inline">Salah APK untuk generasi drone, waypoint di luar zona NFZ/ketinggian &gt;500m atau baterai terlalu rendah</span><span class="lang-en-inline">Wrong SKU installed for aircraft generation, NFZ boundary, altitude &gt;500m or low battery</span></td><td><span class="lang-id-inline">Cek badge peringatan di tab <code>SDK</code>, pindah ke APK yang cocok atau gunakan alur <code>Share KMZ</code> ke DJI Fly</span><span class="lang-en-inline">Check compatibility alert in <code>SDK</code> tab, switch SKU or export via <code>Share KMZ</code></span></td></tr>
+          <tr><td><code>EXCEEDS V4 99-WPT LIMIT</code> di Old V4</td><td><span class="lang-id-inline">Misi penuh melebihi batas memori 99 waypoint MSDK V4</span><span class="lang-en-inline">Full survey mission exceeds MSDK V4 99-waypoint onboard memory cap</span></td><td><span class="lang-id-inline">Pilih chip <strong>Leg Baterai <code>B1, B2..</code></strong> di tab <code>SETUP</code>/<code>SDK</code> (otomatis &le; 99 WPT/leg) atau aktifkan <code>Endpoints-only</code></span><span class="lang-en-inline">Tap <strong>Battery Leg chips <code>B1, B2..</code></strong> in <code>SETUP</code>/<code>SDK</code> (auto-capped &le; 99 WPT/leg) or use <code>Endpoints-only</code></span></td></tr>
+          <tr><td>Error <code>Survey blocked by No-Fly Zones</code></td><td><span class="lang-id-inline">Radius + safety buffer zona NFZ menutupi seluruh poligon AOI</span><span class="lang-en-inline">Configured NFZ radius + safety buffer covers 100% of the AOI polygon</span></td><td><span class="lang-id-inline">Perkecil radius/buffer di <strong>Pro Tools &gt; NFZ</strong> atau pindahkan area AOI sebelum menekan <code>Calculate Plan</code></span><span class="lang-en-inline">Reduce NFZ radius/buffer under <strong>Pro Tools &gt; NFZ</strong> or widen the AOI polygon</span></td></tr>
           <tr><td>Overlay DXF muncul di laut / meleset jauh</td><td><span class="lang-id-inline">Koordinat CAD masih memakai UTM/TM-3 tetapi CRS dibiarkan Auto/WGS84 atau satuan mm</span><span class="lang-en-inline">CAD file uses UTM/TM-3 meters or millimeters while CRS prompt defaulted</span></td><td><span class="lang-id-inline">Pilih zona UTM spesifik (mis. <code>EPSG:32748</code> / UTM 48S) &amp; skala unit di dialog DXF saat impor</span><span class="lang-en-inline">Explicitly pick the site UTM EPSG zone and unit scale in the DXF import dialog</span></td></tr>
-          <tr><td>Virtual Stick berhenti / drone hover diam</td><td><span class="lang-id-inline">Tuas mode RC tidak di Normal, jarak WPT menunggu fix GPS atau tombol Stop ditekan</span><span class="lang-en-inline">RC flight switch not in Normal mode, weak GPS lock or manual Stop triggered</span></td><td><span class="lang-id-inline">Pastikan switch RC Normal, GPS &ge;10 satelit, cek log live di tab <code>SDK</code></span><span class="lang-en-inline">Switch RC back to Normal, confirm GPS &ge;10 sats, inspect live console logs in <code>SDK</code></span></td></tr>
+          <tr><td>Virtual Stick berhenti / Foto terlihat buram</td><td><span class="lang-id-inline">Tuas RC bukan mode Normal / GPS lemah ATAU speed cruise terlalu tinggi di shutter lambat</span><span class="lang-en-inline">RC not in Normal / weak GNSS OR cruise speed exceeds motion-blur threshold</span></td><td><span class="lang-id-inline">Pastikan GPS &ge;10 sats, lalu ketuk tombol <code>Safe Speed</code> pada kartu Motion-Blur Guard di tab <code>CAM</code></span><span class="lang-en-inline">Confirm GPS &ge;10 sats and tap <code>Safe Speed</code> in the <code>CAM</code> Motion-Blur Guard card</span></td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- SECTION 9: COMMERCIAL & PLAY STORE -->
+  <!-- SECTION 10: COMMERCIAL & PLAY STORE -->
   <section class="section" id="sec-commercial">
     <div class="section-head">
-      <h2 class="section-title">// 09. COMMERCIAL LICENSING &amp; DISTRIBUTION STRATEGY</h2>
+      <h2 class="section-title">// 10. COMMERCIAL LICENSING &amp; DISTRIBUTION STRATEGY</h2>
     </div>
     <div class="bilingual-grid">
       <div class="lang-box lang-id">
@@ -1790,6 +2594,283 @@
   } else {
     startBgm(false);
   }
+
+  // -----------------------------------------------------------------------
+  // 10 Pro Innovator Skills Deck & Interactive 4-Tab Avionics Lab
+  // -----------------------------------------------------------------------
+  var currentSkillCat = 'ALL';
+  var allHowTosExpanded = false;
+
+  window.setSkillFilter = function(cat) {
+    currentSkillCat = cat;
+    var chips = document.querySelectorAll('#skillChips .chip');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.toggle('active', chips[i].getAttribute('data-skill-cat') === cat);
+    }
+    var cards = document.querySelectorAll('#skillsGrid .skill-card');
+    var shown = 0;
+    for (var j = 0; j < cards.length; j++) {
+      var vis = (cat === 'ALL' || cards[j].getAttribute('data-skill-cat') === cat);
+      cards[j].classList.toggle('hidden-skill', !vis);
+      if (vis) shown++;
+    }
+    var badge = document.getElementById('skillVisibleBadge');
+    if (badge) badge.textContent = 'Showing ' + shown + ' / ' + cards.length + ' skills';
+  };
+
+  window.toggleSkillHowTo = function(btn) {
+    var box = btn.nextElementSibling;
+    if (!box) return;
+    var isOpen = box.classList.toggle('open');
+    btn.innerHTML = (isOpen ? '▾ ' : '▸ ') +
+      '<span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span>';
+  };
+
+  window.toggleAllSkillHowTo = function() {
+    allHowTosExpanded = !allHowTosExpanded;
+    var boxes = document.querySelectorAll('#skillsGrid .skill-howto');
+    var btns = document.querySelectorAll('#skillsGrid .skill-toggle-btn');
+    for (var i = 0; i < boxes.length; i++) {
+      boxes[i].classList.toggle('open', allHowTosExpanded);
+      if (btns[i]) {
+        btns[i].innerHTML = (allHowTosExpanded ? '▾ ' : '▸ ') +
+          '<span class="lang-id-inline">Tutorial Lapangan</span><span class="lang-en-inline">Field How-To</span>';
+      }
+    }
+    var masterBtn = document.getElementById('toggleAllSkillsBtn');
+    if (masterBtn) {
+      masterBtn.innerHTML = (allHowTosExpanded ? '📕 ' : '📖 ') +
+        (allHowTosExpanded
+          ? '<span class="lang-id-inline">Tutup Semua Tutorial</span><span class="lang-en-inline">Collapse All Guides</span>'
+          : '<span class="lang-id-inline">Buka Semua Tutorial</span><span class="lang-en-inline">Expand All Guides</span>');
+    }
+  };
+
+  window.switchProLab = function(tabName) {
+    var btns = document.querySelectorAll('#labTabs .lab-tab-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].getAttribute('data-lab') === tabName);
+    }
+    var panels = document.querySelectorAll('#proLab .lab-panel');
+    for (var j = 0; j < panels.length; j++) {
+      panels[j].classList.toggle('active', panels[j].id === 'labPanel-' + tabName);
+    }
+  };
+
+  // Lab 1: GSD & Motion-Blur Guard (matches GsdAndBlurEngine.kt)
+  window.updateGsdLab = function() {
+    var droneEl = document.getElementById('simDroneSelect');
+    if (!droneEl) return;
+    var parts = droneEl.value.split(',');
+    var sw = parseFloat(parts[0]);
+    var foc = parseFloat(parts[1]);
+    var imgW = parseFloat(parts[2]);
+    var imgH = parseFloat(parts[3]);
+    var gsdCm = parseFloat(document.getElementById('simGsdSlider').value);
+    var spd = parseFloat(document.getElementById('simSpeedSlider').value);
+    var shutterDenom = parseFloat(document.getElementById('simShutterSelect').value);
+
+    document.getElementById('simGsdVal').textContent = gsdCm.toFixed(1) + ' cm/px';
+    document.getElementById('simSpeedVal').textContent = spd.toFixed(1) + ' m/s';
+
+    var gsdM = gsdCm / 100.0;
+    var solvedAlt = (gsdM * foc * imgW) / sw;
+    var sensorH = sw * (imgH / imgW);
+    var fw = (solvedAlt * sw) / foc;
+    var fh = (solvedAlt * sensorH) / foc;
+    var blurPx = (spd * (1.0 / shutterDenom)) / gsdM;
+    var safeSpd = Math.min(15.0, Math.max(1.0, (0.75 * gsdM) * shutterDenom));
+
+    document.getElementById('outSolvedAlt').textContent = solvedAlt.toFixed(1) + ' m';
+    document.getElementById('outFootprint').textContent = fw.toFixed(0) + '×' + fh.toFixed(0) + ' m';
+    document.getElementById('outBlurPx').textContent = blurPx.toFixed(2) + ' px';
+    document.getElementById('outSafeSpd').textContent = safeSpd.toFixed(1) + ' m/s';
+
+    var fill = document.getElementById('blurGaugeFill');
+    var statusEl = document.getElementById('outBlurStatus');
+    var pct = Math.min(100, (blurPx / 2.0) * 100);
+    var color = '#22C55E';
+    var msg = 'SHARP (<0.50 px) — Crisp photogrammetry frames @ 1/' + shutterDenom + 's';
+    if (blurPx > 1.5) {
+      color = '#EF4444';
+      msg = 'SEVERE BLUR (>1.5 px) — Cap speed <= ' + safeSpd.toFixed(1) + ' m/s or raise shutter!';
+    } else if (blurPx > 1.0) {
+      color = '#F59E0B';
+      msg = 'BLUR RISK (>1.0 px) — Reduce speed to <= ' + safeSpd.toFixed(1) + ' m/s for crisp tie-points.';
+    } else if (blurPx > 0.5) {
+      color = '#00E5FF';
+      msg = 'ACCEPTABLE (<=1.0 px) — Good framing sharpness at ' + spd.toFixed(1) + ' m/s.';
+    }
+    fill.style.width = pct.toFixed(0) + '%';
+    fill.style.backgroundColor = color;
+    statusEl.style.borderColor = color;
+    statusEl.style.color = color;
+    statusEl.textContent = msg;
+  };
+
+  // Lab 2: Wind-Triangle & Endurance Simulator (matches WindSimulationEngine.kt)
+  window.updateWindLab = function() {
+    var air = parseFloat(document.getElementById('simAirSlider').value);
+    var wSpd = parseFloat(document.getElementById('simWindSpdSlider').value);
+    var wFrom = parseFloat(document.getElementById('simWindDirSlider').value);
+    var track = parseFloat(document.getElementById('simTrackSlider').value);
+    var distKm = parseFloat(document.getElementById('simDistSlider').value);
+
+    document.getElementById('simAirVal').textContent = air.toFixed(1) + ' m/s';
+    document.getElementById('simWindSpdVal').textContent = wSpd.toFixed(1) + ' m/s';
+    document.getElementById('simWindDirVal').textContent = wFrom.toFixed(0) + '°';
+    document.getElementById('simTrackVal').textContent = track.toFixed(0) + '°';
+    document.getElementById('simDistVal').textContent = distKm.toFixed(1) + ' km • 30m spec';
+
+    var wTo = (wFrom + 180) % 360;
+    function legSpeed(courseDeg) {
+      var dRad = (wTo - courseDeg) * Math.PI / 180.0;
+      var wAlong = wSpd * Math.cos(dRad);
+      var wCross = wSpd * Math.sin(dRad);
+      var vaSq = air * air - wCross * wCross;
+      if (vaSq <= 0) return { gs: 0.25, stall: true };
+      var raw = Math.sqrt(vaSq) + wAlong;
+      return { gs: Math.max(0.25, raw), stall: raw <= 0.5 };
+    }
+    var outLeg = legSpeed(track);
+    var backLeg = legSpeed((track + 180) % 360);
+    var distM = distKm * 1000.0;
+    var calmS = distM / air;
+    var windS = (distM * 0.5) / outLeg.gs + (distM * 0.5) / backLeg.gs;
+    var penaltyPct = ((windS - calmS) / calmS) * 100.0;
+    var usableMin = 30.0 * 0.75; // 25% reserve -> 22.5 min
+    var battsCalm = Math.max(1, Math.ceil((calmS / 60.0) / usableMin));
+    var battsWind = Math.max(1, Math.ceil((windS / 60.0) / usableMin));
+    var recAz = ((wFrom + 90) % 180 + 180) % 180;
+
+    document.getElementById('outWindGs').textContent = outLeg.gs.toFixed(1) + ' / ' + backLeg.gs.toFixed(1) + ' m/s';
+    document.getElementById('outWindEta').textContent = (windS / 60.0).toFixed(1) + 'm (vs ' + (calmS / 60.0).toFixed(1) + 'm)';
+    document.getElementById('outWindBatts').textContent = battsWind + 'x (Calm ' + battsCalm + 'x)';
+    document.getElementById('outWindRec').textContent = recAz.toFixed(0) + '°';
+
+    // Update SVG compass vectors
+    function ptFromDeg(deg, len) {
+      var r = deg * Math.PI / 180.0;
+      return [72 + len * Math.sin(r), 62 - len * Math.cos(r)];
+    }
+    var tA = ptFromDeg(track, 38), tB = ptFromDeg((track + 180) % 360, 38);
+    var trkEl = document.getElementById('svgTrackLine');
+    trkEl.setAttribute('x1', tA[0].toFixed(1)); trkEl.setAttribute('y1', tA[1].toFixed(1));
+    trkEl.setAttribute('x2', tB[0].toFixed(1)); trkEl.setAttribute('y2', tB[1].toFixed(1));
+
+    var oA = ptFromDeg(recAz, 38), oB = ptFromDeg((recAz + 180) % 360, 38);
+    var optEl = document.getElementById('svgOptTrackLine');
+    optEl.setAttribute('x1', oA[0].toFixed(1)); optEl.setAttribute('y1', oA[1].toFixed(1));
+    optEl.setAttribute('x2', oB[0].toFixed(1)); optEl.setAttribute('y2', oB[1].toFixed(1));
+
+    var wOrigin = ptFromDeg(wFrom, 40), wTip = ptFromDeg(wTo, Math.min(26, wSpd * 1.8));
+    var wEl = document.getElementById('svgWindArrow');
+    wEl.setAttribute('x1', wOrigin[0].toFixed(1)); wEl.setAttribute('y1', wOrigin[1].toFixed(1));
+    wEl.setAttribute('x2', wTip[0].toFixed(1)); wEl.setAttribute('y2', wTip[1].toFixed(1));
+
+    var advEl = document.getElementById('outWindAdvisory');
+    if (outLeg.stall || backLeg.stall) {
+      advEl.style.borderColor = '#EF4444'; advEl.style.color = '#FCA5A5';
+      advEl.textContent = 'STALL RISK: Wind exceeds airspeed along track! Increase airspeed or abort.';
+    } else if (wSpd > 10.7) {
+      advEl.style.borderColor = '#F59E0B'; advEl.style.color = '#FDE68A';
+      advEl.textContent = 'HIGH WIND (' + wSpd.toFixed(1) + ' m/s): Exceeds sub-250g limit; +' + penaltyPct.toFixed(1) + '% ETA.';
+    } else {
+      advEl.style.borderColor = '#00E5FF'; advEl.style.color = '#00E5FF';
+      advEl.textContent = 'Time penalty +' + penaltyPct.toFixed(1) + '% vs calm • Best balanced crosswind azimuth: ' + recAz.toFixed(0) + '°';
+    }
+  };
+
+  // Lab 3: 3D Orbit Helical Geometry (matches OrbitAndFacadeEngine.kt)
+  window.updateOrbitLab = function() {
+    var rad = parseFloat(document.getElementById('simOrbRad').value);
+    var baseAlt = parseFloat(document.getElementById('simOrbAlt').value);
+    var rings = parseInt(document.getElementById('simOrbRings').value, 10);
+    var focusH = parseFloat(document.getElementById('simOrbFocus').value);
+    var pts = parseInt(document.getElementById('simOrbPts').value, 10);
+    var stepAlt = 15;
+
+    document.getElementById('simOrbRadVal').textContent = rad.toFixed(0) + ' m';
+    document.getElementById('simOrbAltVal').textContent = baseAlt.toFixed(0) + ' m';
+    document.getElementById('simOrbRingVal').textContent = rings + ' rings • +' + stepAlt + 'm';
+    document.getElementById('simOrbFocusVal').textContent = focusH.toFixed(0) + ' m';
+    document.getElementById('simOrbPtsVal').textContent = pts + ' WPT/ring';
+
+    var topAlt = baseAlt + (rings - 1) * stepAlt;
+    function calcPitch(altM) {
+      var dz = Math.max(0.0, altM - focusH);
+      return -Math.atan2(dz, Math.max(1.0, rad)) * 180.0 / Math.PI;
+    }
+    var basePitch = calcPitch(baseAlt);
+    var topPitch = calcPitch(topAlt);
+    var totalWpt = rings * pts;
+    var pathLen = rings * 2.0 * Math.PI * rad;
+
+    document.getElementById('outOrbBasePitch').textContent = basePitch.toFixed(1) + '°';
+    document.getElementById('outOrbTopPitch').textContent = topPitch.toFixed(1) + '°';
+    document.getElementById('outOrbTotalWpt').textContent = totalWpt + ' WPT';
+    document.getElementById('outOrbPathLen').textContent = pathLen.toFixed(0) + ' m';
+    document.getElementById('svgOrbLabel').textContent = 'BASE PITCH ' + basePitch.toFixed(1) + '° → TOP ' + topPitch.toFixed(1) + '°';
+  };
+
+  // Lab 4: 10-Point Pre-Flight Safety Gate (matches PreflightReadinessEngine.kt)
+  window.updateGateLab = function() {
+    var sdk = document.getElementById('simGateSdk').value;
+    var wpt = parseInt(document.getElementById('simGateWpt').value, 10);
+    var sat = parseInt(document.getElementById('simGateSat').value, 10);
+    var batt = parseInt(document.getElementById('simGateBatt').value, 10);
+    var agl = parseInt(document.getElementById('simGateAgl').value, 10);
+    var nfzBreach = document.getElementById('simGateNfz').checked;
+    var stale = document.getElementById('simGateStale').checked;
+
+    document.getElementById('simGateWptVal').textContent = 'MSDK ' + sdk + ' • ' + wpt + ' WPT';
+    document.getElementById('simGateSatVal').textContent = sat + ' sats';
+    document.getElementById('simGateBattVal').textContent = batt + '%';
+    document.getElementById('simGateAglVal').textContent = agl + ' m';
+
+    var checks = [
+      { lbl: 'Mission Fresh', sev: stale ? 'fail' : 'pass' },
+      { lbl: sdk + ' WPT (' + wpt + ')', sev: (sdk === 'V4' && wpt > 99) ? 'fail' : 'pass' },
+      { lbl: 'Radio Auto-Link', sev: 'pass' },
+      { lbl: 'GNSS ' + sat + ' sats', sev: sat >= 10 ? 'pass' : (sat >= 6 ? 'warn' : 'fail') },
+      { lbl: 'Battery ' + batt + '%', sev: batt >= 50 ? 'pass' : (batt >= 30 ? 'warn' : 'fail') },
+      { lbl: 'Airspace <=120m', sev: 'pass' },
+      { lbl: 'DEM AGL ' + agl + 'm', sev: agl >= 20 ? 'pass' : (agl >= 10 ? 'warn' : 'fail') },
+      { lbl: 'NFZ Clear', sev: nfzBreach ? 'fail' : 'pass' },
+      { lbl: 'Wind Envelope', sev: 'pass' },
+      { lbl: 'Blur Sharpness', sev: 'pass' }
+    ];
+
+    var passC = 0, warnC = 0, failC = 0;
+    var html = '';
+    for (var i = 0; i < checks.length; i++) {
+      var ch = checks[i];
+      if (ch.sev === 'pass') passC++;
+      else if (ch.sev === 'warn') warnC++;
+      else failC++;
+      var icon = ch.sev === 'pass' ? '✓' : (ch.sev === 'warn' ? '⚠' : '✕');
+      html += '<div class="lab-check-pill ' + ch.sev + '">' + icon + ' ' + ch.lbl + '</div>';
+    }
+    var score = Math.round(((passC * 10 + warnC * 5) / 100.0) * 100);
+    var verdict = failC > 0 ? 'NO-GO BLOCKED' : (warnC > 0 ? 'FLIGHT CAUTION' : 'GO FOR FLIGHT');
+    var clr = failC > 0 ? '#EF4444' : (warnC > 0 ? '#F59E0B' : '#22C55E');
+
+    var vEl = document.getElementById('outGateVerdict');
+    vEl.textContent = verdict + ' (' + failC + '✕ ' + warnC + '⚠)';
+    vEl.style.borderColor = clr;
+    vEl.style.color = clr;
+    document.getElementById('outGateScore').textContent = score + '%';
+    document.getElementById('outGateScore').style.color = clr;
+    var gFill = document.getElementById('gateGaugeFill');
+    gFill.style.width = score + '%';
+    gFill.style.backgroundColor = clr;
+    document.getElementById('outGateChecks').innerHTML = html;
+  };
+
+  window.updateGsdLab();
+  window.updateWindLab();
+  window.updateOrbitLab();
+  window.updateGateLab();
 })();
 </script>
 </body>
