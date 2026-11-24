@@ -1374,6 +1374,241 @@
   .tk-name { font-weight: 700; color: #F8FAFC; margin: 2px 0; }
   .tk-sub { font-size: 11px; color: var(--text-secondary); }
 
+  /* Donor Hall of Fame */
+  .hall-of-fame {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-color: rgba(245, 183, 49, 0.38);
+    background:
+      radial-gradient(ellipse at 12% 0%, rgba(245, 183, 49, 0.12), transparent 42%),
+      radial-gradient(ellipse at 100% 100%, rgba(0, 229, 255, 0.08), transparent 40%),
+      rgba(11, 18, 34, 0.96);
+  }
+  .hall-of-fame::before,
+  .hall-of-fame::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 240px;
+    height: 240px;
+    border: 1px solid rgba(245, 183, 49, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hall-of-fame::before {
+    top: -150px;
+    right: -75px;
+    box-shadow: 0 0 0 22px rgba(245, 183, 49, 0.025), 0 0 0 46px rgba(0, 229, 255, 0.02);
+    animation: hall-orbit 26s linear infinite;
+  }
+  .hall-of-fame::after {
+    bottom: -180px;
+    left: -85px;
+    border-color: rgba(0, 229, 255, 0.1);
+    box-shadow: 0 0 0 24px rgba(0, 229, 255, 0.02), 0 0 0 48px rgba(139, 92, 246, 0.02);
+    animation: hall-orbit 34s linear infinite reverse;
+  }
+  @keyframes hall-orbit { to { transform: rotate(360deg); } }
+  .hall-intro { margin-bottom: 16px; }
+  .hall-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .hall-stat {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: rgba(5, 8, 17, 0.62);
+    text-align: center;
+  }
+  .hall-stat-value {
+    display: block;
+    color: var(--gold);
+    font: 800 17px var(--mono);
+    overflow-wrap: anywhere;
+  }
+  .hall-stat-label {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-secondary);
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .hall-spotlight {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px;
+    overflow: hidden;
+    padding: 18px;
+    border: 1px solid rgba(245, 183, 49, 0.48);
+    border-radius: 13px;
+    background: linear-gradient(110deg, rgba(245, 183, 49, 0.15), rgba(19, 29, 52, 0.88) 45%, rgba(0, 229, 255, 0.08));
+    box-shadow: inset 0 0 26px rgba(245, 183, 49, 0.05), 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .hall-spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 -45%;
+    width: 28%;
+    transform: skewX(-22deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
+    animation: hall-shine 6s ease-in-out infinite;
+  }
+  @keyframes hall-shine {
+    0%, 38% { left: -45%; }
+    72%, 100% { left: 125%; }
+  }
+  .hall-spot-avatar,
+  .donor-avatar {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(245, 183, 49, 0.68);
+    border-radius: 50%;
+    color: #FFF4C2;
+    background: radial-gradient(circle at 30% 25%, rgba(245, 183, 49, 0.35), rgba(19, 29, 52, 0.96) 68%);
+    font-family: var(--mono);
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(245, 183, 49, 0.38);
+  }
+  .hall-spot-avatar { width: 64px; height: 64px; font-size: 16px; }
+  .hall-spot-copy { min-width: 0; }
+  .hall-spot-kicker {
+    color: var(--gold);
+    font: 700 10px var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hall-spot-name {
+    margin: 3px 0;
+    overflow-wrap: anywhere;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .hall-spot-meta { color: var(--text-secondary); font-size: 12px; overflow-wrap: anywhere; }
+  .hall-spot-role { color: #C4B5FD; }
+  .hall-spot-amount {
+    color: var(--gold);
+    font: 800 clamp(16px, 2.4vw, 23px) var(--mono);
+    text-align: right;
+    white-space: nowrap;
+    text-shadow: 0 0 16px rgba(245, 183, 49, 0.3);
+  }
+  .hall-controls {
+    display: grid;
+    grid-template-columns: minmax(190px, 1.5fr) repeat(2, minmax(150px, 1fr)) auto;
+    align-items: center;
+    gap: 9px;
+    margin: 17px 0 12px;
+  }
+  .hall-control {
+    width: 100%;
+    min-height: 39px;
+    padding: 8px 11px;
+    border: 1px solid var(--border-accent);
+    border-radius: 8px;
+    outline: none;
+    background: rgba(5, 8, 17, 0.88);
+    color: var(--text-primary);
+    font: 12px var(--sans);
+  }
+  .hall-control:focus-visible { box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.25); }
+  .hall-results { color: var(--text-secondary); font: 11px var(--mono); text-align: right; white-space: nowrap; }
+  .hall-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    gap: 10px;
+  }
+  .donor-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--cyan);
+    border-radius: 10px;
+    outline: none;
+    background: linear-gradient(135deg, rgba(15, 23, 43, 0.96), rgba(7, 12, 24, 0.92));
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    appearance: none;
+    width: 100%;
+    animation: donor-arrive 0.45s both;
+    animation-delay: var(--delay, 0s);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  @keyframes donor-arrive {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .donor-card:hover,
+  .donor-card:focus-visible {
+    z-index: 1;
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+    box-shadow: 0 8px 22px rgba(0, 229, 255, 0.12);
+  }
+  .donor-card[aria-pressed="true"] {
+    border-color: var(--gold);
+    border-left-color: var(--gold);
+    background: linear-gradient(135deg, rgba(245, 183, 49, 0.13), rgba(15, 23, 43, 0.96) 58%);
+    box-shadow: 0 0 18px rgba(245, 183, 49, 0.1);
+  }
+  .donor-card[data-rank="1"] { border-left-color: var(--gold); }
+  .donor-card[data-rank="2"] { border-left-color: #CBD5E1; }
+  .donor-card[data-rank="3"] { border-left-color: #D28B5B; }
+  .donor-avatar { width: 44px; height: 44px; font-size: 12px; }
+  .donor-card[data-rank="2"] .donor-avatar { border-color: rgba(203, 213, 225, 0.7); color: #E2E8F0; }
+  .donor-card[data-rank="3"] .donor-avatar { border-color: rgba(210, 139, 91, 0.72); color: #FED7AA; }
+  .donor-info { min-width: 0; }
+  .donor-name { overflow-wrap: anywhere; font-size: 13px; font-weight: 800; }
+  .donor-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+  .platform-pill,
+  .donor-rank-pill {
+    max-width: 100%;
+    padding: 3px 6px;
+    overflow-wrap: anywhere;
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    border-radius: 5px;
+    color: #BAE6FD;
+    background: rgba(0, 229, 255, 0.06);
+    font: 10px var(--mono);
+  }
+  .donor-rank-pill { border-color: rgba(245, 183, 49, 0.3); color: var(--gold); background: rgba(245, 183, 49, 0.07); }
+  .donor-job { grid-column: 2; margin-top: -6px; color: var(--text-secondary); font-size: 11px; overflow-wrap: anywhere; }
+  .donor-amount { grid-column: 2; color: var(--gold); font: 800 13px var(--mono); }
+  .donor-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.045) 48%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.65s ease;
+  }
+  .donor-card:hover .donor-shine { transform: translateX(120%); }
+  .hall-empty {
+    padding: 24px 12px;
+    border: 1px dashed var(--border-accent);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
   /* Responsive Breakpoints */
   @media (max-width: 960px) {
     .hero-split { grid-template-columns: 1fr; }
@@ -1395,11 +1630,23 @@
     .hero { padding: 18px 14px; }
     .hero h1 { font-size: 19px; }
     .qr-pitch h2 { font-size: 17px; }
+    .hall-controls { grid-template-columns: 1fr 1fr; }
+    .hall-search { grid-column: 1 / -1; }
+    .hall-results { text-align: left; }
   }
   @media (max-width: 480px) {
     .hero-kpi-strip { grid-template-columns: repeat(2, 1fr); }
     .hud-rail { grid-template-columns: repeat(2, 1fr); }
     .geo-stamp-card { grid-template-columns: 1fr; }
+    .hall-stats { gap: 6px; }
+    .hall-stat { padding: 9px 5px; }
+    .hall-stat-value { font-size: 13px; }
+    .hall-stat-label { font-size: 8px; }
+    .hall-spotlight { grid-template-columns: auto minmax(0, 1fr); gap: 10px; padding: 13px; }
+    .hall-spot-avatar { width: 50px; height: 50px; font-size: 13px; }
+    .hall-spot-name { font-size: 16px; }
+    .hall-spot-amount { grid-column: 2; text-align: left; }
+    .hall-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 420px) {
     .brand-sub { display: none; }
@@ -1423,6 +1670,17 @@
       border-color: #CBD5E1 !important;
       box-shadow: none !important;
     }
+    .hall-stat, .hall-spotlight, .donor-card {
+      background: #FFFFFF !important;
+      color: #0F172A !important;
+      border-color: #CBD5E1 !important;
+      box-shadow: none !important;
+    }
+    .hall-stat-value, .hall-spot-kicker, .hall-spot-amount, .donor-amount { color: #92400E !important; }
+    .hall-stat-label, .hall-spot-meta, .hall-spot-role, .donor-job { color: #334155 !important; }
+    .hall-spot-avatar, .donor-avatar { background: #F1F5F9 !important; color: #0F172A !important; text-shadow: none !important; }
+    .hall-of-fame { break-inside: auto; }
+    .donor-card { break-inside: avoid; }
     .hero h1 { color: #0369A1 !important; -webkit-text-fill-color: #0369A1; }
     .section-title, th, code, .ref-label { color: #0369A1 !important; background: #F1F5F9 !important; }
     .lang-en-inline { color: #334155 !important; }
@@ -1534,6 +1792,7 @@
     <a href="#sec-flight">10. 3-Tier Flight &amp; STA</a>
     <a href="#sec-safety-monetize">11. Safety &amp; Pro Pass</a>
     <a href="#sec-sop">12. SOP &amp; Play Store</a>
+    <a href="#sec-hall-of-fame">🏆 Hall of Fame</a>
   </nav>
 
   <!-- INTERACTIVE HERO WITH LIVE ANIMATED FLIGHT CANVAS -->
@@ -2846,6 +3105,58 @@
     </div>
   </section>
 
+  <section class="section reveal hall-of-fame" id="sec-hall-of-fame">
+    <div class="section-head">
+      <h2 class="section-title">🏆 HALL OF FAME // OKTO COMMUNITY</h2>
+      <span class="stat-pill gold">37 SUPPORTERS • THANK YOU!</span>
+    </div>
+    <div class="bilingual-grid hall-intro">
+      <div class="lang-box lang-id">
+        <span class="lang-tag id">Apresiasi Komunitas OKTO</span>
+        <p>Terima kasih kepada semua pendukung yang ikut membantu perjalanan OKTO. Setiap kontribusi berarti bagi pengembangan aplikasi dan komunitas drone Indonesia.</p>
+      </div>
+      <div class="lang-box lang-en">
+        <span class="lang-tag en">Celebrating the OKTO Community</span>
+        <p>Thank you to everyone who has supported OKTO. Every contribution helps our app and the drone community keep moving forward.</p>
+      </div>
+    </div>
+
+    <div class="hall-stats" aria-label="Ringkasan donasi">
+      <div class="hall-stat"><strong class="hall-stat-value" id="hallDonorCount">37</strong><span class="hall-stat-label">Donatur / Supporters</span></div>
+      <div class="hall-stat"><strong class="hall-stat-value" id="hallTotalAmount">—</strong><span class="hall-stat-label">Total Apresiasi / Total Support</span></div>
+      <div class="hall-stat"><strong class="hall-stat-value" id="hallTopAmount">—</strong><span class="hall-stat-label">Donasi Teratas / Top Donation</span></div>
+    </div>
+
+    <div class="hall-spotlight" id="donorSpotlight" aria-live="polite">
+      <div class="hall-spot-avatar" id="donorSpotAvatar">COCO</div>
+      <div class="hall-spot-copy">
+        <div class="hall-spot-kicker" id="donorSpotKicker">🏆 HALL OF FAME #1</div>
+        <div class="hall-spot-name" id="donorSpotName">Jagad Drone</div>
+        <div class="hall-spot-meta"><span id="donorSpotHandle">@jagad.drone · TikTok</span> · <span class="hall-spot-role" id="donorSpotRole">Top 1 Donate</span></div>
+      </div>
+      <div class="hall-spot-amount" id="donorSpotAmount">Rp 1.000.000</div>
+    </div>
+
+    <div class="hall-controls no-print">
+      <input class="hall-control hall-search" id="donorSearch" type="search" placeholder="Cari nama, akun, atau profesi..." aria-label="Cari donatur">
+      <select class="hall-control" id="donorTierFilter" aria-label="Filter donatur">
+        <option value="all">Semua donatur / All supporters</option>
+        <option value="200k">Donasi Rp 200.000 ke atas</option>
+        <option value="100k">Donasi Rp 100.000 ke atas</option>
+        <option value="under100k">Donasi di bawah Rp 100.000</option>
+      </select>
+      <select class="hall-control" id="donorSort" aria-label="Urutkan donatur">
+        <option value="amount-desc">Nominal terbesar / Highest amount</option>
+        <option value="amount-asc">Nominal terkecil / Lowest amount</option>
+        <option value="name">Nama A–Z / Name A–Z</option>
+      </select>
+      <span class="hall-results" id="donorResults" aria-live="polite">37 / 37 supporters</span>
+    </div>
+
+    <div class="hall-grid" id="donorCards" role="group" aria-label="Daftar donatur OKTO"></div>
+    <div class="hall-empty" id="donorEmpty" hidden>Donatur tidak ditemukan / No supporters match your search.</div>
+  </section>
+
 </main>
 
 <button class="top-float-btn no-print" id="backToTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
@@ -3554,7 +3865,163 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { startBgm(false); });
   else startBgm(false);
 
-  // 16. Initialize Interactive Panels
+  // 16. OKTO Community Hall of Fame
+  var DONORS = [
+    { avatar: 'COCO', name: 'Jagad Drone', handle: '@jagad.drone', platform: 'TikTok', amount: 1000000, role: 'Hall of Fame' },
+    { avatar: 'FAR', name: 'FA Rataf', handle: '@rahmat_tempomona', platform: 'TikTok', amount: 300000, role: 'Top 1 Donate' },
+    { avatar: 'TZ', name: 'Tazz', handle: '@tazz55945', platform: 'TikTok', amount: 206200, role: 'Top 2 Donate' },
+    { avatar: 'SG', name: 'Sagitarius', handle: '@miraclesagitarius12', platform: 'TikTok', amount: 200000, role: 'Top 3 Donate' },
+    { avatar: 'TMN', name: 'TypeMyName', handle: '@mkeytype', platform: 'TikTok', amount: 150000, role: 'Top Donate' },
+    { avatar: 'RA', name: "2031's", handle: '@rances434', platform: 'TikTok', amount: 150000, role: 'Surveyor Pro' },
+    { avatar: 'KG', name: 'KangGift', handle: '@kanggiftpaten', platform: 'TikTok', amount: 150000, role: 'Team Appraisal 🔎🕵️‍♂️🏘️' },
+    { avatar: 'XNY', name: 'Xnypin', handle: '@xnypin6', platform: 'TikTok', amount: 150000, role: 'DP Kucing🙀' },
+    { avatar: 'NL', name: 'Nature Lover', handle: '@naturerecorder', platform: 'TikTok', amount: 120000, role: 'Cine Content Creator' },
+    { avatar: 'PE', name: 'Patop Excellent', handle: '@patop_excellent7', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'CA', name: 'catchemtcg.02', handle: '@catchemtcg.02', platform: 'TikTok', amount: 100000, role: 'Teteh dari Malaysia' },
+    { avatar: 'IR', name: 'iedrahmat', handle: '@iedrahmat', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'SU', name: 'Surya Utama', handle: '@suryautama0', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'CS', name: 'Crim Soot', handle: '@joki_bakwan', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'BG', name: 'Bantug', handle: '@bantughehe', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'S30', name: 'Setelah30', handle: '@setelah30_', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'AFR', name: 'Alvian F.R.', handle: '@alvian_fr', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'AB', name: 'abidin', handle: '@abidinnn_', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'KB', name: 'Kita Bisa', handle: '@Kita Bisa', platform: 'Facebook', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'PES', name: 'Praba Engineering', handle: '@Praba Engineering', platform: 'Facebook', amount: 100000, role: 'Engineering Teacher' },
+    { avatar: 'ES', name: 'Erwin Saputra', handle: '@Erwin Saputra', platform: 'Facebook', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'FM', name: 'Farhanmunggaran', handle: '@Farhanmunggaran', platform: 'Instagram', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'AL', name: 'Alim', handle: '@Alimlewy98', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'BS', name: 'Bagus', handle: '@masbagus363', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'JH', name: 'JHZON', handle: '@rizonoktv', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'PH', name: 'Polroha', handle: '@polroha2', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'SS', name: 'Sauss', handle: '@.udontmattertome', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'WS', name: 'WS 99', handle: '@w.sudir', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'IT', name: 'Ikantongkol', handle: '@ilhamalimuddin983', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'Dii', name: 'Dii', handle: '@jud1567', platform: 'TikTok', amount: 100000, role: 'Bang Keren' },
+    { avatar: 'YN', name: 'Yannone', handle: '@obitokecil99', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'iGee', name: 'not_ur_igee', handle: '@igee17', platform: 'TikTok', amount: 100000, role: 'Surveyor Pro' },
+    { avatar: 'G', name: 'Gian', handle: '@gian_kintap', platform: 'TikTok', amount: 112000, role: 'Surveyor Tambang' },
+    { avatar: 'MF', name: 'Muhammad Faruq U', handle: '@ubaydisana', platform: 'TikTok', amount: 84000, role: 'Surveyor Pro' },
+    { avatar: 'BH', name: 'Bahlil', handle: '@anakbungsu123456789', platform: 'TikTok', amount: 69800, role: '?' },
+    { avatar: '50S', name: '50s 1 116', handle: '@50n.1.116', platform: 'TikTok', amount: 61800, role: 'Surveyor Pro' },
+    { avatar: 'RN', name: 'Riki Nurgahayu822', handle: '@rikinurgahayu96', platform: 'TikTok', amount: 55800, role: 'Mechanic Drone' }
+  ];
+  var donorCardsEl = document.getElementById('donorCards');
+  var donorSearchEl = document.getElementById('donorSearch');
+  var donorTierEl = document.getElementById('donorTierFilter');
+  var donorSortEl = document.getElementById('donorSort');
+  var rankedDonors = DONORS.slice().sort(function(a, b) { return b.amount - a.amount; });
+  var selectedDonorIndex = -1;
+
+  function formatDonation(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
+
+  function selectDonor(index) {
+    var donor = DONORS[index];
+    if (!donor) return;
+    selectedDonorIndex = index;
+    document.getElementById('donorSpotAvatar').textContent = donor.avatar;
+    document.getElementById('donorSpotName').textContent = donor.name;
+    document.getElementById('donorSpotHandle').textContent = donor.handle + ' · ' + donor.platform;
+    document.getElementById('donorSpotRole').textContent = donor.role;
+    document.getElementById('donorSpotAmount').textContent = formatDonation(donor.amount);
+    var rank = rankedDonors.indexOf(donor);
+    document.getElementById('donorSpotKicker').textContent = rank < 3 ? '🏆 HALL OF FAME #' + (rank + 1) : '✨ COMMUNITY SUPPORTER';
+    var cards = donorCardsEl.querySelectorAll('.donor-card');
+    for (var i = 0; i < cards.length; i++) {
+      var isSelected = parseInt(cards[i].getAttribute('data-donor-index'), 10) === index;
+      cards[i].setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+    }
+  }
+
+  function makeDonorCard(donor, index, rank) {
+    var card = document.createElement('button');
+    card.className = 'donor-card';
+    card.type = 'button';
+    card.setAttribute('aria-pressed', 'false');
+    card.setAttribute('data-donor-index', index);
+    if (rank < 3) card.setAttribute('data-rank', rank + 1);
+    card.style.setProperty('--delay', ((index % 12) * 0.035) + 's');
+
+    var avatar = document.createElement('div');
+    avatar.className = 'donor-avatar';
+    avatar.setAttribute('aria-hidden', 'true');
+    avatar.textContent = donor.avatar;
+    var info = document.createElement('div');
+    info.className = 'donor-info';
+    var name = document.createElement('div');
+    name.className = 'donor-name';
+    name.textContent = donor.name;
+    var meta = document.createElement('div');
+    meta.className = 'donor-meta';
+    var platform = document.createElement('span');
+    platform.className = 'platform-pill';
+    platform.textContent = donor.handle + ' · ' + donor.platform;
+    meta.appendChild(platform);
+    if (rank < 3) {
+      var rankPill = document.createElement('span');
+      rankPill.className = 'donor-rank-pill';
+      rankPill.textContent = '🏆 TOP ' + (rank + 1);
+      meta.appendChild(rankPill);
+    }
+    var job = document.createElement('div');
+    job.className = 'donor-job';
+    job.textContent = donor.role;
+    var amount = document.createElement('div');
+    amount.className = 'donor-amount';
+    amount.textContent = formatDonation(donor.amount);
+    var shine = document.createElement('div');
+    shine.className = 'donor-shine';
+    shine.setAttribute('aria-hidden', 'true');
+
+    info.appendChild(name);
+    info.appendChild(meta);
+    card.appendChild(avatar);
+    card.appendChild(info);
+    card.appendChild(job);
+    card.appendChild(amount);
+    card.appendChild(shine);
+    card.addEventListener('click', function() { selectDonor(index); });
+    return card;
+  }
+
+  function renderDonors() {
+    var query = donorSearchEl.value.trim().toLowerCase();
+    var tier = donorTierEl.value;
+    var sort = donorSortEl.value;
+    var filtered = DONORS.map(function(donor, index) { return { donor: donor, index: index }; }).filter(function(entry) {
+      var donor = entry.donor;
+      var matchesQuery = !query || (donor.name + ' ' + donor.handle + ' ' + donor.platform + ' ' + donor.role).toLowerCase().indexOf(query) !== -1;
+      var matchesTier = tier === 'all' ||
+        (tier === '200k' && donor.amount >= 200000) ||
+        (tier === '100k' && donor.amount >= 100000) ||
+        (tier === 'under100k' && donor.amount < 100000);
+      return matchesQuery && matchesTier;
+    });
+    filtered.sort(function(a, b) {
+      if (sort === 'amount-asc') return a.donor.amount - b.donor.amount || a.index - b.index;
+      if (sort === 'name') return a.donor.name.localeCompare(b.donor.name) || a.index - b.index;
+      return b.donor.amount - a.donor.amount || a.index - b.index;
+    });
+    donorCardsEl.textContent = '';
+    for (var i = 0; i < filtered.length; i++) {
+      donorCardsEl.appendChild(makeDonorCard(filtered[i].donor, filtered[i].index, rankedDonors.indexOf(filtered[i].donor)));
+    }
+    document.getElementById('donorResults').textContent = filtered.length + ' / ' + DONORS.length + ' supporters';
+    document.getElementById('donorEmpty').hidden = filtered.length > 0;
+    if (selectedDonorIndex >= 0) selectDonor(selectedDonorIndex);
+  }
+
+  var totalDonations = DONORS.reduce(function(total, donor) { return total + donor.amount; }, 0);
+  var topDonation = Math.max.apply(null, DONORS.map(function(donor) { return donor.amount; }));
+  document.getElementById('hallDonorCount').textContent = DONORS.length;
+  document.getElementById('hallTotalAmount').textContent = formatDonation(totalDonations);
+  document.getElementById('hallTopAmount').textContent = formatDonation(topDonation);
+  donorSearchEl.addEventListener('input', renderDonors);
+  donorTierEl.addEventListener('change', renderDonors);
+  donorSortEl.addEventListener('change', renderDonors);
+  renderDonors();
+  selectDonor(0);
+
+  // 17. Initialize Interactive Panels
   window.setHeroMode('grid2d');
   window.updateGsdLab();
   window.updateWindLab();
